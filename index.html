@@ -325,7 +325,29 @@ tr:hover td{background:rgba(255,255,255,.01)}
 
 <div class="modal" id="moBan"><div class="mdl"><div class="mhdr"><div class="mtitle" style="color:var(--red)">⚠ Ban User</div><button class="mcls" onclick="cm('moBan')">✕</button></div><div class="mbody"><p style="font-size:12px;color:var(--t2);margin-bottom:11px" id="banInfo"></p><div class="fg"><label class="fl">Alasan Ban</label><input type="text" class="fi" id="banReason" placeholder="Tulis alasan..."></div></div><div class="mfoot"><button class="btn" onclick="cm('moBan')">Batal</button><button class="btn btn-r" onclick="confirmBan()">Konfirmasi Ban</button></div></div></div>
 <div class="modal" id="moIC"><div class="mdl"><div class="mhdr"><div class="mtitle">Edit IC Name</div><button class="mcls" onclick="cm('moIC')">✕</button></div><div class="mbody"><p style="font-size:12px;color:var(--t2);margin-bottom:11px" id="icInfo"></p><div class="fg"><label class="fl">Nama IC Baru</label><input type="text" class="fi" id="icInput" placeholder="Nama_IC"></div></div><div class="mfoot"><button class="btn" onclick="cm('moIC')">Batal</button><button class="btn btn-p" onclick="confirmIC()">Simpan</button></div></div></div>
-<div class="modal" id="moBanner"><div class="mdl"><div class="mhdr"><div class="mtitle">Edit Banner Profil</div><button class="mcls" onclick="cm('moBanner')">✕</button></div><div class="mbody"><p style="font-size:12px;color:var(--t2);margin-bottom:11px">URL gambar banner (JPG/PNG, rasio ~4:1)</p><div class="fg"><label class="fl">URL Banner</label><input type="url" class="fi" id="bannerUrl" placeholder="https://..." oninput="prevBanner(this.value)"></div><div id="bannerPrev" style="display:none;margin-top:5px"><img id="bannerPrevImg" style="width:100%;height:75px;object-fit:cover;border-radius:var(--r);border:1px solid var(--b)" src=""></div></div><div class="mfoot"><button class="btn" onclick="cm('moBanner')">Batal</button><button class="btn btn-p" onclick="saveBanner()">Simpan</button></div></div></div>
+<div class="modal" id="moBanner">
+  <div class="mdl">
+    <div class="mhdr"><div class="mtitle">Edit Banner Profil</div><button class="mcls" onclick="cm('moBanner')">✕</button></div>
+    <div class="mbody">
+      <p style="font-size:12px;color:var(--t2);margin-bottom:13px">Upload foto banner. Rasio ideal 4:1 (contoh: 1200x300px). Max 5MB.</p>
+      <div id="bannerDropZone" onclick="document.getElementById('bannerFileIn').click()" style="border:2px dashed var(--b3);border-radius:var(--r2);padding:22px;text-align:center;cursor:pointer;transition:border-color .13s;margin-bottom:11px" onmouseover="this.style.borderColor='var(--acc)'" onmouseout="this.style.borderColor='var(--b3)'">
+        <div style="font-size:24px;margin-bottom:6px">🖼</div>
+        <div style="font-size:12px;color:var(--t2)">Klik untuk pilih foto</div>
+        <div style="font-size:10px;color:var(--t3);margin-top:3px">JPG, PNG, WEBP — max 5MB</div>
+        <input type="file" id="bannerFileIn" accept="image/*" style="display:none" onchange="previewBannerFile(this)">
+      </div>
+      <div id="bannerPrevWrap" style="display:none;margin-bottom:11px;position:relative">
+        <img id="bannerPrevImg" style="width:100%;height:90px;object-fit:cover;border-radius:var(--r);border:1px solid var(--b)" src="">
+        <button onclick="clearBannerPrev()" style="position:absolute;top:5px;right:5px;background:rgba(0,0,0,.7);border:none;color:#fff;width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center">✕</button>
+      </div>
+      <div id="bannerUploadStatus" style="display:none" class="ibox info">Mengupload...</div>
+    </div>
+    <div class="mfoot">
+      <button class="btn" onclick="cm('moBanner')">Batal</button>
+      <button class="btn btn-p" id="saveBannerBtn" onclick="saveBanner()" disabled>Simpan Banner</button>
+    </div>
+  </div>
+</div>
 <div class="modal" id="moImg"><div class="mdl" style="background:transparent;border:none;max-width:90vw;width:auto;position:relative"><button onclick="cm('moImg')" style="position:absolute;top:-28px;right:0;background:none;border:none;color:#fff;font-size:21px;cursor:pointer">✕</button><img id="moImgSrc" style="max-width:100%;max-height:84vh;border-radius:var(--r)" src=""></div></div>
 
 <!-- MOBILE NAV -->
@@ -698,7 +720,20 @@ tr:hover td{background:rgba(255,255,255,.01)}
     </div>
     <div class="tpanel" id="p-posts"><div class="card" id="myPostList"></div></div>
     <div class="tpanel" id="p-settings">
-      <div class="card card-p" style="max-width:400px">
+      <div class="card card-p" style="max-width:420px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid var(--b)">Foto Profil</div>
+        <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+          <div id="setAvaPreview" style="width:60px;height:60px;border-radius:50%;background:var(--bg3);border:2px solid var(--b);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;overflow:hidden;flex-shrink:0"></div>
+          <div style="flex:1">
+            <button class="btn btn-sm" onclick="document.getElementById('photoFileIn').click()" style="margin-bottom:5px">📷 Pilih Foto</button>
+            <div style="font-size:10px;color:var(--t3)">JPG/PNG, max 3MB. Akan di-crop jadi bulat.</div>
+            <input type="file" id="photoFileIn" accept="image/*" style="display:none" onchange="previewPhotoFile(this)">
+          </div>
+        </div>
+        <div id="photoUploadStatus" style="display:none;margin-bottom:9px" class="ibox info">Mengupload...</div>
+        <button class="btn btn-p btn-sm" id="savePhotoBtn" onclick="savePhoto()" style="display:none;margin-bottom:13px">Simpan Foto Profil</button>
+
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t3);margin-bottom:11px;padding-bottom:7px;border-top:1px solid var(--b);padding-top:11px">Informasi Akun</div>
         <div class="fg"><label class="fl">Username</label><input type="text" class="fi" id="setUN" placeholder="Username"></div>
         <button class="btn btn-p" onclick="saveProfile()">Simpan Perubahan</button>
       </div>
@@ -1367,6 +1402,9 @@ function initProfile(){
     if(ava)ava.innerHTML=UP.photoURL?'<img src="'+esc(UP.photoURL)+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover">':'<span>'+ini(UP.username)+'</span>';
     if(UP.bannerUrl){var bi=document.getElementById('profBannerImg');if(bi){bi.src=UP.bannerUrl;bi.style.display='';}}
     show('profLogout');show('editBannerBtn');sv('setUN',UP.username||'');
+    // populate settings avatar preview
+    var sp = document.getElementById('setAvaPreview');
+    if(sp) sp.innerHTML = UP.photoURL ? '<img src="'+esc(UP.photoURL)+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">' : '<span style="font-size:20px;font-weight:700">'+ini(UP.username)+'</span>';
   });
 }
 function loadMyPosts(){
@@ -1384,14 +1422,114 @@ function saveProfile(){
   var un=gv('setUN').trim();if(!un){toast('Username tidak boleh kosong!','e');return;}
   DB.ref('users/'+CU.uid+'/username').set(un).then(function(){UP.username=un;toast('Profil disimpan!','s');renderAuth();st('profName',un);st('profUN',un);}).catch(function(e){toast('Gagal: '+e.message,'e');});
 }
-function prevBanner(url){
-  var prev=document.getElementById('bannerPrev'),img=document.getElementById('bannerPrevImg');
-  if(url&&url.startsWith('http')){prev.style.display='';img.src=url;}else{prev.style.display='none';}
+// ============ IMAGE UPLOAD (ImgBB) ============
+var IMGBB_KEY = '17f2d9f0be09f2eb84119ec6be65e88a';
+var pendingBannerB64 = null;
+var pendingPhotoB64 = null;
+
+function uploadToImgBB(base64, callback) {
+  // Strip data URL prefix
+  var b64 = base64.replace(/^data:image\/[a-z]+;base64,/, '');
+  var fd = new FormData();
+  fd.append('image', b64);
+  fd.append('key', IMGBB_KEY);
+  fetch('https://api.imgbb.com/1/upload', {method:'POST', body:fd})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.success){callback(null, d.data.url);}
+      else{callback(d.error&&d.error.message||'Upload gagal');}
+    })
+    .catch(function(e){callback(e.message||'Network error');});
 }
-function saveBanner(){
-  if(!CU)return;
-  var url=gv('bannerUrl').trim();
-  DB.ref('users/'+CU.uid+'/bannerUrl').set(url).then(function(){UP.bannerUrl=url;cm('moBanner');toast('Banner disimpan!','s');var bi=document.getElementById('profBannerImg');if(bi){if(url){bi.src=url;bi.style.display='';}else bi.style.display='none';}}).catch(function(e){toast('Gagal: '+e.message,'e');});
+
+// --- BANNER ---
+function previewBannerFile(input) {
+  var file = input.files[0]; if(!file) return;
+  if(file.size > 5*1024*1024){toast('Foto max 5MB!','e');return;}
+  var r = new FileReader();
+  r.onload = function(e) {
+    pendingBannerB64 = e.target.result;
+    document.getElementById('bannerPrevWrap').style.display = '';
+    document.getElementById('bannerPrevImg').src = e.target.result;
+    document.getElementById('saveBannerBtn').disabled = false;
+    document.getElementById('bannerDropZone').style.display = 'none';
+  };
+  r.readAsDataURL(file);
+}
+function clearBannerPrev() {
+  pendingBannerB64 = null;
+  document.getElementById('bannerPrevWrap').style.display = 'none';
+  document.getElementById('bannerPrevImg').src = '';
+  document.getElementById('saveBannerBtn').disabled = true;
+  document.getElementById('bannerDropZone').style.display = '';
+  document.getElementById('bannerFileIn').value = '';
+}
+function saveBanner() {
+  if(!CU || !pendingBannerB64) return;
+  var btn = document.getElementById('saveBannerBtn');
+  var st2 = document.getElementById('bannerUploadStatus');
+  btn.disabled = true; btn.textContent = 'Mengupload...';
+  st2.style.display = ''; st2.textContent = 'Mengupload banner ke server...';
+  uploadToImgBB(pendingBannerB64, function(err, url) {
+    btn.textContent = 'Simpan Banner';
+    if(err) {
+      st2.style.display = '';
+      st2.className = 'ibox err';
+      st2.textContent = 'Upload gagal: ' + err + '. Coba lagi atau periksa API key ImgBB.';
+      btn.disabled = false;
+      return;
+    }
+    DB.ref('users/'+CU.uid+'/bannerUrl').set(url).then(function(){
+      UP.bannerUrl = url;
+      cm('moBanner');
+      toast('Banner berhasil disimpan!','s');
+      var bi = document.getElementById('profBannerImg');
+      if(bi){bi.src=url;bi.style.display='';}
+      clearBannerPrev();
+      st2.style.display = 'none';
+    }).catch(function(e){toast('Gagal simpan: '+e.message,'e');btn.disabled=false;});
+  });
+}
+
+// --- FOTO PROFIL ---
+function previewPhotoFile(input) {
+  var file = input.files[0]; if(!file) return;
+  if(file.size > 3*1024*1024){toast('Foto max 3MB!','e');return;}
+  var r = new FileReader();
+  r.onload = function(e) {
+    pendingPhotoB64 = e.target.result;
+    var prev = document.getElementById('setAvaPreview');
+    if(prev) prev.innerHTML = '<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+    document.getElementById('savePhotoBtn').style.display = '';
+  };
+  r.readAsDataURL(file);
+}
+function savePhoto() {
+  if(!CU || !pendingPhotoB64) return;
+  var btn = document.getElementById('savePhotoBtn');
+  var st2 = document.getElementById('photoUploadStatus');
+  btn.disabled = true; btn.textContent = 'Mengupload...';
+  st2.style.display = ''; st2.className = 'ibox info'; st2.textContent = 'Mengupload foto ke server...';
+  uploadToImgBB(pendingPhotoB64, function(err, url) {
+    btn.textContent = 'Simpan Foto Profil'; btn.disabled = false;
+    if(err) {
+      st2.className = 'ibox err';
+      st2.textContent = 'Upload gagal: ' + err + '. Coba lagi atau periksa API key ImgBB.';
+      return;
+    }
+    DB.ref('users/'+CU.uid+'/photoURL').set(url).then(function(){
+      UP.photoURL = url; st2.style.display = 'none';
+      // Update avatar di profil
+      var ava = document.getElementById('profAva');
+      if(ava) ava.innerHTML = '<img src="'+url+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover">';
+      // Update composer avatar
+      var ca = document.getElementById('compAva');
+      if(ca) ca.innerHTML = '<img src="'+url+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover">';
+      renderAuth();
+      toast('Foto profil berhasil disimpan!','s');
+      pendingPhotoB64 = null;
+    }).catch(function(e){toast('Gagal simpan: '+e.message,'e');});
+  });
 }
 
 // ============ LOGS ============
