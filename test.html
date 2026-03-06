@@ -1,106 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ExeMusic YT Player</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiraAudio Intro</title>
 
 <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+}
 
 body{
-background:#0f0f0f;
-font-family:Arial;
-color:white;
+height:100vh;
 display:flex;
 align-items:center;
 justify-content:center;
-height:100vh;
-margin:0;
-}
-
-.box{
-background:#1c1c1c;
-padding:30px;
-border-radius:15px;
-width:420px;
-text-align:center;
-}
-
-input{
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-background:#2b2b2b;
+background:linear-gradient(135deg,#0f0f0f,#1c1c1c,#0a0a0a);
 color:white;
-margin-bottom:10px;
+overflow:hidden;
+}
+
+.container{
+text-align:center;
+animation:fadeIn 1.5s ease;
+padding:20px;
+}
+
+.logo{
+font-size:50px;
+font-weight:700;
+letter-spacing:2px;
+background:linear-gradient(90deg,#00c6ff,#0072ff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:slideDown 1.5s ease;
+}
+
+.version{
+margin-top:8px;
+opacity:0.7;
+font-size:14px;
+}
+
+.wait{
+margin-top:30px;
+font-size:16px;
+opacity:0.8;
 }
 
 button{
-width:100%;
-padding:12px;
+margin-top:25px;
+padding:12px 35px;
+font-size:16px;
 border:none;
 border-radius:8px;
-background:#ff0033;
-color:white;
 cursor:pointer;
+background:linear-gradient(90deg,#0072ff,#00c6ff);
+color:white;
+transition:0.25s;
+opacity:0.6;
 }
 
-audio{
-margin-top:20px;
-width:100%;
+button.active{
+opacity:1;
+transform:scale(1.05);
 }
 
+button:hover{
+transform:scale(1.08);
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+@keyframes slideDown{
+from{
+transform:translateY(-40px);
+opacity:0;
+}
+to{
+transform:translateY(0);
+opacity:1;
+}
+}
+
+@media(max-width:600px){
+.logo{
+font-size:36px;
+}
+.wait{
+font-size:14px;
+}
+}
 </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="container">
+<div class="logo">Welcome to MiraAudio</div>
+<div class="version">v1.0</div>
 
-<h2>ExeMusic YouTube Audio</h2>
+<div class="wait">Please wait <span id="count">5</span> seconds</div>
 
-<input id="yt" placeholder="Paste YouTube Link">
-
-<button onclick="playAudio()">Play</button>
-
-<audio id="player" controls></audio>
-
+<button id="continueBtn">Continue</button>
 </div>
+
+<audio id="welcomeAudio" src="https://audio.jukehost.co.uk/22z0kp56nmEaZgdWYOvvmbBy0NJjMGBd.mp3"></audio>
 
 <script>
 
-function getID(url){
+const audio = document.getElementById("welcomeAudio");
+audio.volume = 0.15;
 
-let regExp = /(?:youtube\.com.*(?:\?|&)v=|youtu\.be\/)([^&#]+)/;
-let match = url.match(regExp);
+window.addEventListener("load",()=>{
+audio.play().catch(()=>{});
+});
 
-return match ? match[1] : null;
+let time = 5;
+const count = document.getElementById("count");
+const btn = document.getElementById("continueBtn");
 
+btn.disabled = true;
+
+const timer = setInterval(()=>{
+
+time--;
+count.textContent = time;
+
+if(time <= 0){
+clearInterval(timer);
+btn.disabled = false;
+btn.classList.add("active");
+count.textContent = "0";
 }
 
-async function playAudio(){
+},1000);
 
-let url = document.getElementById("yt").value
-let id = getID(url)
+btn.onclick = ()=>{
+window.location.href = "index.html";
+};
 
-if(!id){
-alert("Link tidak valid")
-return
-}
-
-let api = "https://pipedapi.kavin.rocks/streams/" + id
-
-let res = await fetch(api)
-let data = await res.json()
-
-let audio = data.audioStreams[0].url
-
-let player = document.getElementById("player")
-
-player.src = audio
-player.play()
-
-}
+setTimeout(()=>{
+window.location.href = "index.html";
+},5000);
 
 </script>
 
