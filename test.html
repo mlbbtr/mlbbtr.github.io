@@ -8796,8 +8796,13 @@
         if (!selectedFile) return msg('Pilih file lagu dulu!');
         if (isUploading) return msg('Sedang mengupload, tunggu sebentar...');
         
-        // Check cooldown for file upload
-        const lastUpload = userData.lastUpload || 0;
+        // Check cooldown for file upload - fetch latest from Firebase
+        let lastUpload = userData.lastUpload || 0;
+        try {
+          const userSnap = await db.ref('users/' + auth.currentUser.uid + '/lastUpload').get();
+          if (userSnap.val()) lastUpload = userSnap.val();
+        } catch (e) { console.log('Using cached lastUpload'); }
+        
         const now = Date.now();
         const diff = (now - lastUpload) / 1000 / 60;
         const vipType = getVipStatus(userData);
@@ -8841,7 +8846,13 @@
       // Handle URL mode (original logic)
       if (!url) return msg('Isi semua data!');
       
-      const lastUpload = userData.lastUpload || 0;
+      // Fetch latest lastUpload from Firebase for accurate cooldown check
+      let lastUpload = userData.lastUpload || 0;
+      try {
+        const userSnap = await db.ref('users/' + auth.currentUser.uid + '/lastUpload').get();
+        if (userSnap.val()) lastUpload = userSnap.val();
+      } catch (e) { console.log('Using cached lastUpload'); }
+      
       const now = Date.now();
       const diff = (now - lastUpload) / 1000 / 60;
       const vipType = getVipStatus(userData);
