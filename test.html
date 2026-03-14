@@ -231,12 +231,12 @@ function login(){
 
 /* Load Media */
 async function loadMedia(){
-  const {data,error} = await sb.storage.from("media").list();
+  const {data,error} = await sb.storage.from("music").list();
   if(error) { console.log(error); return; }
   gallery.innerHTML="";
   mediaList=[];
   data.forEach((file,i)=>{
-    const url = supabaseUrl+"/storage/v1/object/public/media/"+file.name;
+    const url = supabaseUrl+"/storage/v1/object/public/music/"+file.name;
     const type = file.name.match(/\.(mp3|wav|ogg)$/i) ? "audio" :
                  file.name.match(/\.(mp4|webm|mov)$/i) ? "video" : "image";
     mediaList.push({url,type,name:file.name});
@@ -260,7 +260,7 @@ fileInput.addEventListener("change", async ()=>{
   const files = Array.from(fileInput.files);
   for(const file of files){
     const fileName=Date.now()+"_"+file.name.replace(/[^a-zA-Z0-9.]/g,"_");
-    const {error} = await sb.storage.from("media").upload(fileName,file);
+    const {error} = await sb.storage.from("music").upload(fileName,file);
     if(error) { console.log(error); alert("Upload failed"); continue; }
   }
   loadMedia();
@@ -304,7 +304,7 @@ function downloadItem(url){
 /* Delete */
 async function deleteItem(fileName){
   if(!confirm("Delete this file?")) return;
-  const {error}=await sb.storage.from("media").remove([fileName]);
+  const {error}=await sb.storage.from("music").remove([fileName]);
   if(error) { alert("Delete failed"); console.log(error); return; }
   loadMedia();
 }
