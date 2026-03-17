@@ -3,68 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EXECURIVE ARENA - Combat Update</title>
+    <title>EXECURIVE ARENA - Aim Update</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon-blue: #00f3ff; --neon-pink: #ff00ff; --neon-red: #ff3131; }
-        * { 
-            box-sizing: border-box; touch-action: none; 
-            user-select: none; -webkit-user-select: none; /* Anti select text saat spam */
-        }
+        :root { --neon-blue: #00f3ff; --neon-pink: #ff00ff; }
+        * { box-sizing: border-box; touch-action: none; user-select: none; }
+        body { margin: 0; background: #000; overflow: hidden; font-family: 'Orbitron', sans-serif; width: 100vw; height: 100vh; }
+        .overlay { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; }
+        #game-canvas { display: block; background: radial-gradient(circle, #111 0%, #000 100%); }
         
-        body { 
-            margin: 0; padding: 0; background: #000; 
-            overflow: hidden; font-family: 'Orbitron', sans-serif; 
-            width: 100vw; height: 100vh;
-        }
-
-        .overlay {
-            position: fixed; inset: 0; z-index: 100;
-            background: rgba(0,0,0,0.9);
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center; color: white;
-        }
-
-        #game-canvas { display: block; background: #050505; }
-
-        /* UI Kontrol */
-        #joystick-container {
-            position: absolute; bottom: 50px; left: 50px;
-            width: 120px; height: 120px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid var(--neon-blue); border-radius: 50%;
-            display: none;
-        }
-        #joystick-stick {
-            position: absolute; top: 50%; left: 50%;
-            width: 50px; height: 50px;
-            background: var(--neon-blue); border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px var(--neon-blue);
-        }
-
-        /* Tombol Tembak Ala ML */
-        #fire-btn {
-            position: absolute; bottom: 60px; right: 50px;
-            width: 90px; height: 90px;
-            background: radial-gradient(circle, rgba(255, 0, 255, 0.6) 0%, rgba(255, 0, 255, 0.1) 100%);
-            border: 4px solid var(--neon-pink); border-radius: 50%;
-            display: none; justify-content: center; align-items: center;
-            color: white; font-weight: bold; font-size: 14px;
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
-            cursor: pointer; transition: transform 0.1s, box-shadow 0.1s;
-        }
-        #fire-btn:active {
-            transform: scale(0.85); /* Animasi Klik */
-            box-shadow: 0 0 35px var(--neon-pink);
-            background: rgba(255, 0, 255, 0.8);
-        }
-
-        .btn-main {
-            padding: 15px 40px; background: var(--neon-blue);
-            border: none; font-family: 'Orbitron'; font-weight: bold;
-            cursor: pointer; margin-top: 20px; border-radius: 5px;
-        }
+        /* Kontrol */
+        #joystick-container { position: absolute; bottom: 50px; left: 50px; width: 120px; height: 120px; background: rgba(255, 255, 255, 0.1); border: 2px solid var(--neon-blue); border-radius: 50%; display: none; }
+        #joystick-stick { position: absolute; top: 50%; left: 50%; width: 50px; height: 50px; background: var(--neon-blue); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 15px var(--neon-blue); }
+        #fire-btn { position: absolute; bottom: 60px; right: 50px; width: 90px; height: 90px; background: radial-gradient(circle, rgba(255, 0, 255, 0.6), rgba(255, 0, 255, 0.1)); border: 4px solid var(--neon-pink); border-radius: 50%; display: none; justify-content: center; align-items: center; color: white; font-weight: bold; box-shadow: 0 0 20px rgba(255, 0, 255, 0.4); cursor: pointer; transition: transform 0.1s; }
+        #fire-btn:active { transform: scale(0.8); }
+        .btn-main { padding: 15px 40px; background: var(--neon-blue); border: none; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; margin-top: 20px; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -76,7 +29,7 @@
 
     <div id="ui-lobby" class="overlay" style="display:none">
         <h2>LOBBY SERVER</h2>
-        <div id="player-list" style="margin: 20px 0;"></div>
+        <div id="player-list" style="margin: 20px 0; color: var(--neon-blue);"></div>
         <button class="btn-main" style="background:var(--neon-pink)" id="start-btn">DEPLOY</button>
     </div>
 
@@ -111,50 +64,39 @@
         let myId = null;
         let players = {};
         let bullets = [];
+        let effects = []; // Untuk animasi lingkaran tembakan
         let joystick = { active: false, moveX: 0, moveY: 0 };
-        let keys = {}; // Untuk PC WASD
-        let lastFireTime = 0; // Untuk jeda tembak 1 detik
+        let keys = {};
+        let lastFireTime = 0;
+        let mousePos = { x: 0, y: 0 };
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize);
         resize();
 
-        // 1. AUTH LOGIC
+        // 1. AUTH & DATABASE
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 myId = user.uid;
                 document.getElementById("ui-auth").style.display = "none";
                 document.getElementById("ui-lobby").style.display = "flex";
-                
                 const pRef = ref(db, 'players/' + myId);
-                set(pRef, { 
-                    id: myId, 
-                    name: user.displayName, 
-                    x: Math.random() * 500, 
-                    y: Math.random() * 500, 
-                    color: '#00f3ff',
-                    hp: 100 // Health awal
-                });
+                set(pRef, { id: myId, name: user.displayName, x: 200, y: 200, color: '#00f3ff', hp: 100 });
                 onDisconnect(pRef).remove();
             }
         });
 
-        onValue(ref(db, 'players'), (snap) => {
-            players = snap.val() || {};
-            document.getElementById("player-list").innerHTML = Object.values(players).map(p => `<div>${p.name} (HP: ${p.hp})</div>`).join("");
-        });
+        onValue(ref(db, 'players'), (snap) => { players = snap.val() || {}; });
 
-        // 2. INPUT HANDLER (PC & Mobile)
+        // 2. INPUT HANDLER
         window.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
         window.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
+        window.addEventListener("mousemove", e => { mousePos.x = e.clientX; mousePos.y = e.clientY; });
 
+        // Analog Logic
         const jContainer = document.getElementById("joystick-container");
         const jStick = document.getElementById("joystick-stick");
-
-        jContainer.addEventListener("touchstart", (e) => { joystick.active = true; });
+        jContainer.addEventListener("touchstart", (e) => joystick.active = true);
         window.addEventListener("touchmove", (e) => {
             if (!joystick.active) return;
             const touch = Array.from(e.touches).find(t => t.target.closest('#joystick-container') || joystick.active);
@@ -170,36 +112,43 @@
             jStick.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
             joystick.moveX = dx / maxDist; joystick.moveY = dy / maxDist;
         });
-        window.addEventListener("touchend", () => {
-            joystick.active = false; joystick.moveX = 0; joystick.moveY = 0;
-            jStick.style.transform = `translate(-50%, -50%)`;
-        });
+        window.addEventListener("touchend", () => { joystick.active = false; joystick.moveX = 0; joystick.moveY = 0; jStick.style.transform = `translate(-50%, -50%)`; });
 
-        // 3. SHOOTING LOGIC
-        function fire() {
+        // 3. SHOOTING LOGIC (OMNI-DIRECTIONAL)
+        function fire(targetX, targetY) {
             const now = Date.now();
-            if (now - lastFireTime < 1000) return; // Jeda 1 detik
-            if (!myId || !players[myId]) return;
+            if (now - lastFireTime < 1000 || !myId || !players[myId]) return;
 
             const me = players[myId];
+            
+            // RAHASIA: Hitung sudut dari posisi kita ke posisi kursor/tap
+            const angle = Math.atan2(targetY - me.y, targetX - me.x);
+
             bullets.push({
                 x: me.x, y: me.y,
-                vx: 10, vy: 0, // Sementara tembak ke kanan (bisa dikembangkan arahnya)
+                vx: Math.cos(angle) * 12, // Peluru jalan ke arah sudut X
+                vy: Math.sin(angle) * 12, // Peluru jalan ke arah sudut Y
                 owner: myId,
-                life: 100
+                life: 60
             });
+
+            // Tambah Efek Lingkaran di sekitar player
+            effects.push({ x: me.x, y: me.y, radius: 10, opacity: 1 });
+
             lastFireTime = now;
-            
-            // Visual feedback: Recoil kecil pada kotak
-            me.x -= 5;
         }
 
+        // Fire Button (Mobile) & Click (PC)
         document.getElementById("fire-btn").addEventListener("touchstart", (e) => {
-            e.preventDefault();
-            fire();
+            // Untuk mobile, kita tembak ke arah mana kita hadap/terakhir gerak jika tidak ada target spesifik
+            // Tapi di sini kita buat tembak ke tengah layar atau arah analog
+            const targetX = players[myId].x + (joystick.moveX * 100 || 100);
+            const targetY = players[myId].y + (joystick.moveY * 100 || 0);
+            fire(targetX, targetY);
         });
+
         window.addEventListener("mousedown", (e) => {
-            if(canvas.style.display === "block") fire();
+            if (canvas.style.display === "block") fire(e.clientX, e.clientY);
         });
 
         // 4. GAME LOOP
@@ -209,32 +158,24 @@
                 let moved = false;
                 const speed = 5;
 
-                // Gabungan WASD + Analog
                 if (keys['w']) { me.y -= speed; moved = true; }
                 if (keys['s']) { me.y += speed; moved = true; }
                 if (keys['a']) { me.x -= speed; moved = true; }
                 if (keys['d']) { me.x += speed; moved = true; }
-                
-                if (joystick.active) {
-                    me.x += joystick.moveX * speed;
-                    me.y += joystick.moveY * speed;
-                    moved = true;
-                }
+                if (joystick.active) { me.x += joystick.moveX * speed; me.y += joystick.moveY * speed; moved = true; }
 
                 if (moved) update(ref(db, 'players/' + myId), { x: me.x, y: me.y });
             }
 
-            // Update Bullets & Collision
+            // Update Bullets & Damage
             bullets.forEach((b, i) => {
-                b.x += b.vx;
+                b.x += b.vx; b.y += b.vy;
                 b.life--;
                 
-                // Cek Tabrakan dengan Pemain Lain
                 Object.values(players).forEach(p => {
                     if (p.id !== b.owner) {
-                        const dist = Math.hypot(p.x - b.x, p.y - b.y);
-                        if (dist < 25) { // Jika kena kotak
-                            if (p.id === myId) { // Jika KITA yang kena
+                        if (Math.hypot(p.x - b.x, p.y - b.y) < 25) {
+                            if (p.id === myId) {
                                 const newHp = Math.max(0, p.hp - 32);
                                 update(ref(db, 'players/' + myId), { hp: newHp });
                             }
@@ -245,37 +186,49 @@
                 if (b.life <= 0) bullets.splice(i, 1);
             });
 
+            // Update Effects (Lingkaran Tembakan)
+            effects.forEach((ef, i) => {
+                ef.radius += 4;
+                ef.opacity -= 0.05;
+                if (ef.opacity <= 0) effects.splice(i, 1);
+            });
+
             // DRAWING
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            Object.values(players).forEach(p => {
-                // Gambar Health Bar
-                const barW = 50;
-                ctx.fillStyle = "#333";
-                ctx.fillRect(p.x - barW/2, p.y - 40, barW, 6);
-                ctx.fillStyle = p.hp > 30 ? "#4caf50" : "#ff3131"; // Hijau jika sehat, merah jika kritis
-                ctx.fillRect(p.x - barW/2, p.y - 40, (p.hp/100) * barW, 6);
+            
+            // Draw Effects
+            effects.forEach(ef => {
+                ctx.strokeStyle = `rgba(255, 0, 255, ${ef.opacity})`;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(ef.x, ef.y, ef.radius, 0, Math.PI*2);
+                ctx.stroke();
+            });
 
-                // Gambar Pemain
+            Object.values(players).forEach(p => {
+                // Health Bar
+                ctx.fillStyle = "#333"; ctx.fillRect(p.x - 25, p.y - 40, 50, 6);
+                ctx.fillStyle = p.hp > 30 ? varName('--neon-blue') : "#ff3131";
+                ctx.fillRect(p.x - 25, p.y - 40, (p.hp/100) * 50, 6);
+
+                // Player Box
                 ctx.shadowBlur = 15; ctx.shadowColor = p.color;
                 ctx.fillStyle = p.color;
                 ctx.fillRect(p.x - 15, p.y - 15, 30, 30);
                 
-                ctx.shadowBlur = 0;
-                ctx.fillStyle = "white";
-                ctx.font = "10px Orbitron";
+                ctx.shadowBlur = 0; ctx.fillStyle = "white"; ctx.font = "10px Orbitron";
                 ctx.fillText(p.name, p.x - 20, p.y - 45);
             });
 
-            // Gambar Bullets
             bullets.forEach(b => {
-                ctx.fillStyle = "yellow";
-                ctx.beginPath();
-                ctx.arc(b.x, b.y, 4, 0, Math.PI*2);
-                ctx.fill();
+                ctx.fillStyle = "yellow"; ctx.beginPath();
+                ctx.arc(b.x, b.y, 4, 0, Math.PI*2); ctx.fill();
             });
 
             requestAnimationFrame(loop);
         }
+
+        function varName(name) { return getComputedStyle(document.documentElement).getPropertyValue(name); }
 
         document.getElementById("start-btn").onclick = () => {
             document.getElementById("ui-lobby").style.display = "none";
@@ -284,9 +237,7 @@
             canvas.style.display = "block";
             loop();
         };
-
         document.getElementById("login-btn").onclick = () => signInWithPopup(auth, provider);
-
     </script>
 </body>
 </html>
