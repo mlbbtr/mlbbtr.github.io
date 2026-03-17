@@ -3,58 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EXECURIVE ARENA - Pro</title>
+    <title>EXECURIVE ARENA - Fixed</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon-blue: #00f3ff; --neon-pink: #ff00ff; --neon-red: #ff3131; }
+        :root { --neon-blue: #00f3ff; --neon-pink: #ff00ff; }
         * { box-sizing: border-box; touch-action: none; user-select: none; }
         body { margin: 0; background: #000; overflow: hidden; font-family: 'Orbitron', sans-serif; color: white; }
         
-        /* Layar Utama */
-        .overlay { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        #match-timer { font-size: 80px; color: var(--neon-pink); display: none; }
-
-        /* Layar Mati (Death Screen) */
-        #death-screen { display: none; background: rgba(139, 0, 0, 0.8); z-index: 200; }
-        .death-text { font-size: 30px; text-shadow: 0 0 20px black; margin-bottom: 10px; }
-
-        /* HUD Stats */
-        #hud { position: fixed; top: 10px; left: 10px; pointer-events: none; z-index: 50; display: none; }
-        .stat-box { background: rgba(0,0,0,0.5); padding: 5px 15px; border-left: 3px solid var(--neon-blue); margin-bottom: 5px; font-size: 14px; }
-
-        /* Game Canvas */
-        #game-canvas { display: none; cursor: crosshair; }
+        .overlay { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        #death-screen { display: none; background: rgba(100, 0, 0, 0.85); z-index: 200; }
         
-        /* Kontrol */
-        #joystick-container { position: absolute; bottom: 50px; left: 50px; width: 120px; height: 120px; background: rgba(255,255,255,0.05); border: 2px solid var(--neon-blue); border-radius: 50%; display: none; z-index: 60; }
-        #joystick-stick { position: absolute; top: 50%; left: 50%; width: 50px; height: 50px; background: var(--neon-blue); border-radius: 50%; transform: translate(-50%, -50%); }
-        #fire-btn { position: absolute; bottom: 60px; right: 50px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,0,255,0.4), rgba(255,0,255,0.1)); border: 4px solid var(--neon-pink); border-radius: 50%; display: none; justify-content: center; align-items: center; z-index: 60; }
-        
-        .btn-main { padding: 15px 40px; background: var(--neon-blue); border: none; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; border-radius: 5px; }
+        #hud { position: fixed; top: 10px; left: 10px; z-index: 50; display: none; }
+        .stat-box { background: rgba(0,0,0,0.6); padding: 8px 15px; border-left: 4px solid var(--neon-blue); margin-bottom: 5px; font-size: 14px; border-radius: 0 10px 10px 0; }
+
+        #joystick-container { position: absolute; bottom: 40px; left: 40px; width: 120px; height: 120px; background: rgba(255,255,255,0.05); border: 2px solid var(--neon-blue); border-radius: 50%; display: none; z-index: 60; }
+        #joystick-stick { position: absolute; top: 50%; left: 50%; width: 50px; height: 50px; background: var(--neon-blue); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 15px var(--neon-blue); }
+        #fire-btn { position: absolute; bottom: 50px; right: 40px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,0,255,0.4), rgba(255,0,255,0.05)); border: 4px solid var(--neon-pink); border-radius: 50%; display: none; justify-content: center; align-items: center; z-index: 60; font-weight: bold; }
+        #fire-btn:active { transform: scale(0.9); background: rgba(255,0,255,0.6); }
+
+        canvas { display: none; background: #050505; }
     </style>
 </head>
 <body>
 
     <div id="ui-auth" class="overlay">
         <h1>EXECURIVE ARENA</h1>
-        <button class="btn-main" id="login-btn">AUTH LOGIN</button>
+        <button class="btn-main" id="login-btn" style="padding:15px 30px; background:var(--neon-blue); border:none; font-family:'Orbitron'; cursor:pointer;">AUTH LOGIN</button>
     </div>
 
     <div id="ui-lobby" class="overlay" style="display:none">
-        <h2>LOBBY SERVER</h2>
-        <div id="player-list" style="margin: 20px 0; min-width: 200px;"></div>
-        <button class="btn-main" style="background:var(--neon-pink)" id="start-btn">READY TO MATCH</button>
-        <div id="match-timer">3</div>
+        <h2>LOBBY</h2>
+        <div id="player-list" style="margin: 20px 0;"></div>
+        <button id="start-btn" style="padding:15px 30px; background:var(--neon-pink); border:none; color:white; font-family:'Orbitron'; cursor:pointer;">START MATCH (3s)</button>
     </div>
 
     <div id="death-screen" class="overlay">
-        <div class="death-text">WASTED</div>
-        <div id="killed-by" style="font-size: 18px;">KILLED BY: UNKNOWN</div>
-        <div id="respawn-timer" style="margin-top:20px; color: yellow;">RESPAWN IN: 5</div>
+        <h1 style="color:white; font-size: 50px;">WASTED</h1>
+        <p id="killed-by">KILLED BY: ENEMY</p>
+        <p id="respawn-timer" style="color:yellow">RESPAWNING IN 5...</p>
     </div>
 
     <div id="hud">
-        <div class="stat-box" id="hud-name">HEXKY</div>
+        <div class="stat-box" id="hud-name">PLAYER</div>
         <div class="stat-box" id="hud-score">KILLS: 0 | DEATHS: 0</div>
     </div>
 
@@ -87,12 +77,12 @@
         const ctx = canvas.getContext("2d");
         
         let myId = null, players = {}, bullets = [], joystick = { active: false, moveX: 0, moveY: 0 };
-        let camera = { x: 0, y: 0 }, MAP_SIZE = 2000, keys = {}, lastFireTime = 0;
+        let camera = { x: 0, y: 0 }, keys = {}, lastFireTime = 0;
+        const FIRE_RANGE = 350;
 
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
 
-        // 1. AUTH & DATA PERSISTENCE
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 myId = user.uid;
@@ -101,60 +91,24 @@
                 document.getElementById("hud-name").innerText = user.displayName;
                 
                 const pRef = ref(db, 'players/' + myId);
-                // Cek data lama agar kill/death tidak reset saat refresh
-                onValue(pRef, (s) => {
-                    if(!s.exists()) {
-                        set(pRef, { id: myId, name: user.displayName, x: 500, y: 500, color: '#00f3ff', hp: 100, kills: 0, deaths: 0, isAlive: true });
-                    }
-                }, { onlyOnce: true });
+                set(pRef, { id: myId, name: user.displayName, x: 500, y: 500, color: '#00f3ff', hp: 100, kills: 0, deaths: 0, isAlive: true });
                 onDisconnect(pRef).remove();
             }
         });
 
         onValue(ref(db, 'players'), (snap) => { 
             players = snap.val() || {}; 
-            updateLobby();
-        });
-
-        function updateLobby() {
-            document.getElementById("player-list").innerHTML = Object.values(players).map(p => 
-                `<div style="padding:5px; border-bottom:1px solid #333">● ${p.name}</div>`).join("");
             if(myId && players[myId]) {
                 document.getElementById("hud-score").innerText = `KILLS: ${players[myId].kills} | DEATHS: ${players[myId].deaths}`;
             }
-        }
+        });
 
-        // 2. MATCH START SYSTEM (3 SECONDS)
-        document.getElementById("start-btn").onclick = () => {
-            document.getElementById("start-btn").style.display = "none";
-            const timerEl = document.getElementById("match-timer");
-            timerEl.style.display = "block";
-            let count = 3;
-            const itv = setInterval(() => {
-                count--;
-                timerEl.innerText = count;
-                if(count <= 0) {
-                    clearInterval(itv);
-                    enterArena();
-                }
-            }, 1000);
-        };
-
-        function enterArena() {
-            document.getElementById("ui-lobby").style.display = "none";
-            document.getElementById("joystick-container").style.display = "block";
-            document.getElementById("fire-btn").style.display = "flex";
-            document.getElementById("hud").style.display = "block";
-            canvas.style.display = "block";
-            requestAnimationFrame(loop);
-        }
-
-        // 3. SHOOTING & DEATH LOGIC
+        // AUTO-LOCK FIRE LOGIC
         function fire() {
             const me = players[myId];
             if (!me || !me.isAlive || Date.now() - lastFireTime < 1000) return;
 
-            let target = null, minDist = 400;
+            let target = null, minDist = FIRE_RANGE;
             Object.values(players).forEach(p => {
                 if(p.id !== myId && p.isAlive) {
                     let d = Math.hypot(p.x - me.x, p.y - me.y);
@@ -177,95 +131,23 @@
             let count = 5;
             const itv = setInterval(() => {
                 count--;
-                document.getElementById("respawn-timer").innerText = "RESPAWN IN: " + count;
-                if(count <= 0) {
-                    clearInterval(itv);
-                    respawn();
-                }
+                document.getElementById("respawn-timer").innerText = "RESPAWNING IN " + count + "...";
+                if(count <= 0) { clearInterval(itv); respawn(); }
             }, 1000);
         }
 
         function respawn() {
-            update(ref(db, 'players/' + myId), { 
-                isAlive: true, hp: 100, 
-                x: Math.random() * 1000, y: Math.random() * 1000 
-            });
+            update(ref(db, 'players/' + myId), { isAlive: true, hp: 100, x: Math.random()*800, y: Math.random()*800 });
             document.getElementById("death-screen").style.display = "none";
         }
 
-        // 4. GAME LOOP & CAMERA
+        // CONTROLS
         window.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
         window.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
         document.getElementById("fire-btn").addEventListener("touchstart", (e) => { e.preventDefault(); fire(); });
+        window.addEventListener("mousedown", () => { if(canvas.style.display === "block") fire(); });
 
-        function loop() {
-            const me = players[myId];
-            if (me && me.isAlive) {
-                let moved = false;
-                if (keys['w']) { me.y -= 7; moved = true; }
-                if (keys['s']) { me.y += 7; moved = true; }
-                if (keys['a']) { me.x -= 7; moved = true; }
-                if (keys['d']) { me.x += 7; moved = true; }
-                if (joystick.active) { me.x += joystick.moveX * 7; me.y += joystick.moveY * 7; moved = true; }
-                
-                if (moved) update(ref(db, 'players/' + myId), { x: me.x, y: me.y });
-
-                // CAMERA FOLLOW: Kamera mengikut kotak kamu (Center)
-                camera.x = me.x - canvas.width / 2;
-                camera.y = me.y - canvas.height / 2;
-            }
-
-            // Bullet Collision
-            bullets.forEach((b, i) => {
-                b.x += b.vx; b.y += b.vy; b.life--;
-                Object.values(players).forEach(p => {
-                    if(p.id !== b.owner && p.isAlive && Math.hypot(p.x - b.x, p.y - b.y) < 30) {
-                        if(p.id === myId) handleDeath(players[b.owner]?.name || "Enemy");
-                        if(b.owner === myId) {
-                            // Jika kita yang nembak, kurangi HP musuh
-                            const newHp = Math.max(0, p.hp - 32);
-                            update(ref(db, 'players/' + p.id), { hp: newHp });
-                            if(newHp <= 0) update(ref(db, 'players/' + myId), { kills: increment(1) });
-                        }
-                        bullets.splice(i, 1);
-                    }
-                });
-                if(b.life <= 0) bullets.splice(i, 1);
-            });
-
-            // DRAWING
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.save();
-            ctx.translate(-camera.x, -camera.y); // GESER DUNIA BERDASARKAN KAMERA
-
-            // Draw Grid (Biar kerasa geraknya)
-            ctx.strokeStyle = "#111";
-            for(let i=0; i<MAP_SIZE; i+=100) {
-                ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i, MAP_SIZE); ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(MAP_SIZE, i); ctx.stroke();
-            }
-
-            Object.values(players).forEach(p => {
-                if(!p.isAlive) return;
-                // Bar HP
-                ctx.fillStyle = "#222"; ctx.fillRect(p.x - 25, p.y - 45, 50, 6);
-                ctx.fillStyle = p.hp > 30 ? "#00f3ff" : "red";
-                ctx.fillRect(p.x - 25, p.y - 45, (p.hp/100)*50, 6);
-                // Body
-                ctx.fillStyle = p.color; ctx.shadowBlur = 10; ctx.shadowColor = p.color;
-                ctx.fillRect(p.x - 15, p.y - 15, 30, 30);
-                // Name
-                ctx.shadowBlur = 0; ctx.fillStyle = "white"; ctx.font = "10px Orbitron";
-                ctx.fillText(p.name, p.x - 20, p.y - 50);
-            });
-
-            bullets.forEach(b => { ctx.fillStyle = "yellow"; ctx.beginPath(); ctx.arc(b.x, b.y, 4, 0, Math.PI*2); ctx.fill(); });
-            
-            ctx.restore();
-            requestAnimationFrame(loop);
-        }
-
-        // Logic Analog (Sama seperti sebelumnya)
+        // JOYSTICK
         const jContainer = document.getElementById("joystick-container");
         const jStick = document.getElementById("joystick-stick");
         jContainer.addEventListener("touchstart", () => joystick.active = true);
@@ -278,6 +160,88 @@
             jStick.style.transform = `translate(calc(-50% + ${dx*ratio}px), calc(-50% + ${dy*ratio}px))`;
         });
         window.addEventListener("touchend", () => { joystick.active = false; joystick.moveX = 0; joystick.moveY = 0; jStick.style.transform = `translate(-50%, -50%)`; });
+
+        // MAIN LOOP
+        function loop() {
+            const me = players[myId];
+            if (me && me.isAlive) {
+                let dx = 0, dy = 0;
+                if (keys['w']) dy -= 7; if (keys['s']) dy += 7;
+                if (keys['a']) dx -= 7; if (keys['d']) dx += 7;
+                if (joystick.active) { dx += joystick.moveX * 7; dy += joystick.moveY * 7; }
+                
+                if (dx !== 0 || dy !== 0) {
+                    update(ref(db, 'players/' + myId), { x: me.x + dx, y: me.y + dy });
+                }
+                camera.x = me.x - canvas.width / 2;
+                camera.y = me.y - canvas.height / 2;
+            }
+
+            bullets.forEach((b, i) => {
+                b.x += b.vx; b.y += b.vy; b.life--;
+                Object.values(players).forEach(p => {
+                    if(p.id !== b.owner && p.isAlive && Math.hypot(p.x - b.x, p.y - b.y) < 25) {
+                        if(p.id === myId) handleDeath(players[b.owner]?.name || "Enemy");
+                        if(b.owner === myId) {
+                            const newHp = Math.max(0, (p.hp || 100) - 32);
+                            update(ref(db, 'players/' + p.id), { hp: newHp });
+                            if(newHp <= 0) update(ref(db, 'players/' + myId), { kills: increment(1) });
+                        }
+                        bullets.splice(i, 1);
+                    }
+                });
+                if(b.life <= 0) bullets.splice(i, 1);
+            });
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(-camera.x, -camera.y);
+
+            // GRID MAP
+            ctx.strokeStyle = "#111";
+            for(let i=0; i<2000; i+=100) {
+                ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i, 2000); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(2000, i); ctx.stroke();
+            }
+
+            // DRAW PLAYERS
+            Object.values(players).forEach(p => {
+                if(!p.isAlive) return;
+                // Range Circle (Hanya untuk Player Kita)
+                if(p.id === myId) {
+                    ctx.beginPath(); ctx.arc(p.x, p.y, FIRE_RANGE, 0, Math.PI*2);
+                    ctx.strokeStyle = "rgba(0, 243, 255, 0.1)"; ctx.stroke();
+                }
+                // HP BAR
+                ctx.fillStyle = "#333"; ctx.fillRect(p.x - 25, p.y - 40, 50, 5);
+                ctx.fillStyle = (p.hp || 100) > 30 ? "var(--neon-blue)" : "red";
+                ctx.fillRect(p.x - 25, p.y - 40, ((p.hp || 100)/100)*50, 5);
+                // BODY
+                ctx.fillStyle = p.color; ctx.fillRect(p.x - 15, p.y - 15, 30, 30);
+                // NAME
+                ctx.fillStyle = "white"; ctx.font = "10px Orbitron"; ctx.fillText(p.name, p.x - 20, p.y - 45);
+            });
+
+            bullets.forEach(b => { ctx.fillStyle = "yellow"; ctx.beginPath(); ctx.arc(b.x, b.y, 4, 0, Math.PI*2); ctx.fill(); });
+            ctx.restore();
+            requestAnimationFrame(loop);
+        }
+
+        document.getElementById("start-btn").onclick = () => {
+            let s = 3; document.getElementById("start-btn").innerText = s;
+            const t = setInterval(() => {
+                s--; document.getElementById("start-btn").innerText = s;
+                if(s <= 0) {
+                    clearInterval(t);
+                    document.getElementById("ui-lobby").style.display = "none";
+                    document.getElementById("hud").style.display = "block";
+                    document.getElementById("joystick-container").style.display = "block";
+                    document.getElementById("fire-btn").style.display = "flex";
+                    canvas.style.display = "block";
+                    requestAnimationFrame(loop);
+                }
+            }, 1000);
+        };
         document.getElementById("login-btn").onclick = () => signInWithPopup(auth, provider);
     </script>
 </body>
