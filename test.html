@@ -2,52 +2,85 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Execurive Arena - Multiplayer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EXECURIVE ARENA - Mobile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: white; text-align: center; margin: 0; overflow: hidden; }
-        #login-screen { margin-top: 100px; }
+        :root { --neon-blue: #00f3ff; --neon-pink: #ff00ff; }
+        * { box-sizing: border-box; touch-action: none; } /* Mencegah zoom/scroll saat main */
         
-        /* UI Lobby */
-        #lobby-screen { display: none; padding: 20px; }
-        .player-list { background: #1f1f1f; border-radius: 10px; padding: 15px; width: 300px; margin: 20px auto; border: 1px solid #333; }
-        .player-item { padding: 8px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; }
-        .status-ready { color: #4caf50; font-weight: bold; }
+        body { 
+            margin: 0; padding: 0; background: #000; 
+            overflow: hidden; font-family: 'Orbitron', sans-serif; 
+            width: 100vw; height: 100vh;
+        }
 
-        /* Area Game */
-        #game-canvas { background: #000; border: 2px solid #444; display: none; margin: 0 auto; cursor: crosshair; }
-        
-        button { padding: 12px 24px; font-size: 16px; cursor: pointer; border-radius: 8px; border: none; font-weight: bold; transition: 0.3s; }
-        .btn-google { background: #4285F4; color: white; }
-        .btn-ready { background: #ff9800; color: white; margin-top: 20px; }
-        .btn-logout { background: #e53935; color: white; position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 12px; }
+        /* Overlay UI */
+        .overlay {
+            position: fixed; inset: 0; z-index: 100;
+            background: rgba(0,0,0,0.85);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center; color: white;
+        }
+
+        #game-canvas { display: block; background: #050505; }
+
+        /* Style Analog/Joystick */
+        #joystick-container {
+            position: absolute; bottom: 50px; left: 50px;
+            width: 120px; height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--neon-blue);
+            border-radius: 50%; display: none;
+        }
+        #joystick-stick {
+            position: absolute; top: 50%; left: 50%;
+            width: 50px; height: 50px;
+            background: var(--neon-blue);
+            border-radius: 50%; transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        /* Tombol Tembak Mobile */
+        #fire-btn {
+            position: absolute; bottom: 60px; right: 50px;
+            width: 80px; height: 80px;
+            background: rgba(255, 0, 255, 0.3);
+            border: 3px solid var(--neon-pink);
+            border-radius: 50%; display: none;
+            justify-content: center; align-items: center;
+            color: white; font-weight: bold;
+        }
+
+        .btn-main {
+            padding: 15px 40px; background: var(--neon-blue);
+            border: none; font-family: 'Orbitron'; font-weight: bold;
+            cursor: pointer; margin-top: 20px; border-radius: 5px;
+        }
     </style>
 </head>
 <body>
 
-    <div id="login-screen">
-        <h1>EXE AI: EXECURIVE ARENA</h1>
-        <p>Gunakan akun Google untuk mulai mabar</p>
-        <button class="btn-google" id="login-btn">LOGIN WITH GOOGLE</button>
+    <div id="ui-auth" class="overlay">
+        <h1>EXECURIVE ARENA</h1>
+        <button class="btn-main" id="login-btn">AUTH LOGIN</button>
     </div>
 
-    <div id="lobby-screen">
-        <button class="btn-logout" id="logout-btn">LOGOUT</button>
-        <h2>LOBBY ARENA</h2>
-        <div class="player-list">
-            <h3>Pemain Online</h3>
-            <div id="players-container"></div>
-        </div>
-        <button class="btn-ready" id="start-btn">MASUK ARENA (READY)</button>
+    <div id="ui-lobby" class="overlay" style="display:none">
+        <h2>LOBBY SERVER</h2>
+        <div id="player-list" style="margin: 20px 0;"></div>
+        <button class="btn-main" style="background:var(--neon-pink)" id="start-btn">DEPLOY</button>
     </div>
 
-    <canvas id="game-canvas" width="800" height="500"></canvas>
+    <div id="joystick-container"><div id="joystick-stick"></div></div>
+    <div id="fire-btn">FIRE</div>
+
+    <canvas id="game-canvas"></canvas>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        // Import tambahan untuk Database Realtime
-        import { getDatabase, ref, set, onValue, onDisconnect, update, remove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getDatabase, ref, set, onValue, onDisconnect, update } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCl4ei8kfMaBoQEokFE5FlkPvz-NdEhQXw",
@@ -56,7 +89,7 @@
             projectId: "exeai-eefc8",
             storageBucket: "exeai-eefc8.firebasestorage.app",
             messagingSenderId: "1013428002517",
-            appId: "1:1013428002517:web:6e3e07a810167c97bb8c5c",
+            appId: "1:1013428002517:web:6e3e07a810167c97bb8c5c"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -64,105 +97,112 @@
         const db = getDatabase(app);
         const provider = new GoogleAuthProvider();
 
-        // Element Selector
-        const loginScreen = document.getElementById("login-screen");
-        const lobbyScreen = document.getElementById("lobby-screen");
-        const gameCanvas = document.getElementById("game-canvas");
-        const playersContainer = document.getElementById("players-container");
-        const ctx = gameCanvas.getContext("2d");
-
+        const canvas = document.getElementById("game-canvas");
+        const ctx = canvas.getContext("2d");
+        
         let myId = null;
-        let allPlayers = {};
+        let players = {};
+        let joystick = { active: false, x: 0, y: 0, moveX: 0, moveY: 0 };
 
-        // --- SISTEM AUTH ---
+        // Resize Canvas Full Screen
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // 1. AUTH LOGIC
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 myId = user.uid;
-                loginScreen.style.display = "none";
-                lobbyScreen.style.display = "block";
+                document.getElementById("ui-auth").style.display = "none";
+                document.getElementById("ui-lobby").style.display = "flex";
                 
-                // 1. Simpan data pemain ke Database saat login
-                const playerRef = ref(db, 'players/' + myId);
-                set(playerRef, {
-                    id: myId,
-                    name: user.displayName,
-                    x: Math.random() * 700,
-                    y: Math.random() * 400,
-                    color: `hsl(${Math.random() * 360}, 70%, 50%)`,
-                    isReady: false
-                });
-
-                // 2. Jika pemain tutup tab/DC, hapus dari database secara otomatis
-                onDisconnect(playerRef).remove();
-
-            } else {
-                loginScreen.style.display = "block";
-                lobbyScreen.style.display = "none";
-                gameCanvas.style.display = "none";
+                const pRef = ref(db, 'players/' + myId);
+                set(pRef, { id: myId, name: user.displayName, x: 100, y: 100, color: '#00f3ff' });
+                onDisconnect(pRef).remove();
             }
         });
 
-        // --- SISTEM LOBBY REALTIME ---
-        const playersRef = ref(db, 'players');
-        onValue(playersRef, (snapshot) => {
-            const data = snapshot.val() || {};
-            allPlayers = data;
+        onValue(ref(db, 'players'), (snap) => {
+            players = snap.val() || {};
+            document.getElementById("player-list").innerHTML = Object.values(players).map(p => `<div>${p.name}</div>`).join("");
+        });
+
+        // 2. ANALOG LOGIC (Touch Events)
+        const jContainer = document.getElementById("joystick-container");
+        const jStick = document.getElementById("joystick-stick");
+
+        jContainer.addEventListener("touchstart", (e) => {
+            joystick.active = true;
+        });
+
+        window.addEventListener("touchmove", (e) => {
+            if (!joystick.active) return;
+            const touch = e.touches[0];
+            const rect = jContainer.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            // Hitung jarak geser
+            let dx = touch.clientX - centerX;
+            let dy = touch.clientY - centerY;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            const maxDist = rect.width / 2;
+
+            if (dist > maxDist) {
+                dx *= maxDist / dist;
+                dy *= maxDist / dist;
+            }
+
+            // Gerakkan visual stick analog
+            jStick.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
             
-            // Update daftar nama di Lobby
-            playersContainer.innerHTML = "";
-            Object.values(data).forEach(player => {
-                const div = document.createElement("div");
-                div.className = "player-item";
-                div.innerHTML = `<span>${player.name}</span> <span class="${player.isReady ? 'status-ready' : ''}">${player.isReady ? 'READY' : 'Waiting...'}</span>`;
-                playersContainer.appendChild(div);
-            });
-
-            // Gambar ulang game jika sedang di arena
-            drawGame();
+            // Simpan nilai pergerakan (-1 sampai 1)
+            joystick.moveX = dx / maxDist;
+            joystick.moveY = dy / maxDist;
         });
 
-        // --- SISTEM GERAK & GAMEPLAY ---
-        document.getElementById("start-btn").addEventListener("click", () => {
-            update(ref(db, 'players/' + myId), { isReady: true });
-            lobbyScreen.style.display = "none";
-            gameCanvas.style.display = "block";
+        window.addEventListener("touchend", () => {
+            joystick.active = false;
+            joystick.moveX = 0; joystick.moveY = 0;
+            jStick.style.transform = `translate(-50%, -50%)`;
         });
 
-        window.addEventListener("keydown", (e) => {
-            if (!myId || !allPlayers[myId]) return;
-            let { x, y } = allPlayers[myId];
-            const speed = 10;
+        // 3. GAME LOOP
+        function loop() {
+            if (myId && players[myId] && joystick.active) {
+                let me = players[myId];
+                me.x += joystick.moveX * 5;
+                me.y += joystick.moveY * 5;
+                
+                // Update posisi ke Firebase (dibatasi agar tidak lag)
+                update(ref(db, 'players/' + myId), { x: me.x, y: me.y });
+            }
 
-            if (e.key === "w") y -= speed;
-            if (e.key === "s") y += speed;
-            if (e.key === "a") x -= speed;
-            if (e.key === "d") x += speed;
-
-            // Update posisi ke Firebase agar pemain lain bisa lihat
-            update(ref(db, 'players/' + myId), { x, y });
-        });
-
-        function drawGame() {
-            if (gameCanvas.style.display === "none") return;
-            
-            // Hapus layar lama
-            ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-
-            // Gambar semua pemain yang ada di database
-            Object.values(allPlayers).forEach(p => {
+            // Drawing
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            Object.values(players).forEach(p => {
+                ctx.shadowBlur = 10; ctx.shadowColor = p.color;
                 ctx.fillStyle = p.color;
-                ctx.fillRect(p.x, p.y, 30, 30); // Gambar kotak pemain
+                ctx.fillRect(p.x - 15, p.y - 15, 30, 30);
                 ctx.fillStyle = "white";
-                ctx.fillText(p.name, p.x, p.y - 5); // Gambar nama di atas kotak
+                ctx.fillText(p.name, p.x - 20, p.y - 25);
             });
+
+            requestAnimationFrame(loop);
         }
 
-        // Fungsi Tombol Login/Logout
-        document.getElementById("login-btn").onclick = () => signInWithPopup(auth, provider);
-        document.getElementById("logout-btn").onclick = () => {
-            remove(ref(db, 'players/' + myId));
-            signOut(auth);
+        // 4. CONTROL ACTION
+        document.getElementById("start-btn").onclick = () => {
+            document.getElementById("ui-lobby").style.display = "none";
+            jContainer.style.display = "block";
+            document.getElementById("fire-btn").style.display = "flex";
+            loop();
         };
+
+        document.getElementById("login-btn").onclick = () => signInWithPopup(auth, provider);
 
     </script>
 </body>
