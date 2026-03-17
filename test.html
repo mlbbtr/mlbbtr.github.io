@@ -3,53 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EXECURIVE ARENA - Battle Royale</title>
+    <title>EXECURIVE ARENA - Hexky AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon-blue: #00f3ff; --neon-pink: #ff00ff; }
+        :root { --neon-blue: #00f3ff; --neon-pink: #ff00ff; --neon-red: #ff3131; }
         * { box-sizing: border-box; touch-action: none; user-select: none; }
         body { margin: 0; background: #000; overflow: hidden; font-family: 'Orbitron', sans-serif; color: white; }
         
-        /* UI Overlay */
+        /* Layar Utama & Death Screen */
         .overlay { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        #death-screen { display: none; background: rgba(150, 0, 0, 0.9); z-index: 200; text-align: center; }
+        #death-screen { display: none; background: rgba(139, 0, 0, 0.9); z-index: 200; text-align: center; border: 10px solid var(--neon-red); }
         
-        #hud { position: fixed; top: 10px; left: 10px; z-index: 50; display: none; }
-        .stat-box { background: rgba(0,0,0,0.7); padding: 10px; border-left: 4px solid var(--neon-blue); margin-bottom: 5px; border-radius: 0 10px 10px 0; }
-        #zone-warning { color: #ff3131; font-weight: bold; display: none; animation: blink 1s infinite; }
+        /* HUD Stats */
+        #hud { position: fixed; top: 15px; left: 15px; z-index: 50; display: none; }
+        .stat-box { background: rgba(0,0,0,0.8); padding: 12px; border-left: 5px solid var(--neon-blue); margin-bottom: 8px; border-radius: 0 15px 15px 0; box-shadow: 0 0 10px rgba(0,243,255,0.3); }
+        #zone-alert { color: var(--neon-red); font-weight: bold; font-size: 18px; display: none; animation: blink 0.5s infinite; text-shadow: 0 0 10px red; }
 
-        /* Controls */
-        #joystick-container { position: absolute; bottom: 40px; left: 40px; width: 120px; height: 120px; background: rgba(255,255,255,0.05); border: 2px solid var(--neon-blue); border-radius: 50%; display: none; z-index: 60; }
-        #joystick-stick { position: absolute; top: 50%; left: 50%; width: 50px; height: 50px; background: var(--neon-blue); border-radius: 50%; transform: translate(-50%, -50%); }
-        #fire-btn { position: absolute; bottom: 50px; right: 40px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,0,255,0.4), rgba(255,0,255,0.05)); border: 4px solid var(--neon-pink); border-radius: 50%; display: none; justify-content: center; align-items: center; z-index: 60; font-weight: bold; }
+        /* Mobile Controls */
+        #joystick-container { position: absolute; bottom: 50px; left: 50px; width: 130px; height: 130px; background: rgba(255,255,255,0.05); border: 3px solid var(--neon-blue); border-radius: 50%; display: none; z-index: 60; }
+        #joystick-stick { position: absolute; top: 50%; left: 50%; width: 55px; height: 55px; background: var(--neon-blue); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 20px var(--neon-blue); }
+        #fire-btn { position: absolute; bottom: 60px; right: 50px; width: 110px; height: 110px; background: radial-gradient(circle, rgba(255,0,255,0.5), rgba(255,0,255,0.1)); border: 5px solid var(--neon-pink); border-radius: 50%; display: none; justify-content: center; align-items: center; z-index: 60; font-weight: bold; cursor: pointer; transition: 0.1s; }
+        #fire-btn:active { transform: scale(0.8); background: rgba(255,0,255,0.7); box-shadow: 0 0 30px var(--neon-pink); }
         
-        canvas { display: none; background: #000; }
+        canvas { display: none; background: #050505; }
         @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
 
     <div id="ui-auth" class="overlay">
-        <h1>EXECURIVE ARENA</h1>
-        <button id="login-btn" style="padding:15px 30px; background:var(--neon-blue); border:none; font-family:'Orbitron'; cursor:pointer;">AUTH LOGIN</button>
+        <h1 style="letter-spacing: 5px;">EXECURIVE ARENA</h1>
+        <button id="login-btn" style="padding:15px 40px; background:var(--neon-blue); border:none; font-family:'Orbitron'; font-weight:bold; cursor:pointer; border-radius: 5px;">AUTH LOGIN</button>
     </div>
 
     <div id="ui-lobby" class="overlay" style="display:none">
-        <h2>LOBBY</h2>
-        <div id="player-list" style="margin: 20px 0;"></div>
-        <button id="start-btn" style="padding:15px 30px; background:var(--neon-pink); border:none; color:white; font-family:'Orbitron'; cursor:pointer;">DEPLOY (3s)</button>
+        <h2 style="color:var(--neon-pink)">LOBBY SERVER</h2>
+        <div id="player-list" style="margin: 20px 0; background:rgba(255,255,255,0.1); padding:20px; border-radius:10px; min-width:250px;"></div>
+        <button id="start-btn" style="padding:15px 40px; background:var(--neon-pink); border:none; color:white; font-family:'Orbitron'; font-weight:bold; cursor:pointer; border-radius:5px;">DEPLOY (3s)</button>
     </div>
 
     <div id="death-screen" class="overlay">
-        <h1 style="font-size: 60px; margin: 0;">WASTED</h1>
-        <p id="killed-by" style="font-size: 20px;">KILLED BY: UNKNOWN</p>
-        <h2 id="respawn-timer" style="color:yellow">5</h2>
+        <h1 style="font-size: 80px; margin: 0; color: white; text-shadow: 5px 5px #000;">WASTED</h1>
+        <p id="killed-by" style="font-size: 24px; color: #fff;">KILLED BY: PLAYER</p>
+        <p style="font-size: 18px;">Respawn In:</p>
+        <h2 id="respawn-timer" style="color:yellow; font-size: 40px;">5</h2>
     </div>
 
     <div id="hud">
-        <div class="stat-box" id="hud-name">PLAYER</div>
-        <div class="stat-box" id="hud-score">KILLS: 0 | DEATHS: 0</div>
-        <div id="zone-warning">OUTSIDE ZONE! HP -10</div>
+        <div class="stat-box" id="hud-name">NAME</div>
+        <div class="stat-box" id="hud-score">K: 0 | D: 0 | HP: 100</div>
+        <div id="zone-alert">OUTSIDE SAFE ZONE!</div>
     </div>
 
     <div id="joystick-container"><div id="joystick-stick"></div></div>
@@ -81,8 +84,9 @@
         const ctx = canvas.getContext("2d");
         
         let myId = null, players = {}, globalBullets = {}, joystick = { active: false, moveX: 0, moveY: 0 };
-        let camera = { x: 0, y: 0 }, keys = {}, lastFireTime = 0;
-        let zone = { x: 1000, y: 1000, radius: 800 };
+        let camera = { x: 0, y: 0 }, keys = {}, lastFireTime = 0, lastZoneDamage = 0;
+        const FIRE_RANGE = 350; // Jarak Auto-Lock
+        const SAFE_ZONE = { x: 1000, y: 1000, radius: 900 };
 
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
@@ -94,21 +98,21 @@
                 document.getElementById("ui-lobby").style.display = "flex";
                 document.getElementById("hud-name").innerText = user.displayName;
                 
-                set(ref(db, 'players/' + myId), { id: myId, name: user.displayName, x: 1000, y: 1000, color: '#00f3ff', hp: 100, kills: 0, deaths: 0, isAlive: true, lastKiller: "" });
-                onDisconnect(ref(db, 'players/' + myId)).remove();
+                const pRef = ref(db, 'players/' + myId);
+                set(pRef, { id: myId, name: user.displayName, x: 1000, y: 1000, color: '#00f3ff', hp: 100, kills: 0, deaths: 0, isAlive: true, lastKiller: "THE ZONE" });
+                onDisconnect(pRef).remove();
             }
         });
 
-        // Sinkronisasi Data Global
         onValue(ref(db, 'players'), (s) => { players = s.val() || {}; });
         onValue(ref(db, 'bullets'), (s) => { globalBullets = s.val() || {}; });
 
-        // SISTEM TEMBAK GLOBAL
+        // SISTEM TEMBAK AUTO-LOCK (FULL FITUR)
         function fire() {
             const me = players[myId];
-            if (!me || !me.isAlive || Date.now() - lastFireTime < 800) return;
+            if (!me || !me.isAlive || Date.now() - lastFireTime < 1000) return;
 
-            let target = null, minDist = 400;
+            let target = null, minDist = FIRE_RANGE;
             Object.values(players).forEach(p => {
                 if(p.id !== myId && p.isAlive) {
                     let d = Math.hypot(p.x - me.x, p.y - me.y);
@@ -119,39 +123,16 @@
             if(target) {
                 const angle = Math.atan2(target.y - me.y, target.x - me.x);
                 const bRef = push(ref(db, 'bullets'));
-                set(bRef, { owner: myId, x: me.x, y: me.y, vx: Math.cos(angle)*15, vy: Math.sin(angle)*15, life: 50 });
-                setTimeout(() => remove(bRef), 1000); // Hapus peluru dari database setelah 1 detik
+                set(bRef, { owner: myId, x: me.x, y: me.y, vx: Math.cos(angle)*16, vy: Math.sin(angle)*16, life: 60 });
+                setTimeout(() => remove(bRef), 1200);
                 lastFireTime = Date.now();
             }
         }
 
-        // SISTEM MATI & ZONA
-        function checkStatus() {
-            const me = players[myId];
-            if(!me || !me.isAlive) return;
-
-            // 1. Cek HP
-            if(me.hp <= 0) {
-                handleDeath(me.lastKiller || "THE ZONE");
-                return;
-            }
-
-            // 2. Cek Zona (White Circle)
-            const distToCenter = Math.hypot(me.x - zone.x, me.y - zone.y);
-            if(distToCenter > zone.radius) {
-                document.getElementById("zone-warning").style.display = "block";
-                if(Date.now() % 1000 < 50) { // Damage per detik
-                    update(ref(db, 'players/' + myId), { hp: Math.max(0, me.hp - 10) });
-                }
-            } else {
-                document.getElementById("zone-warning").style.display = "none";
-            }
-        }
-
-        function handleDeath(killerName) {
-            update(ref(db, 'players/' + myId), { isAlive: false, deaths: increment(1) });
+        function handleDeath(killer) {
+            update(ref(db, 'players/' + myId), { isAlive: false, deaths: increment(1), hp: 0 });
             document.getElementById("death-screen").style.display = "flex";
-            document.getElementById("killed-by").innerText = "KILLED BY: " + killerName;
+            document.getElementById("killed-by").innerText = "KILLED BY: " + killer;
             
             let count = 5;
             const itv = setInterval(() => {
@@ -162,14 +143,21 @@
         }
 
         function respawn() {
-            update(ref(db, 'players/' + myId), { isAlive: true, hp: 100, x: zone.x, y: zone.y, lastKiller: "" });
+            update(ref(db, 'players/' + myId), { isAlive: true, hp: 100, x: 1000, y: 1000, lastKiller: "THE ZONE" });
             document.getElementById("death-screen").style.display = "none";
         }
 
-        // LOOP UTAMA
+        // KEYBOARD & TOUCH
+        window.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
+        window.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
+        document.getElementById("fire-btn").addEventListener("touchstart", (e) => { e.preventDefault(); fire(); });
+        window.addEventListener("mousedown", () => { if(canvas.style.display === "block") fire(); });
+
+        // MAIN GAME LOOP
         function loop() {
             const me = players[myId];
             if (me && me.isAlive) {
+                // Movement Logic
                 let dx = 0, dy = 0;
                 if (keys['w']) dy -= 7; if (keys['s']) dy += 7;
                 if (keys['a']) dx -= 7; if (keys['d']) dx += 7;
@@ -178,11 +166,25 @@
                 
                 camera.x = me.x - canvas.width / 2;
                 camera.y = me.y - canvas.height / 2;
-                checkStatus();
-                
-                // Cek peluru yang mengenai KITA (Hanya cek peluru milik orang lain)
+
+                // 1. Logika Zona Putih (Damage Fix)
+                const distToCenter = Math.hypot(me.x - SAFE_ZONE.x, me.y - SAFE_ZONE.y);
+                if(distToCenter > SAFE_ZONE.radius) {
+                    document.getElementById("zone-alert").style.display = "block";
+                    if(Date.now() - lastZoneDamage > 1000) { // Fix Damage per detik
+                        update(ref(db, 'players/' + myId), { hp: Math.max(0, me.hp - 10) });
+                        lastZoneDamage = Date.now();
+                    }
+                } else {
+                    document.getElementById("zone-alert").style.display = "none";
+                }
+
+                // 2. Logika Kematian (HP 0)
+                if(me.hp <= 0) handleDeath(me.lastKiller || "THE ZONE");
+
+                // 3. Logika Peluru Kena Kita
                 Object.entries(globalBullets).forEach(([id, b]) => {
-                    if(b.owner !== myId && Math.hypot(me.x - b.x, me.y - b.y) < 30) {
+                    if(b.owner !== myId && Math.hypot(me.x - b.x, me.y - b.y) < 25) {
                         const newHp = Math.max(0, me.hp - 32);
                         update(ref(db, 'players/' + myId), { hp: newHp, lastKiller: players[b.owner]?.name || "Enemy" });
                         if(newHp <= 0) update(ref(db, 'players/' + b.owner), { kills: increment(1) });
@@ -191,64 +193,66 @@
                 });
             }
 
+            // RENDERING
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.save();
             ctx.translate(-camera.x, -camera.y);
 
-            // Gambar Zona Putih
-            ctx.beginPath(); ctx.arc(zone.x, zone.y, zone.radius, 0, Math.PI*2);
-            ctx.strokeStyle = "white"; ctx.lineWidth = 5; ctx.stroke();
+            // Draw Zona Putih
+            ctx.beginPath(); ctx.arc(SAFE_ZONE.x, SAFE_ZONE.y, SAFE_ZONE.radius, 0, Math.PI*2);
+            ctx.strokeStyle = "white"; ctx.lineWidth = 10; ctx.stroke();
 
-            // Gambar Semua Player
+            // Draw Players & UI Lokal
             Object.values(players).forEach(p => {
                 if(!p.isAlive) return;
-                // Health Bar Realistis
-                ctx.fillStyle = "#333"; ctx.fillRect(p.x - 30, p.y - 45, 60, 8);
-                ctx.fillStyle = p.hp > 30 ? "#00f3ff" : "red";
-                ctx.fillRect(p.x - 30, p.y - 45, (p.hp/100)*60, 8);
-                // Body
-                ctx.fillStyle = p.color; ctx.shadowBlur = 15; ctx.shadowColor = p.color;
-                ctx.fillRect(p.x - 15, p.y - 15, 30, 30);
-                // Name
+                // Auto-Lock Range (Hanya tampil di diri sendiri)
+                if(p.id === myId) {
+                    ctx.beginPath(); ctx.arc(p.x, p.y, FIRE_RANGE, 0, Math.PI*2);
+                    ctx.strokeStyle = "rgba(0, 243, 255, 0.1)"; ctx.lineWidth = 2; ctx.stroke();
+                }
+                // Health Bar (Fix: Selalu muncul)
+                ctx.fillStyle = "#222"; ctx.fillRect(p.x - 30, p.y - 45, 60, 8);
+                ctx.fillStyle = (p.hp > 30) ? varName('--neon-blue') : varName('--neon-red');
+                ctx.fillRect(p.x - 30, p.y - 45, (Math.max(0, p.hp)/100)*60, 8);
+                // Box Body
+                ctx.shadowBlur = 15; ctx.shadowColor = p.color;
+                ctx.fillStyle = p.color; ctx.fillRect(p.x - 15, p.y - 15, 30, 30);
+                // Name Tag
                 ctx.shadowBlur = 0; ctx.fillStyle = "white"; ctx.font = "bold 12px Orbitron";
                 ctx.fillText(p.name, p.x - 25, p.y - 55);
             });
 
-            // Gambar Peluru Global
+            // Draw Global Bullets
             Object.values(globalBullets).forEach(b => {
                 ctx.fillStyle = "yellow"; ctx.beginPath();
-                ctx.arc(b.x, b.y, 5, 0, Math.PI*2); ctx.fill();
-                // Update posisi peluru secara visual (lokal agar smooth)
-                b.x += b.vx; b.y += b.vy;
+                ctx.arc(b.x, b.y, 6, 0, Math.PI*2); ctx.fill();
+                b.x += b.vx; b.y += b.vy; // Smooth visual movement
             });
 
             ctx.restore();
             if(myId && players[myId]) {
-                document.getElementById("hud-score").innerText = `KILLS: ${players[myId].kills} | DEATHS: ${players[myId].deaths} | HP: ${players[myId].hp}`;
+                document.getElementById("hud-score").innerText = `K: ${players[myId].kills} | D: ${players[myId].deaths} | HP: ${players[myId].hp}`;
             }
             requestAnimationFrame(loop);
         }
 
-        // Kontrol & Event
-        window.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
-        window.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
-        document.getElementById("fire-btn").addEventListener("touchstart", (e) => { e.preventDefault(); fire(); });
-        window.addEventListener("mousedown", () => { if(canvas.style.display === "block") fire(); });
+        function varName(n) { return getComputedStyle(document.documentElement).getPropertyValue(n); }
 
-        // Joystick Logic
+        // JOYSTICK LOGIC
         const jContainer = document.getElementById("joystick-container");
         const jStick = document.getElementById("joystick-stick");
         jContainer.addEventListener("touchstart", () => joystick.active = true);
         window.addEventListener("touchmove", (e) => {
             if(!joystick.active) return;
             const t = e.touches[0]; const r = jContainer.getBoundingClientRect();
-            const dx = t.clientX - (r.left + 60), dy = t.clientY - (r.top + 60);
-            const d = Math.hypot(dx, dy), ratio = d > 60 ? 60/d : 1;
-            joystick.moveX = (dx*ratio)/60; joystick.moveY = (dy*ratio)/60;
+            const dx = t.clientX - (r.left + 65), dy = t.clientY - (r.top + 65);
+            const d = Math.hypot(dx, dy), ratio = d > 65 ? 65/d : 1;
+            joystick.moveX = (dx*ratio)/65; joystick.moveY = (dy*ratio)/65;
             jStick.style.transform = `translate(calc(-50% + ${dx*ratio}px), calc(-50% + ${dy*ratio}px))`;
         });
         window.addEventListener("touchend", () => { joystick.active = false; joystick.moveX = 0; joystick.moveY = 0; jStick.style.transform = `translate(-50%, -50%)`; });
 
+        // START GAME
         document.getElementById("start-btn").onclick = () => {
             let s = 3; document.getElementById("start-btn").innerText = s;
             const t = setInterval(() => {
