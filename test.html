@@ -1391,7 +1391,7 @@ function cm(id){document.getElementById(id).classList.remove('open');}
 document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('.modal.open').forEach(function(m){m.classList.remove('open');});});
 
 // ============ NAV ============
-function nav(page, fromHashChange){
+function nav(page){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('act');});
   var el=document.getElementById('page-'+page);if(el)el.classList.add('act');
   document.querySelectorAll('.tb-nav a').forEach(function(a){a.classList.remove('act');});
@@ -1407,33 +1407,19 @@ function nav(page, fromHashChange){
   else if(page==='profile')initProfile();
   else if(page==='admin')initAdmin();
   window.scrollTo(0,0);
-  // Update URL hash only if not called from hashchange
-  if (!fromHashChange) {
-    history.replaceState(null, null, '#' + page);
-  }
+  // Update URL hash
+  history.replaceState(null, null, '#' + page);
 }
 
-// Handle hash change on load and navigation
-var hashNavInProgress = false;
+// Handle hash change - for bookmarking pages
 window.addEventListener('hashchange', function() {
-  if (hashNavInProgress) return;
   var hash = window.location.hash.substring(1);
   if (hash) {
-    nav(hash, true);
+    nav(hash);
   } else {
-    nav('home', true);
+    nav('home');
   }
 });
-
-// Initial nav on page load based on hash
-function initHashNav() {
-  var hash = window.location.hash.substring(1);
-  if (hash) {
-    nav(hash, true);
-  } else {
-    nav('home', true);
-  }
-}
 
 function stab(btn,pid){
   var par=btn.closest('.tabs');if(!par)return;
@@ -2939,7 +2925,7 @@ var ADM_MENU=[
 ];
 
 function initAdmin(){
-  if(!CU||!UP||ADMIN_ROLES.indexOf(UP.role)<0){toast('Akses ditolak.','e');nav('home',true);return;}
+  if(!CU||!UP||ADMIN_ROLES.indexOf(UP.role)<0){toast('Akses ditolak.','e');nav('home');return;}
   buildAdmSidebar();
   loadAdmDashboard();
   loadAdmWL();
