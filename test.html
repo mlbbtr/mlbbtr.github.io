@@ -149,6 +149,190 @@
     text-align: right;
   }
 
+  /* GLOBAL PANEL */
+  .global-panel {
+    max-width: 1400px; margin: 20px auto 0;
+    padding: 0 24px;
+  }
+
+  .global-panel-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px; font-weight: 700;
+    color: var(--muted); letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .global-panel-title::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  .global-counters {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  .gcounter {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative; overflow: hidden;
+    transition: all 0.25s;
+  }
+
+  .gcounter::before {
+    content: '';
+    position: absolute; inset: 0;
+    opacity: 0; transition: opacity 0.25s;
+    pointer-events: none;
+  }
+
+  .gcounter.win-gc { border: 1px solid rgba(0,230,118,0.2); }
+  .gcounter.win-gc::before { background: radial-gradient(ellipse at top left, rgba(0,230,118,0.07), transparent 70%); }
+
+  .gcounter.lose-gc { border: 1px solid rgba(255,61,87,0.2); }
+  .gcounter.lose-gc::before { background: radial-gradient(ellipse at top left, rgba(255,61,87,0.07), transparent 70%); }
+
+  .gcounter.mmr-gc { border: 1px solid rgba(245,200,66,0.25); }
+  .gcounter.mmr-gc::before { background: radial-gradient(ellipse at top left, rgba(245,200,66,0.08), transparent 70%); }
+
+  .gcounter:hover::before { opacity: 1; }
+  .gcounter:hover { transform: translateY(-2px); }
+
+  .gcounter.win-gc:hover { box-shadow: 0 8px 30px rgba(0,230,118,0.12); }
+  .gcounter.lose-gc:hover { box-shadow: 0 8px 30px rgba(255,61,87,0.12); }
+  .gcounter.mmr-gc:hover { box-shadow: 0 8px 30px rgba(245,200,66,0.15); }
+
+  .gc-header {
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .gc-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  .win-gc .gc-dot { background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .lose-gc .gc-dot { background: var(--red); box-shadow: 0 0 8px var(--red); }
+  .mmr-gc .gc-dot { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+
+  .gc-label {
+    font-family: 'Oxanium', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted);
+    flex: 1;
+  }
+
+  .gc-badge {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .win-gc .gc-badge { background: rgba(0,230,118,0.12); color: var(--green); }
+  .lose-gc .gc-badge { background: rgba(255,61,87,0.12); color: var(--red); }
+  .mmr-gc .gc-badge { background: rgba(245,200,66,0.12); color: var(--gold); }
+
+  .gc-main {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .gc-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 40px; font-weight: 900;
+    line-height: 1;
+    transition: transform 0.1s;
+  }
+
+  .gc-number.bump { animation: numBump 0.18s ease; }
+  @keyframes numBump {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.18); }
+    100% { transform: scale(1); }
+  }
+
+  .win-gc .gc-number { color: var(--green); }
+  .lose-gc .gc-number { color: var(--red); }
+  .mmr-gc .gc-number { color: var(--gold); font-size: 36px; }
+
+  .gc-btns {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+
+  .gc-btn {
+    width: 38px; height: 38px;
+    border: none; border-radius: 10px;
+    cursor: pointer; font-size: 20px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; font-family: 'Orbitron', sans-serif;
+    line-height: 1;
+  }
+
+  .gc-btn-add { background: rgba(255,255,255,0.06); color: var(--text); }
+  .gc-btn-add:hover { transform: scale(1.12); }
+
+  .win-gc .gc-btn-add:hover { background: rgba(0,230,118,0.2); color: var(--green); box-shadow: 0 0 12px rgba(0,230,118,0.3); }
+  .lose-gc .gc-btn-add:hover { background: rgba(255,61,87,0.2); color: var(--red); box-shadow: 0 0 12px rgba(255,61,87,0.3); }
+  .mmr-gc .gc-btn-add:hover { background: rgba(245,200,66,0.2); color: var(--gold); box-shadow: 0 0 12px rgba(245,200,66,0.3); }
+
+  .gc-btn-sub { background: rgba(255,255,255,0.04); color: var(--muted); }
+  .gc-btn-sub:hover { background: rgba(255,255,255,0.1); color: var(--text); transform: scale(1.12); }
+
+  .gc-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 10px;
+    margin-top: 2px;
+  }
+
+  .gc-rate {
+    font-family: 'Oxanium', sans-serif;
+    font-size: 12px; font-weight: 600;
+    color: var(--muted);
+  }
+
+  .gc-rate span {
+    margin-left: 4px;
+  }
+
+  .win-gc .gc-rate span { color: var(--green); }
+  .lose-gc .gc-rate span { color: var(--red); }
+  .mmr-gc .gc-rate span { color: var(--gold); }
+
+  .gc-edit-inline {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 4px 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px; font-weight: 700;
+    color: var(--text); outline: none;
+    width: 80px; text-align: center;
+    cursor: pointer; transition: all 0.2s;
+  }
+
+  .gc-edit-inline:focus {
+    border-color: var(--gold);
+    background: rgba(245,200,66,0.06);
+    box-shadow: 0 0 0 3px rgba(245,200,66,0.1);
+  }
+
+  @media (max-width: 640px) {
+    .global-counters { grid-template-columns: 1fr; }
+    .gc-number { font-size: 32px; }
+    .mmr-gc .gc-number { font-size: 28px; }
+    .global-panel { padding: 0 16px; }
+  }
+
+  @media (max-width: 900px) and (min-width: 641px) {
+    .global-counters { grid-template-columns: 1fr 1fr; }
+    .mmr-gc { grid-column: span 2; }
+  }
+
   /* HERO FILTER & SEARCH */
   .toolbar {
     max-width: 1400px; margin: 0 auto;
@@ -881,6 +1065,74 @@
   </div>
 </div>
 
+<!-- GLOBAL WIN/LOSE/MMR PANEL -->
+<div class="global-panel">
+  <div class="global-panel-title">⚡ Global Counter</div>
+  <div class="global-counters">
+
+    <!-- WIN -->
+    <div class="gcounter win-gc">
+      <div class="gc-header">
+        <div class="gc-dot"></div>
+        <div class="gc-label">Total Win</div>
+        <div class="gc-badge" id="gWinBadge">Global</div>
+      </div>
+      <div class="gc-main">
+        <div class="gc-number" id="gWinNum">0</div>
+        <div class="gc-btns">
+          <button class="gc-btn gc-btn-add" onclick="changeGlobal('win',1)">+</button>
+          <button class="gc-btn gc-btn-sub" onclick="changeGlobal('win',-1)">−</button>
+        </div>
+      </div>
+      <div class="gc-footer">
+        <div class="gc-rate">Win Rate <span id="gWRVal">0%</span></div>
+        <div style="font-size:10px;color:var(--muted);font-family:'Oxanium';letter-spacing:1px">INDEPENDEN DARI HERO</div>
+      </div>
+    </div>
+
+    <!-- LOSE -->
+    <div class="gcounter lose-gc">
+      <div class="gc-header">
+        <div class="gc-dot"></div>
+        <div class="gc-label">Total Lose</div>
+        <div class="gc-badge" id="gLoseBadge">Global</div>
+      </div>
+      <div class="gc-main">
+        <div class="gc-number" id="gLoseNum">0</div>
+        <div class="gc-btns">
+          <button class="gc-btn gc-btn-add" onclick="changeGlobal('lose',1)">+</button>
+          <button class="gc-btn gc-btn-sub" onclick="changeGlobal('lose',-1)">−</button>
+        </div>
+      </div>
+      <div class="gc-footer">
+        <div class="gc-rate">Total Games <span id="gTotalVal">0</span></div>
+        <div style="font-size:10px;color:var(--muted);font-family:'Oxanium';letter-spacing:1px">INDEPENDEN DARI HERO</div>
+      </div>
+    </div>
+
+    <!-- MMR -->
+    <div class="gcounter mmr-gc">
+      <div class="gc-header">
+        <div class="gc-dot"></div>
+        <div class="gc-label">MMR</div>
+        <div class="gc-badge">Ranked Points</div>
+      </div>
+      <div class="gc-main">
+        <div class="gc-number" id="gMMRNum">—</div>
+        <div class="gc-btns">
+          <button class="gc-btn gc-btn-add" onclick="changeMMRGlobal(1)">+</button>
+          <button class="gc-btn gc-btn-sub" onclick="changeMMRGlobal(-1)">−</button>
+        </div>
+      </div>
+      <div class="gc-footer">
+        <div class="gc-rate" style="display:flex;align-items:center;gap:6px">Set: <input class="gc-edit-inline" type="number" id="gMMRInput" placeholder="—" onkeydown="if(event.key==='Enter')setMMRDirect(this.value)"></div>
+        <div style="font-size:10px;color:var(--muted);font-family:'Oxanium';letter-spacing:1px">+/− ATAU KETIK MANUAL</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- MAIN -->
 <main>
   <div class="section-header">
@@ -990,6 +1242,58 @@
     Tank: '🛡️', Fighter: '⚔️', Support: '💊'
   };
 
+  // ── GLOBAL COUNTERS ──
+  let globalData = { win: 0, lose: 0 };
+
+  onValue(ref(db, 'global'), snap => {
+    globalData = snap.val() || { win: 0, lose: 0 };
+    renderGlobal();
+  });
+
+  function renderGlobal() {
+    const w = globalData.win || 0;
+    const l = globalData.lose || 0;
+    const total = w + l;
+    const wr = total > 0 ? Math.round(w / total * 100) : 0;
+    document.getElementById('gWinNum').textContent = w;
+    document.getElementById('gLoseNum').textContent = l;
+    document.getElementById('gTotalVal').textContent = total;
+    document.getElementById('gWRVal').textContent = wr + '%';
+  }
+
+  window.changeGlobal = (field, delta) => {
+    const cur = globalData[field] || 0;
+    const next = Math.max(0, cur + delta);
+    update(ref(db, 'global'), { [field]: next })
+      .then(() => bumpNum(field === 'win' ? 'gWinNum' : 'gLoseNum'));
+  };
+
+  window.changeMMRGlobal = (delta) => {
+    const cur = parseInt(document.getElementById('gMMRNum').textContent) || 0;
+    const next = Math.max(0, cur + delta);
+    set(ref(db, 'mmr'), next)
+      .then(() => bumpNum('gMMRNum'));
+  };
+
+  window.setMMRDirect = (val) => {
+    const v = parseInt(val);
+    if (isNaN(v) || v < 0) return;
+    set(ref(db, 'mmr'), v)
+      .then(() => {
+        document.getElementById('gMMRInput').value = '';
+        showToast(`MMR diset ke ${v} 🏅`);
+        bumpNum('gMMRNum');
+      });
+  };
+
+  function bumpNum(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('bump');
+    void el.offsetWidth;
+    el.classList.add('bump');
+  }
+
   // ── REALTIME LISTENERS ──
   onValue(ref(db, 'heroes'), snap => {
     heroesData = snap.val() || {};
@@ -999,7 +1303,9 @@
 
   onValue(ref(db, 'mmr'), snap => {
     const v = snap.val();
-    document.getElementById('mmrVal').textContent = v !== null ? v : '—';
+    const display = v !== null ? v : '—';
+    document.getElementById('mmrVal').textContent = display;
+    document.getElementById('gMMRNum').textContent = display;
   });
 
   // ── TOAST ──
