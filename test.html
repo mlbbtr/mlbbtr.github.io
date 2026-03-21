@@ -2681,8 +2681,13 @@ async function doUploadToImgBB(blob) {
           try { data = JSON.parse(xhr.responseText); }
           catch { reject(new Error('Response bukan JSON: ' + xhr.responseText.slice(0,100))); return; }
 
-          if (data.success && data.data?.url) {
-            resolve(data.data.url);
+          console.log('ImgBB Response:', JSON.stringify(data, null, 2)); // debug
+
+          if (data.success && data.data) {
+            // Ambil direct image URL — prioritas: image.url > display_url > url
+            const directURL = data.data?.image?.url || data.data?.display_url || data.data?.url;
+            if (directURL) resolve(directURL);
+            else reject(new Error('ImgBB tidak mengembalikan URL gambar'));
           } else {
             const errMsg = data.error?.message || data.status_txt || 'Upload gagal';
             reject(new Error(`ImgBB: ${errMsg} (status ${data.status||'?'})`));
