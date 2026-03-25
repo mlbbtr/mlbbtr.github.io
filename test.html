@@ -578,7 +578,6 @@
       }
     });
 
-    // Extract video ID from URL
     function extractVideoId(url) {
       const patterns = [
         /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
@@ -591,9 +590,7 @@
       return null;
     }
 
-    function setProgress(pct) {
-      progressBar.style.width = pct + '%';
-    }
+    function setProgress(pct) { progressBar.style.width = pct + '%'; }
 
     function hideAll() {
       loader.classList.remove('show');
@@ -624,63 +621,53 @@
       loader.classList.add('show');
       setProgress(0);
 
-      // Show thumbnail from YouTube
       const thumbUrl = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
       resultThumb.src = thumbUrl;
       resultTitle.textContent = 'Memproses video...';
       resultSub.textContent = `Format: ${selectedFormat.toUpperCase()} · ID: ${videoId}`;
 
       loaderText.textContent = 'MENGHUBUNGI SERVER...';
-      setProgress(10);
+      setProgress(15);
 
-      const targetUrl = `https://www.yt2mp3converter.net/apis/fetch.php?url=${encodeURIComponent(url)}&format=${selectedFormat}`;
-
-      // CORS proxies - dicoba satu per satu
-      const proxies = [
-        `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
-        `https://cors-anywhere.herokuapp.com/${targetUrl}`,
-      ];
+      // Cobalt.tools - open source, CORS-friendly, support YouTube
+      const isAudio = ['mp3', 'm4a'].includes(selectedFormat);
+      const body = {
+        url: url,
+        downloadMode: isAudio ? 'audio' : 'auto',
+        ...(isAudio && { audioFormat: 'mp3', audioBitrate: '320' }),
+        ...(!isAudio && { videoQuality: '1080' }),
+      };
 
       try {
-        loaderText.textContent = 'MENGAMBIL DATA...';
-        setProgress(30);
+        loaderText.textContent = 'MENGAMBIL LINK...';
+        setProgress(35);
 
-        let resp = null;
-        let lastErr = null;
+        const resp = await fetch('https://api.cobalt.tools', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body)
+        });
 
-        for (let i = 0; i < proxies.length; i++) {
-          loaderText.textContent = `MENCOBA PROXY ${i + 1}/${proxies.length}...`;
-          try {
-            resp = await fetch(proxies[i], { headers: { 'x-requested-with': 'XMLHttpRequest' } });
-            if (resp.ok) break;
-          } catch (e) {
-            lastErr = e;
-            resp = null;
-          }
-        }
-
-        if (!resp || !resp.ok) throw new Error(lastErr?.message || 'Semua proxy gagal. Coba lagi nanti.');
-
-        setProgress(60);
-        loaderText.textContent = 'MEMPROSES RESPONS...';
-
-        if (!resp.ok) throw new Error(`HTTP error: ${resp.status}`);
+        setProgress(65);
+        loaderText.textContent = 'MEMPROSES...';
 
         const data = await resp.json();
-        setProgress(90);
+        console.log('Cobalt response:', data);
 
-        // Try to get download link from response
-        const link = data?.link || data?.url || data?.download_url || data?.downloadUrl || data?.file || null;
-        const title = data?.title || data?.name || 'Video YouTube';
-
-        if (!link) {
-          console.log('API Response:', data);
-          throw new Error('Link download tidak ditemukan dalam respons API. Lihat console untuk detail.');
+        if (data.status === 'error') {
+          const code = data?.error?.code || 'unknown';
+          throw new Error(`API Error: ${code}`);
         }
 
+        const link = data?.url || data?.picker?.[0]?.url || null;
+        if (!link) throw new Error('Link tidak ditemukan. Coba URL lain.');
+
         downloadUrl = link;
-        resultTitle.textContent = title;
+        const fname = data?.filename || '';
+        resultTitle.textContent = fname.replace(/\.[^.]+$/, '') || `YouTube · ${videoId}`;
         resultSub.textContent = `Format: ${selectedFormat.toUpperCase()} · Siap diunduh`;
 
         setProgress(100);
@@ -710,7 +697,6 @@
     fetchBtn.addEventListener('click', startConvert);
     urlInput.addEventListener('keydown', e => { if (e.key === 'Enter') startConvert(); });
 
-    // Auto-detect paste into input
     urlInput.addEventListener('paste', () => {
       setTimeout(() => {
         if (urlInput.value.includes('youtube.com') || urlInput.value.includes('youtu.be')) {
