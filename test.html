@@ -4619,6 +4619,562 @@
   </style>
 </head>
 <body>
+  <script>
+// ============================================================
+// ExeMusic Patch v3.2.4 - Script 1: Cleanup
+// Paste before </body>
+// ============================================================
+(function() {
+  function applyCleanup() {
+    // Remove Ramadhan tab from event center
+    var ramTab = document.querySelector('[data-tab="ramadhan"]');
+    if (ramTab) ramTab.remove();
+    var ramView = document.getElementById('evTabRamadhan');
+    if (ramView) ramView.remove();
+
+    // Remove Sahur & Ramadhan admin cards
+    document.querySelectorAll('.admin-card').forEach(function(card) {
+      var txt = card.textContent || '';
+      if (txt.includes('SECRET TAG: EXE-SAHUR') ||
+          txt.includes('RAMADHAN EVENT CONTROL') ||
+          txt.includes('CYCLE 1 - Awal') ||
+          txt.includes('CYCLE 2 - Mid') ||
+          txt.includes('CYCLE 3 - 10 Hari')) {
+        card.remove();
+      }
+    });
+
+    // Remove Ramadhan admin section class
+    var ramSection = document.querySelector('.admin-ramadhan-section');
+    if (ramSection) ramSection.remove();
+
+    // Remove story popup and thank you overlay
+    ['storyPopup','thankYouOverlay'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.remove();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyCleanup);
+  } else {
+    applyCleanup();
+  }
+})();
+
+// No-op overrides for removed features
+window.showStoryPopup     = function() {};
+window.closeStoryPopup    = function() {};
+window.showThankYouAnimation = function() {};
+window.toggleImageZoom    = function() {};
+window.updateRamadhanProgress = function() {};
+window.claimRamadhanCycle = function() {};
+window.checkRamadhanProgress  = function() {};
+window.checkSahurTime     = function() { return false; };
+window.grantSahurTag      = function() {};
+window.adSaveRamadhanEvent  = function() { if(window.showToast) showToast('Event Ramadhan telah dihapus'); };
+window.adClearRamadhanEvent = function() { if(window.showToast) showToast('Event Ramadhan telah dihapus'); };
+window.adViewRamadhanProgress = function() { if(window.showToast) showToast('Event Ramadhan telah dihapus'); };
+window.adEnableSahurTag   = function() { if(window.showToast) showToast('Fitur ini telah dihapus'); };
+window.adDisableSahurTag  = function() { if(window.showToast) showToast('Fitur ini telah dihapus'); };
+window.updateSahurStatus  = function() {};
+
+// Override dismissLoader: hapus showStoryPopup() call
+setTimeout(function() {
+  var origAdvance = window.advanceLoader;
+  window.dismissLoader = function() {
+    if (origAdvance) origAdvance(100, 'READY!');
+    setTimeout(function() {
+      var screen = document.getElementById('gameLoadScreen');
+      if (screen) {
+        screen.classList.add('fade-out');
+        setTimeout(function() { screen.style.display = 'none'; }, 800);
+      }
+    }, 400);
+  };
+}, 200);
+</script>
+  <script>
+// ============================================================
+// ExeMusic Patch v3.2.4 - Script 2: Leaderboard Extended
+// Top Listener + Weekly/AllTime + Reset Countdown
+// Paste before </body>, AFTER Script 1
+// ============================================================
+
+// --- State ---
+var lbCurrentTab    = 'followers';
+var lbCurrentPeriod = 'alltime';
+var lbWeeklyInterval = null;
+var lbMaintenanceMode = false;
+var _listenerBuffer  = 0;
+
+// --- Helpers ---
+function getNextWeeklyReset() {
+  var now = new Date();
+  var day = now.getDay(); // 0=Sun
+  var daysUntilMon = day === 0 ? 1 : (8 - day);
+  var next = new Date(now);
+  next.setDate(now.getDate() + daysUntilMon);
+  next.setHours(0, 1, 0, 0);
+  return next.getTime();
+}
+
+function getMaintenanceWindowActive() {
+  var now = new Date();
+  var d = now.getDay(), h = now.getHours(), m = now.getMinutes();
+  return (d === 0 && h === 23 && m >= 58) || (d === 1 && h === 0 && m === 0);
+}
+
+function getWeeklyLbKey() {
+  var d = new Date();
+  var onejan = new Date(d.getFullYear(), 0, 1);
+  var week = Math.ceil((((d - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+  return d.getFullYear() + '-w' + String(week).padStart(2, '0');
+}
+
+function fmtCountdown(ms) {
+  if (ms <= 0) return 'Segera reset';
+  var s   = Math.floor(ms / 1000);
+  var day = Math.floor(s / 86400);
+  var hr  = Math.floor((s % 86400) / 3600);
+  var mn  = Math.floor((s % 3600) / 60);
+  var p = [];
+  if (day > 0) p.push(day + ' hari');
+  if (hr  > 0) p.push(hr  + ' jam');
+  if (mn  > 0 && day === 0) p.push(mn + ' menit');
+  return p.join(' ') || '< 1 menit';
+}
+
+function escHtml(t) {
+  var d = document.createElement('div'); d.textContent = t; return d.innerHTML;
+}
+
+function getTagHtmlLb(tag) {
+  if (!tag || tag === 'none') return '';
+  return '' + tag.toUpperCase() + '';
+}
+
+// --- CSS Inject ---
+function injectLbCss() {
+  if (document.getElementById('lbExtCss')) return;
+  var s = document.createElement('style');
+  s.id = 'lbExtCss';
+  s.textContent = [
+    '.lb-period-wrap{display:flex;gap:8px;margin:10px 0 4px;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.15);border-radius:12px;padding:8px}',
+    '.lb-period-btn{flex:1;padding:7px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.3);background:rgba(15,23,42,.95);color:#9ca3af;font-size:11px;font-weight:700;cursor:pointer;transition:.18s;font-family:Rajdhani,sans-serif;letter-spacing:.5px;display:inline-flex;align-items:center;justify-content:center;gap:6px}',
+    '.lb-period-btn.active{background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(245,158,11,.2));border-color:rgba(251,191,36,.8);color:#fbbf24;box-shadow:0 0 15px rgba(251,191,36,.3)}',
+    '.lb-reset-info{font-size:10px;color:#6b7280;text-align:center;padding:4px 8px;font-family:"JetBrains Mono",monospace;letter-spacing:.3px}',
+    '.lb-reset-info span{color:#fbbf24}',
+    '.lb-listener-stat{font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.5px}',
+    '.lb-maintenance{position:absolute;inset:0;z-index:100;background:rgba(0,0,0,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:20px;gap:16px;backdrop-filter:blur(10px)}',
+    '.lb-maint-title{font-family:Rajdhani,sans-serif;font-size:22px;font-weight:800;color:#fbbf24;letter-spacing:2px}',
+    '.lb-maint-sub{font-size:13px;color:#9ca3af;text-align:center;max-width:260px;line-height:1.6}'
+  ].join('');
+  document.head.appendChild(s);
+}
+
+// --- Inject UI into leaderboard sheet ---
+function injectLbEnhancements() {
+  var tabsEl = document.querySelector('.leaderboard-tabs');
+  if (!tabsEl || tabsEl.dataset.enhanced) return;
+  tabsEl.dataset.enhanced = '1';
+  injectLbCss();
+
+  // Add Top Listener tab button
+  var listBtn = document.createElement('button');
+  listBtn.className = 'leaderboard-tab-btn';
+  listBtn.id = 'lbTabListenerBtn';
+  listBtn.innerHTML = ' Top Listener';
+  listBtn.onclick = function() { switchLbTab('listener', this); };
+  tabsEl.appendChild(listBtn);
+
+  // Add listener tab view
+  var sheet = document.querySelector('.leaderboard-sheet');
+  if (sheet) {
+    var listView = document.createElement('div');
+    listView.id = 'lbTabListener';
+    listView.className = 'leaderboard-tab-view';
+    listView.innerHTML = '
+Memuat...
+';
+    sheet.appendChild(listView);
+
+    // Period selector
+    var pw = document.createElement('div');
+    pw.className = 'lb-period-wrap';
+    pw.innerHTML =
+      ' All Time' +
+      ' Mingguan';
+    tabsEl.after(pw);
+
+    // Reset info
+    var ri = document.createElement('div');
+    ri.id = 'lbResetInfo';
+    ri.className = 'lb-reset-info';
+    pw.after(ri);
+    updateLbResetInfo();
+
+    sheet.style.position = 'relative';
+  }
+
+  // Start maintenance check
+  if (lbWeeklyInterval) clearInterval(lbWeeklyInterval);
+  lbWeeklyInterval = setInterval(function() {
+    updateLbResetInfo();
+    checkLbMaintenance();
+  }, 15000);
+}
+
+function updateLbResetInfo() {
+  var el = document.getElementById('lbResetInfo');
+  if (!el) return;
+  var diff = getNextWeeklyReset() - Date.now();
+  el.innerHTML = '⏰ Reset mingguan dalam: ' + fmtCountdown(diff) + '';
+}
+
+function checkLbMaintenance() {
+  var lbModal = document.getElementById('modalLeaderboard');
+  if (!lbModal || lbModal.style.display !== 'block') return;
+  var inMaint = getMaintenanceWindowActive();
+  if (inMaint && !lbMaintenanceMode) {
+    lbMaintenanceMode = true;
+    showLbMaintenance();
+  } else if (!inMaint && lbMaintenanceMode) {
+    lbMaintenanceMode = false;
+    hideLbMaintenance();
+    loadLbDataExtended();
+  }
+}
+
+function showLbMaintenance() {
+  if (document.getElementById('lbMaintEl')) return;
+  var el = document.createElement('div');
+  el.id = 'lbMaintEl';
+  el.className = 'lb-maintenance';
+  el.innerHTML = '
+⚙️
+' +
+    '
+RESET MINGGUAN
+' +
+    '
+Leaderboard mingguan sedang direset.
+Kembali normal jam 00:01 Senin.
+' +
+    '
+';
+  var sheet = document.querySelector('.leaderboard-sheet');
+  if (sheet) sheet.appendChild(el);
+}
+
+function hideLbMaintenance() {
+  var el = document.getElementById('lbMaintEl');
+  if (el) el.remove();
+}
+
+// --- Switch tab & period ---
+function switchLbTab(cat, btn) {
+  lbCurrentTab = cat;
+  document.querySelectorAll('.leaderboard-tab-view').forEach(function(v){ v.classList.remove('active'); });
+  document.querySelectorAll('.leaderboard-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  var m = { followers:'lbTabFollowers', tags:'lbTabTags', uploads:'lbTabUploads', execoin:'lbTabExecoin', listener:'lbTabListener' };
+  var tabEl = document.getElementById(m[cat]);
+  if (tabEl) tabEl.classList.add('active');
+  if (btn) btn.classList.add('active');
+  loadLbDataExtended();
+}
+
+window.switchLbPeriod = function(period, btn) {
+  lbCurrentPeriod = period;
+  document.querySelectorAll('.lb-period-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  loadLbDataExtended();
+};
+
+// --- Load data ---
+async function loadLbDataExtended() {
+  try {
+    var db = firebase.database();
+    var usersSnap  = await db.ref('users').once('value');
+    var songsSnap  = await db.ref('songs').once('value');
+    var weeklyKey  = getWeeklyLbKey();
+    var wSnap = await db.ref('leaderboardWeekly/' + weeklyKey).once('value');
+    var wData = wSnap.val() || {};
+    var wExecoin   = wData.execoin   || {};
+    var wListener  = wData.listener  || {};
+    var uploadCounts = {};
+    songsSnap.forEach(function(s) {
+      var d = s.val();
+      if (d && d.uid) uploadCounts[d.uid] = (uploadCounts[d.uid] || 0) + 1;
+    });
+    var users = [];
+    usersSnap.forEach(function(s) {
+      var d = s.val();
+      if (!d || !d.username) return;
+      var uid = s.key;
+      var fol = d.followers ? (Array.isArray(d.followers) ? d.followers.length : Object.keys(d.followers).length) : 0;
+      var tags = d.alltag ? Object.keys(d.alltag).length : 0;
+      users.push({
+        uid: uid,
+        username: d.username,
+        tag: d.tag || 'user',
+        followers: fol,
+        tags: tags,
+        uploads: uploadCounts[uid] || 0,
+        execoin: d.coins || 0,
+        listenerMinutes: d.listenerMinutes || 0,
+        weeklyExecoin: wExecoin[uid] || 0,
+        weeklyListener: wListener[uid] || 0
+      });
+    });
+
+    var isW = lbCurrentPeriod === 'weekly';
+    var resetInfo = '
+Reset mingguan dalam: ' + fmtCountdown(getNextWeeklyReset() - Date.now()) + '
+';
+
+    if (lbCurrentTab === 'followers')  renderLbSimple('followers', users, 'lbFollowersList', isW, 'Followers', resetInfo);
+    if (lbCurrentTab === 'tags')       renderLbSimple('tags',      users, 'lbTagsList',      isW, 'Tags',      resetInfo);
+    if (lbCurrentTab === 'uploads')    renderLbSimple('uploads',   users, 'lbUploadsList',   isW, 'Uploads',   resetInfo);
+    if (lbCurrentTab === 'execoin')    renderLbExecoin(users, 'lbExecoinList', isW, resetInfo);
+    if (lbCurrentTab === 'listener')   renderLbListener(users, 'lbListenerList', isW, resetInfo);
+
+    updateLbResetInfo();
+  } catch(e) {
+    console.error('Leaderboard error:', e);
+  }
+}
+
+function renderLbSimple(field, users, cid, isW, label, resetInfo) {
+  var c = document.getElementById(cid);
+  if (!c) return;
+  var sorted = users.slice().sort(function(a,b){ return b[field]-a[field]; }).slice(0,5);
+  if (!sorted.length || sorted[0][field] === 0) { c.innerHTML = '
+Belum ada data
+'; return; }
+  var medals = ['🥇','🥈','🥉'], rcls = ['rank-1','rank-2','rank-3'];
+  var curUid = window.auth && window.auth.currentUser && window.auth.currentUser.uid;
+  var html = '';
+  sorted.forEach(function(u, idx) {
+    var r = idx+1, isMe = u.uid === curUid;
+    html += '
+' +
+      '
+'+(medals[idx]||'
+'+r+'
+')+'
+' +
+      '
+' +
+        '
+'+escHtml(u.username)+(isMe?' ':'')+getTagHtmlLb(u.tag)+'
+' +
+        '
+Rank #'+r+''+(isMe?'• Kamu':'')+'
+' +
+      '
+' +
+      '
+' +
+        '
+'+u[field].toLocaleString()+'
+' +
+        '
+'+label+'
+' +
+      '
+' +
+    '
+';
+  });
+  c.innerHTML = html + resetInfo;
+}
+
+function renderLbExecoin(users, cid, isW, resetInfo) {
+  var c = document.getElementById(cid);
+  if (!c) return;
+  var field = isW ? 'weeklyExecoin' : 'execoin';
+  var sorted = users.slice().sort(function(a,b){ return b[field]-a[field]; }).slice(0,5);
+  var medals = ['🥇','🥈','🥉'], rcls = ['rank-1','rank-2','rank-3'];
+  var curUid = window.auth && window.auth.currentUser && window.auth.currentUser.uid;
+  var note = isW ? '
+📊 Coin yang didapat sejak reset Senin terakhir. Reset: '+fmtCountdown(getNextWeeklyReset()-Date.now())+'
+' : '';
+  var html = note;
+  var hasData = sorted.some(function(u){ return u[field]>0; });
+  if (!hasData) { c.innerHTML = note+'
+Belum ada data'+(isW?' mingguan':'')+'
+'; return; }
+  sorted.forEach(function(u, idx) {
+    if (u[field] === 0) return;
+    var r=idx+1, isMe=u.uid===curUid;
+    html += '
+' +
+      '
+'+(medals[idx]||'
+'+r+'
+')+'
+' +
+      '
+' +
+        '
+'+escHtml(u.username)+(isMe?' ':'')+getTagHtmlLb(u.tag)+'
+' +
+        '
+Rank #'+r+''+(isMe?'• Kamu':'')+(isW?'• Minggu ini':'')+'
+' +
+      '
+' +
+      '
+' +
+        '
+'+u[field].toLocaleString()+'
+' +
+        '
+'+(isW?'Coin (minggu)':'ExeCoin')+'
+' +
+      '
+' +
+    '
+';
+  });
+  c.innerHTML = html + resetInfo;
+}
+
+function renderLbListener(users, cid, isW, resetInfo) {
+  var c = document.getElementById(cid);
+  if (!c) return;
+  var field = isW ? 'weeklyListener' : 'listenerMinutes';
+  var sorted = users.slice().sort(function(a,b){ return b[field]-a[field]; }).slice(0,5);
+  var medals = ['🥇','🥈','🥉'], rcls = ['rank-1','rank-2','rank-3'];
+  var curUid = window.auth && window.auth.currentUser && window.auth.currentUser.uid;
+  var note = isW ? '
+🎧 Waktu dengar minggu ini. Reset: '+fmtCountdown(getNextWeeklyReset()-Date.now())+'
+' : '';
+  var html = note;
+  var hasData = sorted.some(function(u){ return u[field]>0; });
+  if (!hasData) { c.innerHTML = note+'
+Belum ada data listener
+Dengarkan musik untuk masuk leaderboard
+'; return; }
+  sorted.forEach(function(u, idx) {
+    if (u[field] === 0) return;
+    var r=idx+1, isMe=u.uid===curUid;
+    var mins = u[field], hrs = Math.floor(mins/60), m = mins%60;
+    var disp = hrs>0 ? hrs+'j '+m+'m' : m+'m';
+    html += '
+' +
+      '
+'+(medals[idx]||'
+'+r+'
+')+'
+' +
+      '
+' +
+        '
+'+escHtml(u.username)+(isMe?' ':'')+getTagHtmlLb(u.tag)+'
+' +
+        '
+Rank #'+r+''+(isMe?'• Kamu':'')+''+(isW?'• Minggu ini':'• All time')+'
+' +
+      '
+' +
+      '
+' +
+        '
+'+disp+'
+' +
+        '
+'+(isW?'Dengar (minggu)':'Total Dengar')+'
+' +
+      '
+' +
+    '
+';
+  });
+  c.innerHTML = html + resetInfo;
+}
+
+// --- Track listener minutes ---
+function trackListenerMins(minsToAdd) {
+  if (!window.auth || !window.auth.currentUser || !minsToAdd) return;
+  var uid = window.auth.currentUser.uid;
+  var wk  = getWeeklyLbKey();
+  var db  = firebase.database();
+  db.ref('users/'+uid+'/listenerMinutes').transaction(function(cur){ return (cur||0)+minsToAdd; });
+  db.ref('leaderboardWeekly/'+wk+'/listener/'+uid).transaction(function(cur){ return (cur||0)+minsToAdd; });
+}
+
+// --- Track weekly execoin ---
+function trackWeeklyExecoin(uid, amount) {
+  if (!uid || !amount || amount<=0) return;
+  var wk = getWeeklyLbKey();
+  firebase.database().ref('leaderboardWeekly/'+wk+'/execoin/'+uid).transaction(function(cur){ return (cur||0)+amount; });
+}
+
+// --- Override addListeningProgress ---
+var _origALP = window.addListeningProgress;
+window.addListeningProgress = function(sec) {
+  if (_origALP) _origALP(sec);
+  _listenerBuffer += sec;
+  if (_listenerBuffer >= 300) {
+    var m = Math.floor(_listenerBuffer/60);
+    _listenerBuffer = _listenerBuffer%60;
+    if (m>0) trackListenerMins(m);
+  }
+};
+
+// --- Override grantCoins to track weekly ---
+var _origGC = window.grantCoins;
+window.grantCoins = async function(uid, amount) {
+  var result = _origGC ? await _origGC(uid, amount) : null;
+  trackWeeklyExecoin(uid, amount);
+  return result;
+};
+
+// --- Override switchLeaderboardTab ---
+window.switchLeaderboardTab = switchLbTab;
+
+// --- Override openLeaderboard ---
+var _origOL = window.openLeaderboard;
+window.openLeaderboard = function() {
+  var eventModal = document.getElementById('modalEventCenter');
+  var lbModal    = document.getElementById('modalLeaderboard');
+  if (!window.auth || !window.auth.currentUser) {
+    if (window.msg) window.msg('Login dulu!');
+    return;
+  }
+  if (eventModal) eventModal.style.display = 'none';
+  if (lbModal)    lbModal.style.display    = 'block';
+
+  setTimeout(function() {
+    injectLbEnhancements();
+    lbCurrentTab = 'followers';
+    lbCurrentPeriod = 'alltime';
+    loadLbDataExtended();
+    checkLbMaintenance();
+  }, 80);
+
+  // Refresh timer
+  if (window.leaderboardRefreshInterval) clearInterval(window.leaderboardRefreshInterval);
+  window.leaderboardRefreshCountdown = 60;
+  var timerEl = document.getElementById('lbRefreshTimer');
+  window.leaderboardRefreshInterval = setInterval(function() {
+    window.leaderboardRefreshCountdown--;
+    if (timerEl) timerEl.textContent = window.leaderboardRefreshCountdown + 's';
+    if (window.leaderboardRefreshCountdown <= 0) {
+      window.leaderboardRefreshCountdown = 60;
+      loadLbDataExtended();
+    }
+    checkLbMaintenance();
+  }, 1000);
+};
+
+// --- Also expose for period button ---
+window.switchLbPeriod = window.switchLbPeriod;
+
+console.log('[ExeMusic v3.2.4] Leaderboard Extended loaded');
+</script>
 
   <!--
   ================================================================
@@ -10770,556 +11326,4 @@
     }
   </script>
 </body>
-  // ============================================================
-// ExeMusic Patch v3.2.4 - Script 1: Cleanup
-// Paste before </body>
-// ============================================================
-(function() {
-  function applyCleanup() {
-    // Remove Ramadhan tab from event center
-    var ramTab = document.querySelector('[data-tab="ramadhan"]');
-    if (ramTab) ramTab.remove();
-    var ramView = document.getElementById('evTabRamadhan');
-    if (ramView) ramView.remove();
-
-    // Remove Sahur & Ramadhan admin cards
-    document.querySelectorAll('.admin-card').forEach(function(card) {
-      var txt = card.textContent || '';
-      if (txt.includes('SECRET TAG: EXE-SAHUR') ||
-          txt.includes('RAMADHAN EVENT CONTROL') ||
-          txt.includes('CYCLE 1 - Awal') ||
-          txt.includes('CYCLE 2 - Mid') ||
-          txt.includes('CYCLE 3 - 10 Hari')) {
-        card.remove();
-      }
-    });
-
-    // Remove Ramadhan admin section class
-    var ramSection = document.querySelector('.admin-ramadhan-section');
-    if (ramSection) ramSection.remove();
-
-    // Remove story popup and thank you overlay
-    ['storyPopup','thankYouOverlay'].forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el) el.remove();
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', applyCleanup);
-  } else {
-    applyCleanup();
-  }
-})();
-
-// No-op overrides for removed features
-window.showStoryPopup     = function() {};
-window.closeStoryPopup    = function() {};
-window.showThankYouAnimation = function() {};
-window.toggleImageZoom    = function() {};
-window.updateRamadhanProgress = function() {};
-window.claimRamadhanCycle = function() {};
-window.checkRamadhanProgress  = function() {};
-window.checkSahurTime     = function() { return false; };
-window.grantSahurTag      = function() {};
-window.adSaveRamadhanEvent  = function() { if(window.showToast) showToast('Event Ramadhan telah dihapus'); };
-window.adClearRamadhanEvent = function() { if(window.showToast) showToast('Event Ramadhan telah dihapus'); };
-window.adViewRamadhanProgress = function() { if(window.showToast) showToast('Event Ramadhan telah dihapus'); };
-window.adEnableSahurTag   = function() { if(window.showToast) showToast('Fitur ini telah dihapus'); };
-window.adDisableSahurTag  = function() { if(window.showToast) showToast('Fitur ini telah dihapus'); };
-window.updateSahurStatus  = function() {};
-
-// Override dismissLoader: hapus showStoryPopup() call
-setTimeout(function() {
-  var origAdvance = window.advanceLoader;
-  window.dismissLoader = function() {
-    if (origAdvance) origAdvance(100, 'READY!');
-    setTimeout(function() {
-      var screen = document.getElementById('gameLoadScreen');
-      if (screen) {
-        screen.classList.add('fade-out');
-        setTimeout(function() { screen.style.display = 'none'; }, 800);
-      }
-    }, 400);
-  };
-}, 200);
-  // ============================================================
-// ExeMusic Patch v3.2.4 - Script 2: Leaderboard Extended
-// Top Listener + Weekly/AllTime + Reset Countdown
-// Paste before </body>, AFTER Script 1
-// ============================================================
-
-// --- State ---
-var lbCurrentTab    = 'followers';
-var lbCurrentPeriod = 'alltime';
-var lbWeeklyInterval = null;
-var lbMaintenanceMode = false;
-var _listenerBuffer  = 0;
-
-// --- Helpers ---
-function getNextWeeklyReset() {
-  var now = new Date();
-  var day = now.getDay(); // 0=Sun
-  var daysUntilMon = day === 0 ? 1 : (8 - day);
-  var next = new Date(now);
-  next.setDate(now.getDate() + daysUntilMon);
-  next.setHours(0, 1, 0, 0);
-  return next.getTime();
-}
-
-function getMaintenanceWindowActive() {
-  var now = new Date();
-  var d = now.getDay(), h = now.getHours(), m = now.getMinutes();
-  return (d === 0 && h === 23 && m >= 58) || (d === 1 && h === 0 && m === 0);
-}
-
-function getWeeklyLbKey() {
-  var d = new Date();
-  var onejan = new Date(d.getFullYear(), 0, 1);
-  var week = Math.ceil((((d - onejan) / 86400000) + onejan.getDay() + 1) / 7);
-  return d.getFullYear() + '-w' + String(week).padStart(2, '0');
-}
-
-function fmtCountdown(ms) {
-  if (ms <= 0) return 'Segera reset';
-  var s   = Math.floor(ms / 1000);
-  var day = Math.floor(s / 86400);
-  var hr  = Math.floor((s % 86400) / 3600);
-  var mn  = Math.floor((s % 3600) / 60);
-  var p = [];
-  if (day > 0) p.push(day + ' hari');
-  if (hr  > 0) p.push(hr  + ' jam');
-  if (mn  > 0 && day === 0) p.push(mn + ' menit');
-  return p.join(' ') || '< 1 menit';
-}
-
-function escHtml(t) {
-  var d = document.createElement('div'); d.textContent = t; return d.innerHTML;
-}
-
-function getTagHtmlLb(tag) {
-  if (!tag || tag === 'none') return '';
-  return '' + tag.toUpperCase() + '';
-}
-
-// --- CSS Inject ---
-function injectLbCss() {
-  if (document.getElementById('lbExtCss')) return;
-  var s = document.createElement('style');
-  s.id = 'lbExtCss';
-  s.textContent = [
-    '.lb-period-wrap{display:flex;gap:8px;margin:10px 0 4px;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.15);border-radius:12px;padding:8px}',
-    '.lb-period-btn{flex:1;padding:7px 12px;border-radius:10px;border:1px solid rgba(251,191,36,.3);background:rgba(15,23,42,.95);color:#9ca3af;font-size:11px;font-weight:700;cursor:pointer;transition:.18s;font-family:Rajdhani,sans-serif;letter-spacing:.5px;display:inline-flex;align-items:center;justify-content:center;gap:6px}',
-    '.lb-period-btn.active{background:linear-gradient(135deg,rgba(251,191,36,.25),rgba(245,158,11,.2));border-color:rgba(251,191,36,.8);color:#fbbf24;box-shadow:0 0 15px rgba(251,191,36,.3)}',
-    '.lb-reset-info{font-size:10px;color:#6b7280;text-align:center;padding:4px 8px;font-family:"JetBrains Mono",monospace;letter-spacing:.3px}',
-    '.lb-reset-info span{color:#fbbf24}',
-    '.lb-listener-stat{font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.5px}',
-    '.lb-maintenance{position:absolute;inset:0;z-index:100;background:rgba(0,0,0,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:20px;gap:16px;backdrop-filter:blur(10px)}',
-    '.lb-maint-title{font-family:Rajdhani,sans-serif;font-size:22px;font-weight:800;color:#fbbf24;letter-spacing:2px}',
-    '.lb-maint-sub{font-size:13px;color:#9ca3af;text-align:center;max-width:260px;line-height:1.6}'
-  ].join('');
-  document.head.appendChild(s);
-}
-
-// --- Inject UI into leaderboard sheet ---
-function injectLbEnhancements() {
-  var tabsEl = document.querySelector('.leaderboard-tabs');
-  if (!tabsEl || tabsEl.dataset.enhanced) return;
-  tabsEl.dataset.enhanced = '1';
-  injectLbCss();
-
-  // Add Top Listener tab button
-  var listBtn = document.createElement('button');
-  listBtn.className = 'leaderboard-tab-btn';
-  listBtn.id = 'lbTabListenerBtn';
-  listBtn.innerHTML = ' Top Listener';
-  listBtn.onclick = function() { switchLbTab('listener', this); };
-  tabsEl.appendChild(listBtn);
-
-  // Add listener tab view
-  var sheet = document.querySelector('.leaderboard-sheet');
-  if (sheet) {
-    var listView = document.createElement('div');
-    listView.id = 'lbTabListener';
-    listView.className = 'leaderboard-tab-view';
-    listView.innerHTML = '
-Memuat...
-';
-    sheet.appendChild(listView);
-
-    // Period selector
-    var pw = document.createElement('div');
-    pw.className = 'lb-period-wrap';
-    pw.innerHTML =
-      ' All Time' +
-      ' Mingguan';
-    tabsEl.after(pw);
-
-    // Reset info
-    var ri = document.createElement('div');
-    ri.id = 'lbResetInfo';
-    ri.className = 'lb-reset-info';
-    pw.after(ri);
-    updateLbResetInfo();
-
-    sheet.style.position = 'relative';
-  }
-
-  // Start maintenance check
-  if (lbWeeklyInterval) clearInterval(lbWeeklyInterval);
-  lbWeeklyInterval = setInterval(function() {
-    updateLbResetInfo();
-    checkLbMaintenance();
-  }, 15000);
-}
-
-function updateLbResetInfo() {
-  var el = document.getElementById('lbResetInfo');
-  if (!el) return;
-  var diff = getNextWeeklyReset() - Date.now();
-  el.innerHTML = '⏰ Reset mingguan dalam: ' + fmtCountdown(diff) + '';
-}
-
-function checkLbMaintenance() {
-  var lbModal = document.getElementById('modalLeaderboard');
-  if (!lbModal || lbModal.style.display !== 'block') return;
-  var inMaint = getMaintenanceWindowActive();
-  if (inMaint && !lbMaintenanceMode) {
-    lbMaintenanceMode = true;
-    showLbMaintenance();
-  } else if (!inMaint && lbMaintenanceMode) {
-    lbMaintenanceMode = false;
-    hideLbMaintenance();
-    loadLbDataExtended();
-  }
-}
-
-function showLbMaintenance() {
-  if (document.getElementById('lbMaintEl')) return;
-  var el = document.createElement('div');
-  el.id = 'lbMaintEl';
-  el.className = 'lb-maintenance';
-  el.innerHTML = '
-⚙️
-' +
-    '
-RESET MINGGUAN
-' +
-    '
-Leaderboard mingguan sedang direset.
-Kembali normal jam 00:01 Senin.
-' +
-    '
-';
-  var sheet = document.querySelector('.leaderboard-sheet');
-  if (sheet) sheet.appendChild(el);
-}
-
-function hideLbMaintenance() {
-  var el = document.getElementById('lbMaintEl');
-  if (el) el.remove();
-}
-
-// --- Switch tab & period ---
-function switchLbTab(cat, btn) {
-  lbCurrentTab = cat;
-  document.querySelectorAll('.leaderboard-tab-view').forEach(function(v){ v.classList.remove('active'); });
-  document.querySelectorAll('.leaderboard-tab-btn').forEach(function(b){ b.classList.remove('active'); });
-  var m = { followers:'lbTabFollowers', tags:'lbTabTags', uploads:'lbTabUploads', execoin:'lbTabExecoin', listener:'lbTabListener' };
-  var tabEl = document.getElementById(m[cat]);
-  if (tabEl) tabEl.classList.add('active');
-  if (btn) btn.classList.add('active');
-  loadLbDataExtended();
-}
-
-window.switchLbPeriod = function(period, btn) {
-  lbCurrentPeriod = period;
-  document.querySelectorAll('.lb-period-btn').forEach(function(b){ b.classList.remove('active'); });
-  if (btn) btn.classList.add('active');
-  loadLbDataExtended();
-};
-
-// --- Load data ---
-async function loadLbDataExtended() {
-  try {
-    var db = firebase.database();
-    var usersSnap  = await db.ref('users').once('value');
-    var songsSnap  = await db.ref('songs').once('value');
-    var weeklyKey  = getWeeklyLbKey();
-    var wSnap = await db.ref('leaderboardWeekly/' + weeklyKey).once('value');
-    var wData = wSnap.val() || {};
-    var wExecoin   = wData.execoin   || {};
-    var wListener  = wData.listener  || {};
-    var uploadCounts = {};
-    songsSnap.forEach(function(s) {
-      var d = s.val();
-      if (d && d.uid) uploadCounts[d.uid] = (uploadCounts[d.uid] || 0) + 1;
-    });
-    var users = [];
-    usersSnap.forEach(function(s) {
-      var d = s.val();
-      if (!d || !d.username) return;
-      var uid = s.key;
-      var fol = d.followers ? (Array.isArray(d.followers) ? d.followers.length : Object.keys(d.followers).length) : 0;
-      var tags = d.alltag ? Object.keys(d.alltag).length : 0;
-      users.push({
-        uid: uid,
-        username: d.username,
-        tag: d.tag || 'user',
-        followers: fol,
-        tags: tags,
-        uploads: uploadCounts[uid] || 0,
-        execoin: d.coins || 0,
-        listenerMinutes: d.listenerMinutes || 0,
-        weeklyExecoin: wExecoin[uid] || 0,
-        weeklyListener: wListener[uid] || 0
-      });
-    });
-
-    var isW = lbCurrentPeriod === 'weekly';
-    var resetInfo = '
-Reset mingguan dalam: ' + fmtCountdown(getNextWeeklyReset() - Date.now()) + '
-';
-
-    if (lbCurrentTab === 'followers')  renderLbSimple('followers', users, 'lbFollowersList', isW, 'Followers', resetInfo);
-    if (lbCurrentTab === 'tags')       renderLbSimple('tags',      users, 'lbTagsList',      isW, 'Tags',      resetInfo);
-    if (lbCurrentTab === 'uploads')    renderLbSimple('uploads',   users, 'lbUploadsList',   isW, 'Uploads',   resetInfo);
-    if (lbCurrentTab === 'execoin')    renderLbExecoin(users, 'lbExecoinList', isW, resetInfo);
-    if (lbCurrentTab === 'listener')   renderLbListener(users, 'lbListenerList', isW, resetInfo);
-
-    updateLbResetInfo();
-  } catch(e) {
-    console.error('Leaderboard error:', e);
-  }
-}
-
-function renderLbSimple(field, users, cid, isW, label, resetInfo) {
-  var c = document.getElementById(cid);
-  if (!c) return;
-  var sorted = users.slice().sort(function(a,b){ return b[field]-a[field]; }).slice(0,5);
-  if (!sorted.length || sorted[0][field] === 0) { c.innerHTML = '
-Belum ada data
-'; return; }
-  var medals = ['🥇','🥈','🥉'], rcls = ['rank-1','rank-2','rank-3'];
-  var curUid = window.auth && window.auth.currentUser && window.auth.currentUser.uid;
-  var html = '';
-  sorted.forEach(function(u, idx) {
-    var r = idx+1, isMe = u.uid === curUid;
-    html += '
-' +
-      '
-'+(medals[idx]||'
-'+r+'
-')+'
-' +
-      '
-' +
-        '
-'+escHtml(u.username)+(isMe?' ':'')+getTagHtmlLb(u.tag)+'
-' +
-        '
-Rank #'+r+''+(isMe?'• Kamu':'')+'
-' +
-      '
-' +
-      '
-' +
-        '
-'+u[field].toLocaleString()+'
-' +
-        '
-'+label+'
-' +
-      '
-' +
-    '
-';
-  });
-  c.innerHTML = html + resetInfo;
-}
-
-function renderLbExecoin(users, cid, isW, resetInfo) {
-  var c = document.getElementById(cid);
-  if (!c) return;
-  var field = isW ? 'weeklyExecoin' : 'execoin';
-  var sorted = users.slice().sort(function(a,b){ return b[field]-a[field]; }).slice(0,5);
-  var medals = ['🥇','🥈','🥉'], rcls = ['rank-1','rank-2','rank-3'];
-  var curUid = window.auth && window.auth.currentUser && window.auth.currentUser.uid;
-  var note = isW ? '
-📊 Coin yang didapat sejak reset Senin terakhir. Reset: '+fmtCountdown(getNextWeeklyReset()-Date.now())+'
-' : '';
-  var html = note;
-  var hasData = sorted.some(function(u){ return u[field]>0; });
-  if (!hasData) { c.innerHTML = note+'
-Belum ada data'+(isW?' mingguan':'')+'
-'; return; }
-  sorted.forEach(function(u, idx) {
-    if (u[field] === 0) return;
-    var r=idx+1, isMe=u.uid===curUid;
-    html += '
-' +
-      '
-'+(medals[idx]||'
-'+r+'
-')+'
-' +
-      '
-' +
-        '
-'+escHtml(u.username)+(isMe?' ':'')+getTagHtmlLb(u.tag)+'
-' +
-        '
-Rank #'+r+''+(isMe?'• Kamu':'')+(isW?'• Minggu ini':'')+'
-' +
-      '
-' +
-      '
-' +
-        '
-'+u[field].toLocaleString()+'
-' +
-        '
-'+(isW?'Coin (minggu)':'ExeCoin')+'
-' +
-      '
-' +
-    '
-';
-  });
-  c.innerHTML = html + resetInfo;
-}
-
-function renderLbListener(users, cid, isW, resetInfo) {
-  var c = document.getElementById(cid);
-  if (!c) return;
-  var field = isW ? 'weeklyListener' : 'listenerMinutes';
-  var sorted = users.slice().sort(function(a,b){ return b[field]-a[field]; }).slice(0,5);
-  var medals = ['🥇','🥈','🥉'], rcls = ['rank-1','rank-2','rank-3'];
-  var curUid = window.auth && window.auth.currentUser && window.auth.currentUser.uid;
-  var note = isW ? '
-🎧 Waktu dengar minggu ini. Reset: '+fmtCountdown(getNextWeeklyReset()-Date.now())+'
-' : '';
-  var html = note;
-  var hasData = sorted.some(function(u){ return u[field]>0; });
-  if (!hasData) { c.innerHTML = note+'
-Belum ada data listener
-Dengarkan musik untuk masuk leaderboard
-'; return; }
-  sorted.forEach(function(u, idx) {
-    if (u[field] === 0) return;
-    var r=idx+1, isMe=u.uid===curUid;
-    var mins = u[field], hrs = Math.floor(mins/60), m = mins%60;
-    var disp = hrs>0 ? hrs+'j '+m+'m' : m+'m';
-    html += '
-' +
-      '
-'+(medals[idx]||'
-'+r+'
-')+'
-' +
-      '
-' +
-        '
-'+escHtml(u.username)+(isMe?' ':'')+getTagHtmlLb(u.tag)+'
-' +
-        '
-Rank #'+r+''+(isMe?'• Kamu':'')+''+(isW?'• Minggu ini':'• All time')+'
-' +
-      '
-' +
-      '
-' +
-        '
-'+disp+'
-' +
-        '
-'+(isW?'Dengar (minggu)':'Total Dengar')+'
-' +
-      '
-' +
-    '
-';
-  });
-  c.innerHTML = html + resetInfo;
-}
-
-// --- Track listener minutes ---
-function trackListenerMins(minsToAdd) {
-  if (!window.auth || !window.auth.currentUser || !minsToAdd) return;
-  var uid = window.auth.currentUser.uid;
-  var wk  = getWeeklyLbKey();
-  var db  = firebase.database();
-  db.ref('users/'+uid+'/listenerMinutes').transaction(function(cur){ return (cur||0)+minsToAdd; });
-  db.ref('leaderboardWeekly/'+wk+'/listener/'+uid).transaction(function(cur){ return (cur||0)+minsToAdd; });
-}
-
-// --- Track weekly execoin ---
-function trackWeeklyExecoin(uid, amount) {
-  if (!uid || !amount || amount<=0) return;
-  var wk = getWeeklyLbKey();
-  firebase.database().ref('leaderboardWeekly/'+wk+'/execoin/'+uid).transaction(function(cur){ return (cur||0)+amount; });
-}
-
-// --- Override addListeningProgress ---
-var _origALP = window.addListeningProgress;
-window.addListeningProgress = function(sec) {
-  if (_origALP) _origALP(sec);
-  _listenerBuffer += sec;
-  if (_listenerBuffer >= 300) {
-    var m = Math.floor(_listenerBuffer/60);
-    _listenerBuffer = _listenerBuffer%60;
-    if (m>0) trackListenerMins(m);
-  }
-};
-
-// --- Override grantCoins to track weekly ---
-var _origGC = window.grantCoins;
-window.grantCoins = async function(uid, amount) {
-  var result = _origGC ? await _origGC(uid, amount) : null;
-  trackWeeklyExecoin(uid, amount);
-  return result;
-};
-
-// --- Override switchLeaderboardTab ---
-window.switchLeaderboardTab = switchLbTab;
-
-// --- Override openLeaderboard ---
-var _origOL = window.openLeaderboard;
-window.openLeaderboard = function() {
-  var eventModal = document.getElementById('modalEventCenter');
-  var lbModal    = document.getElementById('modalLeaderboard');
-  if (!window.auth || !window.auth.currentUser) {
-    if (window.msg) window.msg('Login dulu!');
-    return;
-  }
-  if (eventModal) eventModal.style.display = 'none';
-  if (lbModal)    lbModal.style.display    = 'block';
-
-  setTimeout(function() {
-    injectLbEnhancements();
-    lbCurrentTab = 'followers';
-    lbCurrentPeriod = 'alltime';
-    loadLbDataExtended();
-    checkLbMaintenance();
-  }, 80);
-
-  // Refresh timer
-  if (window.leaderboardRefreshInterval) clearInterval(window.leaderboardRefreshInterval);
-  window.leaderboardRefreshCountdown = 60;
-  var timerEl = document.getElementById('lbRefreshTimer');
-  window.leaderboardRefreshInterval = setInterval(function() {
-    window.leaderboardRefreshCountdown--;
-    if (timerEl) timerEl.textContent = window.leaderboardRefreshCountdown + 's';
-    if (window.leaderboardRefreshCountdown <= 0) {
-      window.leaderboardRefreshCountdown = 60;
-      loadLbDataExtended();
-    }
-    checkLbMaintenance();
-  }, 1000);
-};
-
-// --- Also expose for period button ---
-window.switchLbPeriod = window.switchLbPeriod;
-
-console.log('[ExeMusic v3.2.4] Leaderboard Extended loaded');
 </html>
