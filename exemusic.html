@@ -685,7 +685,7 @@
       padding: 22px;
       position: relative;
       box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 40px rgba(0,255,136,0.05), inset 0 1px 0 rgba(255,255,255,0.06);
-      overflow: visible;
+      overflow: hidden;
     }
     .app::before {
       content: '';
@@ -1962,10 +1962,8 @@
       display: flex; align-items: center; justify-content: center;
       margin-bottom: 18px;
       border: 1px solid rgba(255,255,255,0.04);
-      overflow: visible; position: relative; z-index: 10;
+      overflow: hidden; position: relative; z-index: 10;
       box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 0 30px rgba(0,0,0,0.3);
-      padding: 15px;
-      box-sizing: border-box;
     }
     .cover-box::before {
       content: '';
@@ -1973,27 +1971,15 @@
       background: repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(0,255,136,0.01) 30px, rgba(0,255,136,0.01) 31px),
                   repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(0,255,136,0.01) 30px, rgba(0,255,136,0.01) 31px);
     }
-    .eq { display: flex; align-items: flex-end; gap: 5px; height: 60px; position: relative; z-index: 15; padding: 5px; box-sizing: border-box; }
-    .eq span { width: 6px; min-width: 4px; background: linear-gradient(to top, var(--accent), var(--accent2)); border-radius: 10px; height: 10px; transition: height 0.2s ease; box-shadow: 0 0 10px var(--accent); flex-shrink: 0; }
+    .eq { display: flex; align-items: flex-end; gap: 5px; height: 60px; position: relative; z-index: 15; }
+    .eq span { width: 6px; background: linear-gradient(to top, var(--accent), var(--accent2)); border-radius: 10px; height: 10px; transition: height 0.2s ease; box-shadow: 0 0 10px var(--accent); }
     .playing span { animation: wave 0.8s infinite ease-in-out; }
     .playing span:nth-child(1) { animation-delay: 0.1s; }
     .playing span:nth-child(2) { animation-delay: 0.3s; }
     .playing span:nth-child(3) { animation-delay: 0.2s; }
     .playing span:nth-child(4) { animation-delay: 0.4s; }
     .playing span:nth-child(5) { animation-delay: 0.15s; }
-    @keyframes wave { 0%, 100% { height: 10px; } 50% { height: 45px; } }
-
-    /* Responsive EQ */
-    @media (max-width: 480px) {
-      .eq { height: 50px; gap: 4px; padding: 4px; }
-      .eq span { width: 5px; min-width: 3px; }
-      @keyframes wave { 0%, 100% { height: 8px; } 50% { height: 38px; } }
-    }
-    @media (max-width: 360px) {
-      .eq { height: 45px; gap: 3px; padding: 3px; }
-      .eq span { width: 4px; min-width: 2px; }
-      @keyframes wave { 0%, 100% { height: 6px; } 50% { height: 32px; } }
-    }
+    @keyframes wave { 0%, 100% { height: 10px; } 50% { height: 50px; } }
 
     /* ============================================================
        TRACK INFO
@@ -4358,8 +4344,279 @@
         max-width: 100vw !important;
       }
     }
+    @media (min-width: 481px) and (max-width: 768px) {
+      .app {
+        max-width: 420px !important;
+        width: 95% !important;
+      }
+    }
+    @media (min-width: 769px) {
+      .app {
+        max-width: 400px !important;
+        width: 95% !important;
+      }
+    }
 
-
+    /* ============================================================
+       STORY POPUP - EXECURIVE ORIGIN
+    ============================================================ */
+    #storyPopup {
+      position: fixed;
+      inset: 0;
+      z-index: 999998;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: storyFadeIn 0.5s ease;
+      padding: 20px;
+    }
+    #storyPopup.hidden {
+      display: none;
+    }
+    @keyframes storyFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .story-container {
+      position: relative;
+      max-width: 600px;
+      width: 100%;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      border-radius: 24px;
+      border: 2px solid rgba(0, 255, 136, 0.3);
+      box-shadow: 0 0 60px rgba(0, 255, 136, 0.4), 0 20px 80px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+      animation: storySlideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes storySlideUp {
+      from { 
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .story-header {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 212, 255, 0.1));
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .story-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .story-close {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 51, 51, 0.1);
+      border: 2px solid rgba(255, 51, 51, 0.3);
+      color: #ff6666;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 700;
+    }
+    .story-close:hover {
+      background: rgba(255, 51, 51, 0.2);
+      border-color: #ff3333;
+      color: #ff3333;
+      transform: rotate(90deg) scale(1.1);
+      box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+    }
+    .story-body {
+      padding: 24px;
+    }
+    .story-image-wrapper {
+      position: relative;
+      border-radius: 16px;
+      overflow: auto;
+      margin-bottom: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      cursor: zoom-in;
+      transition: all 0.3s ease;
+      max-height: 70vh;
+    }
+    .story-image-wrapper:hover {
+      border-color: rgba(0, 255, 136, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 255, 136, 0.3);
+    }
+    .story-image-wrapper.zoomed {
+      cursor: grab;
+      overflow: auto;
+    }
+    .story-image-wrapper.zoomed:active {
+      cursor: grabbing;
+    }
+    .story-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 14px;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .story-image.zoomed {
+      transform: scale(2);
+      cursor: grab;
+      transform-origin: top left;
+    }
+    .story-image.zoomed:active {
+      cursor: grabbing;
+    }
+    .story-text {
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 3px solid var(--accent);
+      padding: 16px 20px;
+      border-radius: 12px;
+      line-height: 1.6;
+      color: #e5e7eb;
+      font-size: 14px;
+    }
+    .story-text strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .story-footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 11px;
+      color: #6b7280;
+      font-style: italic;
+    }
+    
+    /* Thank You Animation */
+    #thankYouOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background: rgba(0, 0, 0, 0.98);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: thankYouFadeIn 0.5s ease;
+    }
+    #thankYouOverlay.show {
+      display: flex;
+    }
+    @keyframes thankYouFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .thank-you-text {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 48px;
+      font-weight: 900;
+      text-align: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent2), var(--purple));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: thankYouScale 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      line-height: 1.4;
+    }
+    @keyframes thankYouScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.3) rotate(-5deg);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.1) rotate(2deg);
+      }
+      70% {
+        transform: scale(0.95) rotate(-1deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+    .thank-you-sparkles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: sparkleFloat 2s ease-out forwards;
+      box-shadow: 0 0 10px var(--accent);
+    }
+    @keyframes sparkleFloat {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-200px) scale(0);
+      }
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .thank-you-text {
+        font-size: 32px;
+        letter-spacing: 2px;
+        padding: 0 20px;
+      }
+    }
+    @media (max-width: 480px) {
+      .thank-you-text {
+        font-size: 24px;
+        letter-spacing: 1px;
+      }
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .story-container {
+        max-width: 95%;
+        border-radius: 20px;
+      }
+      .story-header {
+        padding: 16px 20px;
+      }
+      .story-title {
+        font-size: 16px;
+      }
+      .story-close {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+      }
+      .story-body {
+        padding: 20px;
+      }
+      .story-text {
+        font-size: 13px;
+        padding: 14px 16px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -4650,28 +4907,6 @@
   <div class="exe-redirect-text">Memasuki ExeMusic...</div>
 </div>
 
-<!-- DATA LOADING SCREEN -->
-<div id="dataLoadScreen" style="display:none; position:fixed; inset:0; z-index:99998; background:radial-gradient(ellipse at 50% -20%, rgba(0,212,255,0.15), transparent 60%), radial-gradient(ellipse at 80% 100%, rgba(0,255,136,0.1), transparent 50%), linear-gradient(180deg, #030308 0%, #06060f 50%, #030308 100%); display:flex; flex-direction:column; align-items:center; justify-content:center;">
-  <div style="margin-bottom:30px;">
-    <div style="width:80px; height:80px; border-radius:50%; border:2px solid transparent; background:linear-gradient(#030308, #030308) padding-box, linear-gradient(135deg, #00ff88, #00d4ff, #bf00ff) border-box; display:flex; align-items:center; justify-content:center; animation:ringPulse 2s ease-in-out infinite;">
-      <i class="fas fa-database" style="font-size:30px; color:#00ff88; text-shadow:0 0 20px #00ff88;"></i>
-    </div>
-  </div>
-  <div style="font-family:'Rajdhani', sans-serif; font-size:24px; font-weight:700; letter-spacing:4px; background:linear-gradient(135deg, #00ff88, #00d4ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; text-transform:uppercase; margin-bottom:6px;">Memuat Data</div>
-  <div style="font-size:11px; color:rgba(255,255,255,0.3); letter-spacing:3px; text-transform:uppercase; font-family:'JetBrains Mono', monospace; margin-bottom:30px;">Menghubungkan ke server...</div>
-  <div style="width:320px; max-width:90vw; margin-bottom:16px;">
-    <div style="width:100%; height:6px; background:rgba(255,255,255,0.06); border-radius:10px; position:relative; overflow:hidden; border:1px solid rgba(255,255,255,0.05);">
-      <div id="dataLoadBar" style="height:100%; background:linear-gradient(90deg, #00ff88, #00d4ff, #00ff88); background-size:200% 100%; border-radius:10px; width:0%; transition:width 0.3s cubic-bezier(0.4, 0, 0.2, 1); position:relative; animation:barShimmer 1.5s linear infinite;">
-        <div style="position:absolute; right:0; top:50%; transform:translateY(-50%); width:12px; height:12px; border-radius:50%; background:white; box-shadow:0 0 10px #00ff88, 0 0 20px #00d4ff;"></div>
-      </div>
-    </div>
-  </div>
-  <div style="display:flex; justify-content:space-between; align-items:center; font-family:'JetBrains Mono', monospace; font-size:11px; width:320px; max-width:90vw;">
-    <span id="dataLoadStatus" style="color:rgba(255,255,255,0.4); letter-spacing:1px;">Menghubungkan...</span>
-    <span id="dataLoadPercent" style="font-weight:700; font-size:16px; background:linear-gradient(135deg, #00ff88, #00d4ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">0%</span>
-  </div>
-</div>
-
 <!-- ==================== GATE SCRIPT ==================== -->
 <script>
   (function() {
@@ -4707,48 +4942,40 @@
       document.getElementById('exeGateSuccess').classList.add('show');
 
       setTimeout(function() {
-        document.getElementById('exeGate').style.display = 'none';
-        document.getElementById('exeGateRedirect').style.display = 'none';
-        
-        // Show data loading screen
-        document.getElementById('dataLoadScreen').style.display = 'flex';
-        
-        // Simulate data loading progress
-        var dataBar = document.getElementById('dataLoadBar');
-        var dataStatus = document.getElementById('dataLoadStatus');
-        var dataPercent = document.getElementById('dataLoadPercent');
-        var loadSteps = [
-          [20, 'Menghubungkan ke Firebase...'],
-          [40, 'Memuat data pengguna...'],
-          [60, 'Memuat lagu dan playlist...'],
-          [80, 'Menyiapkan antarmuka...'],
-          [100, 'Selesai!']
-        ];
-        var stepIdx = 0;
-        
-        function runLoadStep() {
-          if (stepIdx >= loadSteps.length) {
-            // All data loaded, show main app
-            setTimeout(function() {
-              document.getElementById('dataLoadScreen').style.display = 'none';
-              document.getElementById('mainApp').style.display = 'block';
-            }, 500);
-            return;
-          }
-          dataBar.style.width = loadSteps[stepIdx][0] + '%';
-          dataStatus.textContent = loadSteps[stepIdx][1];
-          dataPercent.textContent = loadSteps[stepIdx][0] + '%';
-          stepIdx++;
-          setTimeout(runLoadStep, 600 + Math.random() * 400);
-        }
-        setTimeout(runLoadStep, 300);
+        document.getElementById('exeGateRedirect').classList.add('show');
+        document.getElementById('exeGate').classList.add('gate-exiting');
+        setTimeout(function() {
+          document.getElementById('exeGate').style.display = 'none';
+          document.getElementById('exeGateRedirect').style.display = 'none';
+        }, 700);
       }, 1200);
     };
   })();
 </script>
 <!-- ==================== END GATE ==================== -->
   
+  <!-- STORY POPUP - EXECURIVE ORIGIN -->
+  <div id="storyPopup" class="hidden">
+    <div class="story-container">
+      <div class="story-header">
+        <div class="story-title">🎵 ExeMusic Origin</div>
+        <button class="story-close" onclick="closeStoryPopup()">×</button>
+      </div>
+      <div class="story-body">
+        <div class="story-image-wrapper" onclick="toggleImageZoom()">
+          <img src="ssrplastexecurive.png" alt="Execurive RP" class="story-image" id="storyImage">
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- THANK YOU OVERLAY -->
+  <div id="thankYouOverlay">
+    <div class="thank-you-sparkles" id="sparklesContainer"></div>
+    <div class="thank-you-text">
+      welcome!!
+    </div>
+  </div>
 
   <!-- LOADING SCREEN -->
   <div id="gameLoadScreen">
@@ -4896,7 +5123,7 @@
   </div>
 
   <!-- MAIN APP -->
-  <div class="app" id="mainApp">
+  <div class="app">
   <div class="ml-corner-tl ml-corner"></div>
     <div class="ml-corner-tr ml-corner"></div>
     <div class="ml-corner-bl ml-corner"></div>
@@ -5510,6 +5737,7 @@
           <div class="event-center-tabs">
             <button class="event-tab-btn active" data-tab="daily" onclick="switchEventTab('daily', this)"><i class="fas fa-sun"></i> Tugas Harian</button>
             <button class="event-tab-btn" data-tab="weekly" onclick="switchEventTab('weekly', this)"><i class="fas fa-calendar-week"></i> Misi Mingguan</button>
+            <button class="event-tab-btn" data-tab="ramadhan" onclick="switchEventTab('ramadhan', this)"><i class="fas fa-moon"></i> Event Ramadhan</button>
             <button class="event-tab-btn" data-tab="shop" onclick="switchEventTab('shop', this)"><i class="fas fa-store"></i> Toko ExeCoin</button>
           </div>
           <div style="margin-top:10px; display:flex; justify-content:center">
@@ -5524,6 +5752,71 @@
           <div id="evTabWeekly" class="event-tab-view">
             <div class="event-tab-caption">Reset tiap 7 hari. Cocok untuk misi jangka panjang.</div>
             <div id="evWeeklyList" class="event-quest-list"></div>
+          </div>
+          <div id="evTabRamadhan" class="event-tab-view">
+            <div class="event-tab-caption">🌙 Event spesial Ramadhan dengan 3 cycle quest. Selesaikan untuk dapat tag eksklusif!</div>
+            <div id="evRamadhanList" class="event-quest-list">
+              <!-- Cycle 1 -->
+              <div class="event-quest-card gaming-card-enhanced">
+                <div class="event-quest-main">
+                  <div class="event-quest-title-row">
+                    <div class="event-quest-title">🌅 Cycle 1 - Awal Ramadhan</div>
+                    <div class="event-quest-reward"><i class="fas fa-trophy"></i> RAMADHAN 1447H</div>
+                  </div>
+                  <div class="event-quest-desc">Login 3 hari berturut • Play 10 lagu • Online 30 menit</div>
+                  <div class="event-quest-progress-wrap">
+                    <div class="event-quest-progress-bar">
+                      <div class="event-quest-progress-fill" id="ramCycle1Progress" style="transform:scaleX(0)"></div>
+                    </div>
+                    <div class="event-quest-progress-text" id="ramCycle1Text">0%</div>
+                  </div>
+                </div>
+                <div class="event-quest-action">
+                  <div class="event-quest-badge" id="ramCycle1Badge">LOCKED</div>
+                  <button class="event-quest-btn event-quest-btn-gaming" id="ramCycle1Btn" disabled>CLAIM</button>
+                </div>
+              </div>
+              <!-- Cycle 2 -->
+              <div class="event-quest-card gaming-card-enhanced">
+                <div class="event-quest-main">
+                  <div class="event-quest-title-row">
+                    <div class="event-quest-title">🌙 Cycle 2 - Mid Ramadhan</div>
+                    <div class="event-quest-reward"><i class="fas fa-trophy"></i> NIGHT TARAWIH</div>
+                  </div>
+                  <div class="event-quest-desc">Online jam 18-20 (2 hari) • Share 2 lagu • Like 5 lagu</div>
+                  <div class="event-quest-progress-wrap">
+                    <div class="event-quest-progress-bar">
+                      <div class="event-quest-progress-fill" id="ramCycle2Progress" style="transform:scaleX(0)"></div>
+                    </div>
+                    <div class="event-quest-progress-text" id="ramCycle2Text">0%</div>
+                  </div>
+                </div>
+                <div class="event-quest-action">
+                  <div class="event-quest-badge" id="ramCycle2Badge">LOCKED</div>
+                  <button class="event-quest-btn event-quest-btn-gaming" id="ramCycle2Btn" disabled>CLAIM</button>
+                </div>
+              </div>
+              <!-- Cycle 3 -->
+              <div class="event-quest-card gaming-card-enhanced">
+                <div class="event-quest-main">
+                  <div class="event-quest-title-row">
+                    <div class="event-quest-title">🕌 Cycle 3 - 10 Hari Terakhir</div>
+                    <div class="event-quest-reward"><i class="fas fa-trophy"></i> LAILAT MODE</div>
+                  </div>
+                  <div class="event-quest-desc">Login 7/10 hari terakhir • 120 menit playtime • Aktif jam 23+</div>
+                  <div class="event-quest-progress-wrap">
+                    <div class="event-quest-progress-bar">
+                      <div class="event-quest-progress-fill" id="ramCycle3Progress" style="transform:scaleX(0)"></div>
+                    </div>
+                    <div class="event-quest-progress-text" id="ramCycle3Text">0%</div>
+                  </div>
+                </div>
+                <div class="event-quest-action">
+                  <div class="event-quest-badge" id="ramCycle3Badge">LOCKED</div>
+                  <button class="event-quest-btn event-quest-btn-gaming" id="ramCycle3Btn" disabled>CLAIM</button>
+                </div>
+              </div>
+            </div>
           </div>
           <div id="evTabShop" class="event-tab-view">
             <div class="event-tab-caption">Tukar ExeCoin dengan tag eksklusif dan VIP.</div>
@@ -5785,6 +6078,76 @@
   </div>
 
   <script>
+    // ============================================================
+    // STORY POPUP FUNCTIONS
+    // ============================================================
+    function closeStoryPopup() {
+      const popup = document.getElementById('storyPopup');
+      if (popup) {
+        popup.style.animation = 'storyFadeIn 0.3s ease reverse';
+        setTimeout(() => {
+          popup.classList.add('hidden');
+          // Show thank you animation
+          showThankYouAnimation();
+        }, 300);
+      }
+    }
+
+    function showThankYouAnimation() {
+      const overlay = document.getElementById('thankYouOverlay');
+      const sparklesContainer = document.getElementById('sparklesContainer');
+      
+      if (overlay) {
+        overlay.classList.add('show');
+        
+        // Create sparkles
+        if (sparklesContainer) {
+          for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+              const sparkle = document.createElement('div');
+              sparkle.className = 'sparkle';
+              sparkle.style.left = Math.random() * 100 + '%';
+              sparkle.style.top = 50 + Math.random() * 20 + '%';
+              sparkle.style.animationDelay = Math.random() * 0.5 + 's';
+              sparklesContainer.appendChild(sparkle);
+              
+              setTimeout(() => sparkle.remove(), 2500);
+            }, i * 50);
+          }
+        }
+        
+        // Hide after 3 seconds
+        setTimeout(() => {
+          overlay.style.animation = 'thankYouFadeIn 0.5s ease reverse';
+          setTimeout(() => {
+            overlay.classList.remove('show');
+            overlay.style.animation = '';
+          }, 500);
+        }, 3000);
+      }
+    }
+
+    function toggleImageZoom() {
+      const img = document.getElementById('storyImage');
+      const wrapper = img?.parentElement;
+      if (img && wrapper) {
+        img.classList.toggle('zoomed');
+        wrapper.classList.toggle('zoomed');
+      }
+    }
+
+    function showStoryPopup() {
+      const popup = document.getElementById('storyPopup');
+      if (popup) {
+        popup.classList.remove('hidden');
+        // Auto close after 15 seconds if user doesn't close manually
+        setTimeout(() => {
+          if (!popup.classList.contains('hidden')) {
+            closeStoryPopup();
+          }
+        }, 15000);
+      }
+    }
 
     const firebaseConfig = {
       apiKey: "AIzaSyCVJYSR4nHeoRA9WTMZa3-2xliKQRrd5g4",
@@ -5854,6 +6217,8 @@
           screen.classList.add('fade-out');
           setTimeout(() => { 
             screen.style.display = 'none';
+            // Show story popup after loading completes
+            showStoryPopup();
           }, 800);
         }
       }, 400);
@@ -6397,11 +6762,15 @@
       const tabMap = {
         'daily': 'evTabDaily',
         'weekly': 'evTabWeekly',
+        'ramadhan': 'evTabRamadhan',
         'shop': 'evTabShop'
       };
       const tab = document.getElementById(tabMap[id] || 'evTabDaily');
       if (tab) tab.classList.add('active');
       if (btn) btn.classList.add('active');
+      if (id === 'ramadhan') {
+        updateRamadhanProgress();
+      }
       renderEventCenter();
     }
 
