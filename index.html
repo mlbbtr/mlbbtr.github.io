@@ -5630,7 +5630,7 @@
           <div class="file-upload-area" id="fileUploadArea" onclick="document.getElementById('supabaseFileInput').click()">
             <div class="file-upload-icon"><i class="fas fa-music"></i></div>
             <div class="file-upload-text">Klik atau drag file lagu kesini</div>
-            <div class="file-upload-hint">Max 10MB (MP3, WAV, M4A, OGG)</div>
+            <div class="file-upload-hint">Max 50MB (MP3, WAV, M4A, OGG)</div>
           </div>
           <div id="fileSelectedInfo" class="file-selected-info" style="display:none">
             <div>
@@ -6171,8 +6171,8 @@
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJpcmVybm5rc3RyampxdXZibGdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0OTYyMzAsImV4cCI6MjA4OTA3MjIzMH0.M2JDFy327Pny7gchW2pZVt5dzNbyw63gebYe_SkP4Mk';
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Max file size: 10MB
-    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
+    // Max file size: 50mb
+    const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50mb in bytes
 
     // Upload state
     let selectedFile = null;
@@ -8952,9 +8952,9 @@
       const errorEl = document.getElementById('uploadError');
       errorEl.classList.remove('show');
 
-      // Check file size (max 10MB)
+      // Check file size (max 50mb)
       if (file.size > MAX_FILE_SIZE) {
-        errorEl.textContent = '❌ File terlalu besar! Maksimum 10MB.';
+        errorEl.textContent = '❌ File terlalu besar! Maksimum 50MB.';
         errorEl.classList.add('show');
         input.value = '';
         return;
