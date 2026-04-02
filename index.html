@@ -2064,106 +2064,6 @@
     .sheet::-webkit-scrollbar { width: 4px; }
     .sheet::-webkit-scrollbar-thumb { background: rgba(0,255,136,0.3); border-radius: 10px; }
 
-    .upload-queue-section {
-      margin-top: 12px;
-      padding-top: 8px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-    .upload-queue-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-      font-size: 11px;
-    }
-    .upload-queue-title-label {
-      font-weight: 600;
-      color: #fff;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-    .upload-queue-info {
-      color: #aaa;
-      font-size: 10px;
-    }
-    .upload-queue-list {
-      max-height: 150px;
-      overflow-y: auto;
-      border-radius: 10px;
-      background: rgba(8,8,20,0.9);
-      border: 1px solid rgba(255,255,255,0.04);
-    }
-    .upload-queue-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 7px 10px;
-      font-size: 11px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      gap: 10px;
-    }
-    .upload-queue-item:last-child {
-      border-bottom: none;
-    }
-    .upload-queue-main {
-      flex: 1;
-      min-width: 0;
-    }
-    .upload-queue-title {
-      margin-right: 4px;
-      color: #ddd;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .upload-queue-time {
-      font-size: 10px;
-      color: #888;
-    }
-    .upload-queue-actions {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .upload-queue-status {
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      color: #ccc;
-      white-space: nowrap;
-    }
-    .upload-queue-status.status-queued {
-      background: rgba(0,255,136,0.08);
-      color: #7bffb9;
-    }
-    .upload-queue-status.status-processing {
-      background: rgba(0,212,255,0.08);
-      color: #7be9ff;
-    }
-    .upload-queue-status.status-done {
-      background: rgba(120,120,120,0.2);
-      color: #bbb;
-    }
-    .upload-queue-btn {
-      border: none;
-      background: rgba(255,255,255,0.06);
-      color: #fff;
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      cursor: pointer;
-    }
-    .upload-queue-btn:hover {
-      background: rgba(255,255,255,0.12);
-    }
-
     /* ============================================================
        SUPABASE FILE UPLOAD - v3.2.3
     ============================================================ */
@@ -5654,13 +5554,6 @@
         </div>
         
         <button onclick="confirmAndSave()" class="btn-act" id="postBtn">POST SEKARANG</button>
-        <div id="uploadQueueSection" class="upload-queue-section" style="display:none">
-          <div class="upload-queue-header">
-            <span class="upload-queue-title-label">UPLOAD QUEUE</span>
-            <span id="uploadQueueInfo" class="upload-queue-info"></span>
-          </div>
-          <div id="uploadQueueList" class="upload-queue-list"></div>
-        </div>
         <div id="uploadCdCard" class="upload-cd-card">
           <div class="upload-cd-row">
             <span class="upload-cd-label">COOLDOWN</span>
@@ -5737,7 +5630,6 @@
           <div class="event-center-tabs">
             <button class="event-tab-btn active" data-tab="daily" onclick="switchEventTab('daily', this)"><i class="fas fa-sun"></i> Tugas Harian</button>
             <button class="event-tab-btn" data-tab="weekly" onclick="switchEventTab('weekly', this)"><i class="fas fa-calendar-week"></i> Misi Mingguan</button>
-            <button class="event-tab-btn" data-tab="ramadhan" onclick="switchEventTab('ramadhan', this)"><i class="fas fa-moon"></i> Event Ramadhan</button>
             <button class="event-tab-btn" data-tab="shop" onclick="switchEventTab('shop', this)"><i class="fas fa-store"></i> Toko ExeCoin</button>
           </div>
           <div style="margin-top:10px; display:flex; justify-content:center">
@@ -5752,71 +5644,6 @@
           <div id="evTabWeekly" class="event-tab-view">
             <div class="event-tab-caption">Reset tiap 7 hari. Cocok untuk misi jangka panjang.</div>
             <div id="evWeeklyList" class="event-quest-list"></div>
-          </div>
-          <div id="evTabRamadhan" class="event-tab-view">
-            <div class="event-tab-caption">🌙 Event spesial Ramadhan dengan 3 cycle quest. Selesaikan untuk dapat tag eksklusif!</div>
-            <div id="evRamadhanList" class="event-quest-list">
-              <!-- Cycle 1 -->
-              <div class="event-quest-card gaming-card-enhanced">
-                <div class="event-quest-main">
-                  <div class="event-quest-title-row">
-                    <div class="event-quest-title">🌅 Cycle 1 - Awal Ramadhan</div>
-                    <div class="event-quest-reward"><i class="fas fa-trophy"></i> RAMADHAN 1447H</div>
-                  </div>
-                  <div class="event-quest-desc">Login 3 hari berturut • Play 10 lagu • Online 30 menit</div>
-                  <div class="event-quest-progress-wrap">
-                    <div class="event-quest-progress-bar">
-                      <div class="event-quest-progress-fill" id="ramCycle1Progress" style="transform:scaleX(0)"></div>
-                    </div>
-                    <div class="event-quest-progress-text" id="ramCycle1Text">0%</div>
-                  </div>
-                </div>
-                <div class="event-quest-action">
-                  <div class="event-quest-badge" id="ramCycle1Badge">LOCKED</div>
-                  <button class="event-quest-btn event-quest-btn-gaming" id="ramCycle1Btn" disabled>CLAIM</button>
-                </div>
-              </div>
-              <!-- Cycle 2 -->
-              <div class="event-quest-card gaming-card-enhanced">
-                <div class="event-quest-main">
-                  <div class="event-quest-title-row">
-                    <div class="event-quest-title">🌙 Cycle 2 - Mid Ramadhan</div>
-                    <div class="event-quest-reward"><i class="fas fa-trophy"></i> NIGHT TARAWIH</div>
-                  </div>
-                  <div class="event-quest-desc">Online jam 18-20 (2 hari) • Share 2 lagu • Like 5 lagu</div>
-                  <div class="event-quest-progress-wrap">
-                    <div class="event-quest-progress-bar">
-                      <div class="event-quest-progress-fill" id="ramCycle2Progress" style="transform:scaleX(0)"></div>
-                    </div>
-                    <div class="event-quest-progress-text" id="ramCycle2Text">0%</div>
-                  </div>
-                </div>
-                <div class="event-quest-action">
-                  <div class="event-quest-badge" id="ramCycle2Badge">LOCKED</div>
-                  <button class="event-quest-btn event-quest-btn-gaming" id="ramCycle2Btn" disabled>CLAIM</button>
-                </div>
-              </div>
-              <!-- Cycle 3 -->
-              <div class="event-quest-card gaming-card-enhanced">
-                <div class="event-quest-main">
-                  <div class="event-quest-title-row">
-                    <div class="event-quest-title">🕌 Cycle 3 - 10 Hari Terakhir</div>
-                    <div class="event-quest-reward"><i class="fas fa-trophy"></i> LAILAT MODE</div>
-                  </div>
-                  <div class="event-quest-desc">Login 7/10 hari terakhir • 120 menit playtime • Aktif jam 23+</div>
-                  <div class="event-quest-progress-wrap">
-                    <div class="event-quest-progress-bar">
-                      <div class="event-quest-progress-fill" id="ramCycle3Progress" style="transform:scaleX(0)"></div>
-                    </div>
-                    <div class="event-quest-progress-text" id="ramCycle3Text">0%</div>
-                  </div>
-                </div>
-                <div class="event-quest-action">
-                  <div class="event-quest-badge" id="ramCycle3Badge">LOCKED</div>
-                  <button class="event-quest-btn event-quest-btn-gaming" id="ramCycle3Btn" disabled>CLAIM</button>
-                </div>
-              </div>
-            </div>
           </div>
           <div id="evTabShop" class="event-tab-view">
             <div class="event-tab-caption">Tukar ExeCoin dengan tag eksklusif dan VIP.</div>
@@ -8761,160 +8588,6 @@
     // ============================================================
     // UPLOAD / SAVE + QUEUE
     // ============================================================
-    function startUploadQueueWatcher(uid) {
-      if (!uid) return;
-      if (uploadQueueListenerUid && uploadQueueListenerUid !== uid) {
-        db.ref('uploadQueue/' + uploadQueueListenerUid).off();
-      }
-      uploadQueueListenerUid = uid;
-      db.ref('uploadQueue/' + uid).on('value', snap => {
-        const val = snap.val() || {};
-        renderUploadQueue(val);
-      });
-      if (uploadQueueInterval) clearInterval(uploadQueueInterval);
-      uploadQueueInterval = setInterval(() => processUploadQueue(uid), 15000);
-    }
-    function stopUploadQueueWatcher() {
-      if (uploadQueueInterval) {
-        clearInterval(uploadQueueInterval);
-        uploadQueueInterval = null;
-      }
-      if (uploadQueueListenerUid) {
-        db.ref('uploadQueue/' + uploadQueueListenerUid).off();
-        uploadQueueListenerUid = null;
-      }
-      const section = document.getElementById('uploadQueueSection');
-      if (section) section.style.display = 'none';
-    }
-    function renderUploadQueue(map) {
-      const section = document.getElementById('uploadQueueSection');
-      const listEl = document.getElementById('uploadQueueList');
-      const infoEl = document.getElementById('uploadQueueInfo');
-      if (!section || !listEl || !infoEl || !userData) return;
-      const limit = getUploadQueueLimit();
-      const entries = Object.keys(map || {}).map(id => ({ id, ...(map[id] || {}) }))
-        .sort((a, b) => (a.scheduledAt || 0) - (b.scheduledAt || 0));
-      section.style.display = 'block';
-      if (!entries.length) {
-        infoEl.textContent = 'Belum ada antrian upload';
-        listEl.innerHTML = '<div style="font-size:11px;color:#777;padding:6px 0">Kamu belum punya upload di queue.</div>';
-        return;
-      }
-      const activeCount = entries.filter(it => it.status !== 'done' && it.status !== 'cancelled').length;
-      if (limit) infoEl.textContent = activeCount + '/' + limit + ' slot terpakai';
-      else infoEl.textContent = '';
-      listEl.innerHTML = entries.map(it => {
-        const t = it.title || '';
-        const timeStr = it.scheduledAt ? new Date(it.scheduledAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '';
-        let statusLabel = 'Queued';
-        let statusClass = 'status-queued';
-        if (it.status === 'processing') { statusLabel = 'Processing'; statusClass = 'status-processing'; }
-        else if (it.status === 'done') { statusLabel = 'Uploaded'; statusClass = 'status-done'; }
-        const disabled = it.status === 'processing';
-        return `<div class="upload-queue-item">
-          <div class="upload-queue-main">
-            <div class="upload-queue-title">${escapeHtml(t)}</div>
-            <div class="upload-queue-time">${escapeHtml(timeStr)}</div>
-          </div>
-          <div class="upload-queue-actions">
-            <span class="upload-queue-status ${statusClass}">${escapeHtml(statusLabel)}</span>
-            <button class="upload-queue-btn" onclick="editUploadQueueItem('${it.id}')" ${disabled ? 'disabled' : ''}><i class="fas fa-pen"></i></button>
-            <button class="upload-queue-btn" onclick="deleteUploadQueueItem('${it.id}')" ${disabled ? 'disabled' : ''}><i class="fas fa-trash"></i></button>
-          </div>
-        </div>`;
-      }).join('');
-    }
-    async function processUploadQueue(uid) {
-      if (!uid || !auth.currentUser || !userData || auth.currentUser.uid !== uid) return;
-      const now = Date.now();
-      const snap = await db.ref('uploadQueue/' + uid).orderByChild('scheduledAt').endAt(now).limitToFirst(1).get();
-      const val = snap.val();
-      if (!val) return;
-      const id = Object.keys(val)[0];
-      const item = val[id];
-      if (!item || item.status !== 'queued') return;
-      const itemRef = db.ref('uploadQueue/' + uid + '/' + id);
-      const txRes = await itemRef.transaction(cur => {
-        if (!cur || cur.status !== 'queued') return cur;
-        return { ...cur, status: 'processing', processingAt: now };
-      });
-      if (!txRes.committed) return;
-      const cur = txRes.snapshot.val();
-      if (!cur || cur.status !== 'processing') return;
-      const songRef = db.ref('songs').push();
-      const songData = { title: cur.title, url: cur.url, uid, by: userData.username, timestamp: Date.now() };
-      await songRef.set(songData);
-      const songKey = songRef.key;
-      await db.ref('users/' + uid).update({ lastUpload: Date.now() });
-      await itemRef.update({ status: 'done', uploadedAt: Date.now(), songKey });
-      await db.ref('users/' + uid + '/notifications').push({ type: 'upload', text: userData.username + ' mengupload (queue): ' + (cur.title || ''), fromName: userData.username, timestamp: Date.now() });
-      updateQuestProgress('daily', 'daily_first_upload', 1, uid);
-      updateQuestProgress('daily', 'daily_music_producer', 1, uid);
-      updateQuestProgress('weekly', 'weekly_active_creator', 1, uid);
-      msg('✅ Upload queue terupload: ' + (cur.title || ''));
-    }
-    async function editUploadQueueItem(id) {
-      if (!auth.currentUser || !userData || !id) return;
-      const uid = auth.currentUser.uid;
-      const snap = await db.ref('uploadQueue/' + uid + '/' + id).get();
-      const item = snap.val();
-      if (!item) { msg('Queue tidak ditemukan'); return; }
-      if (item.status === 'processing') { msg('Queue sedang diproses'); return; }
-      const safeTitle = (item.title || '').replace(/"/g, '&quot;');
-      const safeUrl = (item.url || '').replace(/"/g, '&quot;');
-      Swal.fire({
-        title: 'Edit Upload Queue',
-        html:
-          '<input id="qTitle" class="swal2-input" placeholder="Judul Lagu" value="' + safeTitle + '">' +
-          '<input id="qUrl" class="swal2-input" placeholder="URL MP3" value="' + safeUrl + '">',
-        focusConfirm: false,
-        showCancelButton: true,
-        background: '#181818',
-        color: '#fff',
-        confirmButtonColor: '#00ff88',
-        cancelButtonColor: '#d33',
-        preConfirm: () => {
-          const title = (document.getElementById('qTitle').value || '').trim();
-          const url = (document.getElementById('qUrl').value || '').trim();
-          if (!title || !url) {
-            Swal.showValidationMessage('Judul dan URL wajib diisi');
-            return;
-          }
-          return { title, url };
-        }
-      }).then(async res => {
-        if (!res.value) return;
-        await db.ref('uploadQueue/' + uid + '/' + id).update({
-          title: res.value.title,
-          url: res.value.url
-        });
-        msg('Queue diperbarui');
-      });
-    }
-    function deleteUploadQueueItem(id) {
-      if (!auth.currentUser || !id) return;
-      const uid = auth.currentUser.uid;
-      Swal.fire({
-        title: 'Hapus dari queue?',
-        text: 'Lagu tidak akan diupload otomatis.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#ff4d4f',
-        cancelButtonColor: '#555',
-        confirmButtonText: 'Ya, hapus',
-        background: '#181818',
-        color: '#fff'
-      }).then(async r => {
-        if (!r.isConfirmed) return;
-        await db.ref('uploadQueue/' + uid + '/' + id).remove();
-        msg('Queue dihapus');
-      });
-    }
-    function getUploadQueueLimit() {
-      if (!userData || userData.role === 'admin') return 0;
-      return 1;
-    }
-
     // ============================================================
     // SUPABASE FILE UPLOAD FUNCTIONS - v3.2.3
     // ============================================================
@@ -9170,6 +8843,9 @@
         if (postBtn) { postBtn.disabled = true; postBtn.textContent = 'Mengupload...'; }
 
         try {
+          // Add delay to prevent spam uploads
+          await new Promise(resolve => setTimeout(resolve, 5000)); // 5 second delay
+          
           // Upload file to Supabase
           const uploadedUrl = await uploadToSupabase(selectedFile);
           
@@ -9273,6 +8949,11 @@
     
     async function processUpload(title, url) {
       // This function handles both file and URL upload
+      // Anti HTTP URL check
+      if (url.startsWith('http://')) {
+        Swal.fire({ icon: 'error', title: 'URL Tidak Aman', text: 'Upload dari URL HTTP tidak diperbolehkan. Gunakan HTTPS.', background: '#181828', color: '#fff' });
+        return;
+      }
       const now = Date.now();
       const lastUpload = userData.lastUpload || 0;
       const diff = (now - lastUpload) / 1000 / 60;
@@ -9284,24 +8965,14 @@
         // Direct upload
         saveMusic(title, url);
       } else {
-        // Add to queue
-        const queueLimit = getUploadQueueLimit();
-        if (!queueLimit) {
-          // Calculate remaining cooldown in minutes and seconds
-          const remainingMinutes = Math.floor(cooldown - diff);
-          const remainingSeconds = Math.floor((cooldown - diff - remainingMinutes) * 60);
-          const timeDisplay = remainingMinutes > 0 
-            ? `${remainingMinutes}:${remainingSeconds.toString().padStart(2, '0')}` 
-            : `0:${remainingSeconds.toString().padStart(2, '0')}`;
-          Swal.fire({ icon: 'error', title: 'Sabar...', text: `Tunggu ${timeDisplay} lagi.`, background: '#181828', color: '#fff' });
-          return;
-        }
-        const scheduledAt = Math.max(lastUpload + cooldown * 60 * 1000, now);
-        const item = { title, url, uid: auth.currentUser.uid, by: userData.username, createdAt: now, scheduledAt, status: 'queued', cooldownMinutes: cooldown, vip: !!vipType };
-        await db.ref('uploadQueue/' + auth.currentUser.uid).push(item);
-        msg('✅ Lagu masuk upload queue');
-        document.getElementById('rLagu').value = '';
-        document.getElementById('rUrl').value = '';
+        // Calculate remaining cooldown in minutes and seconds
+        const remainingMinutes = Math.floor(cooldown - diff);
+        const remainingSeconds = Math.floor((cooldown - diff - remainingMinutes) * 60);
+        const timeDisplay = remainingMinutes > 0 
+          ? `${remainingMinutes}:${remainingSeconds.toString().padStart(2, '0')}` 
+          : `0:${remainingSeconds.toString().padStart(2, '0')}`;
+        Swal.fire({ icon: 'error', title: 'Cooldown', text: `Tunggu ${timeDisplay} lagi.`, background: '#181828', color: '#fff' });
+        return;
       }
     }
     
