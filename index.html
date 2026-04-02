@@ -6229,8 +6229,6 @@
     let globalCountdownInterval = null;
     let tagUnlockTimeout = null;
     let vipTrialBannerClosed = false;
-    let uploadQueueInterval = null;
-    let uploadQueueListenerUid = null;
     let uploadCooldownInterval = null;
     let isAdminUnlocked = localStorage.getItem('exeAdminUnlocked') === '1';
     let currentProfileUid = null;
@@ -8153,7 +8151,6 @@
     // ============================================================
     auth.onAuthStateChanged(u => {
       if (u) {
-        startUploadQueueWatcher(u.uid);
         db.ref('users/' + u.uid).on('value', snap => {
           userData = snap.val();
           if (!userData) { dismissLoader(); return; }
@@ -8244,7 +8241,6 @@
         });
         setupTagDropWatcher();
       } else {
-        stopUploadQueueWatcher();
         stopUploadCooldownWatcher();
         if (tagDropInterval) {
           clearInterval(tagDropInterval);
@@ -8911,40 +8907,7 @@
         }).then(r => { if (r.isConfirmed) processUpload(title, url); });
         return;
       }
-      const queueLimit = getUploadQueueLimit();
-      if (!queueLimit) {
-        // Calculate remaining cooldown in minutes and seconds
-        const remainingMinutes = Math.floor(cooldown - diff);
-        const remainingSeconds = Math.floor((cooldown - diff - remainingMinutes) * 60);
-        const timeDisplay = remainingMinutes > 0 
-          ? `${remainingMinutes}:${remainingSeconds.toString().padStart(2, '0')}` 
-          : `0:${remainingSeconds.toString().padStart(2, '0')}`;
-        Swal.fire({ icon: 'error', title: 'Sabar...', text: `Tunggu ${timeDisplay} lagi.`, background: '#181828', color: '#fff' });
-        return;
-      }
-      const qSnap = await db.ref('uploadQueue/' + auth.currentUser.uid).get();
-      const qVal = qSnap.val() || {};
-      let activeCount = 0;
-      Object.keys(qVal).forEach(k => {
-        const it = qVal[k];
-        if (!it) return;
-        if (it.status === 'done' || it.status === 'cancelled') return;
-        activeCount++;
-      });
-      if (activeCount >= queueLimit) {
-        Swal.fire({ icon: 'error', title: 'Queue penuh', text: 'Upload queue kamu sudah penuh, tunggu antrian terupload dulu.', background: '#181828', color: '#fff' });
-        return;
-      }
-      const scheduledAt = Math.max(lastUpload + cooldown * 60 * 1000, now);
-      Swal.fire({ title: 'Masuk Upload Queue?', text: 'Lagu akan otomatis diupload saat cooldown selesai.', icon: 'question', showCancelButton: true, confirmButtonColor: '#00ff88', cancelButtonColor: '#d33', confirmButtonText: 'Ya, antrikan', background: '#181828', color: '#fff' })
-        .then(async r => {
-          if (!r.isConfirmed) return;
-          const item = { title, url, uid: auth.currentUser.uid, by: userData.username, createdAt: now, scheduledAt, status: 'queued', cooldownMinutes: cooldown, vip: !!vipType };
-          await db.ref('uploadQueue/' + auth.currentUser.uid).push(item);
-          msg('✅ Lagu masuk upload queue');
-          document.getElementById('rLagu').value = '';
-          document.getElementById('rUrl').value = '';
-        });
+      processUpload(title, url);
     }
     
     async function processUpload(title, url) {
