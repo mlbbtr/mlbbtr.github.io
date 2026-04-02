@@ -8812,7 +8812,7 @@
           if (freshUserData) {
             lastUpload = freshUserData.lastUpload || 0;
             isAdmin = freshUserData.role === 'admin';
-            vipType = freshUserData.vipType || null;
+            vipType = getVipStatus(freshUserData);
           }
         } catch(e) {
           console.error('Error fetching user data:', e);
@@ -8907,7 +8907,14 @@
         }).then(r => { if (r.isConfirmed) processUpload(title, url); });
         return;
       }
-      processUpload(title, url);
+      // Cooldown not ready, show error
+      const remainingMinutes = Math.floor(cooldown - diff);
+      const remainingSeconds = Math.floor((cooldown - diff - remainingMinutes) * 60);
+      const timeDisplay = remainingMinutes > 0 
+        ? `${remainingMinutes}:${remainingSeconds.toString().padStart(2, '0')}` 
+        : `0:${remainingSeconds.toString().padStart(2, '0')}`;
+      Swal.fire({ icon: 'error', title: 'Cooldown', text: `Tunggu ${timeDisplay} lagi.`, background: '#181828', color: '#fff' });
+      return;
     }
     
     async function processUpload(title, url) {
