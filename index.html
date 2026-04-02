@@ -8,7 +8,6 @@
 
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app-check.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
@@ -2011,95 +2010,6 @@
     .download-progress-bar { width: 100%; height: 8px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; border: 1px solid rgba(255,255,255,0.15); }
     .download-progress-bar #downloadProgressFill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.2s ease; }
     .download-progress-text { font-size: 11px; color: #fff; text-align: center; letter-spacing: 0.4px; font-family: 'JetBrains Mono', monospace; }
-
-    .download-detail-modal { position: fixed; inset: 0; z-index: 999999; background: rgba(0,0,0,0.9); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; padding: 20px; animation: modalFadeIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .download-detail-card { background: linear-gradient(135deg, #0d0d14 0%, #1a1a24 50%, #0f0f18 100%); border: 2px solid rgba(0,255,136,0.5); border-radius: 20px; width: min(480px, 100%); box-shadow: 0 25px 80px rgba(0,0,0,0.9), 0 0 30px rgba(0,255,136,0.15), inset 0 1px 0 rgba(255,255,255,0.1); overflow: hidden; transform: scale(0.9); animation: modalScaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; position: relative; }
-    .download-detail-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent)); }
-    .download-detail-header { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(90deg, rgba(0,255,136,0.15), rgba(0,255,136,0.08)); padding: 18px 20px; font-weight: 700; color: #fff; border-bottom: 1px solid rgba(0,255,136,0.3); position: relative; }
-    .download-detail-header::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 60%; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,255,136,0.6), transparent); }
-    .download-detail-close { border: none; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); color: #fff; font-size: 16px; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-    .download-detail-close:hover { background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1)); transform: scale(1.1) rotate(90deg); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-    .download-detail-body { padding: 20px; display: grid; gap: 14px; }
-    .download-item { font-size: 14px; color: #e0e0e0; padding: 12px 16px; background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
-    .download-item::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0,255,136,0.1), transparent); transition: left 0.5s ease; }
-    .download-item:hover::before { left: 100%; }
-    .download-item:hover { background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); border-color: rgba(0,255,136,0.3); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,255,136,0.1); }
-    .download-item b { color: var(--accent2); font-weight: 600; display: inline-block; margin-right: 8px; }
-    .download-item a { color: var(--accent2); text-decoration: none; font-weight: 500; transition: all 0.3s ease; position: relative; }
-    .download-item a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--accent2); transition: width 0.3s ease; }
-    .download-item a:hover::after { width: 100%; }
-    .download-item a:hover { color: #00ff88; text-shadow: 0 0 8px rgba(0,255,136,0.5); }
-    .download-detail-actions { display: flex; justify-content: space-between; gap: 12px; padding: 18px 20px 20px; background: linear-gradient(135deg, rgba(0,0,0,0.3), rgba(0,0,0,0.1)); border-top: 1px solid rgba(0,255,136,0.2); }
-    .download-detail-actions .btn-act { flex: 1; font-size: 14px; padding: 12px 16px; border-radius: 12px; font-weight: 600; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
-    .download-detail-actions .btn-act::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s ease; }
-    .download-detail-actions .btn-act:hover::before { left: 100%; }
-    .download-detail-actions .btn-act:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
-    .download-detail-actions .btn-act:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .download-detail-actions .btn-act:disabled:hover { transform: none; box-shadow: none; }
-
-    /* Progress section styling */
-    #ddProgressSection { background: linear-gradient(135deg, rgba(0,255,136,0.05), rgba(0,255,136,0.02)); border-radius: 12px; padding: 16px; border: 1px solid rgba(0,255,136,0.2); }
-    #ddProgressSection .download-progress-bar { width: 100%; height: 10px; border-radius: 999px; background: rgba(255,255,255,0.1); overflow: hidden; border: 1px solid rgba(255,255,255,0.2); box-shadow: inset 0 1px 2px rgba(0,0,0,0.2); }
-    #ddProgressSection #ddProgressFill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 10px rgba(0,255,136,0.5); }
-    #ddProgressSection #ddProgressText { font-size: 13px; color: #fff; text-align: center; letter-spacing: 0.5px; font-family: 'JetBrains Mono', monospace; font-weight: 500; margin-top: 8px; }
-
-    /* Error section styling */
-    #ddErrorSection { background: linear-gradient(135deg, rgba(255,107,107,0.1), rgba(255,107,107,0.05)); border-radius: 12px; padding: 16px; border: 1px solid rgba(255,107,107,0.3); }
-    #ddErrorSection #ddErrorMsg { color: #ffcccc; font-size: 13px; margin-bottom: 12px; }
-    #ddErrorSection #ddErrorLink { color: var(--accent2); text-decoration: none; font-weight: 600; transition: all 0.3s ease; }
-    #ddErrorSection #ddErrorLink:hover { color: #00ff88; text-shadow: 0 0 8px rgba(0,255,136,0.5); }
-
-    /* Checkbox styling */
-    .download-item input[type="checkbox"] { margin-right: 8px; accent-color: var(--accent2); transform: scale(1.2); }
-
-    @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes modalScaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-    /* Additional visual enhancements */
-    .download-detail-card::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
-      opacity: 0.8;
-    }
-
-    .download-item input[type="checkbox"]:checked {
-      filter: drop-shadow(0 0 6px rgba(0,255,136,0.6));
-    }
-
-    /* Success animation for completed downloads */
-    @keyframes downloadComplete {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-
-    .download-complete {
-      animation: downloadComplete 0.6s ease-out;
-    }
-
-    /* Loading spinner for progress */
-    .download-spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: var(--accent2);
-      animation: spin 1s ease-in-out infinite;
-      margin-right: 8px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes modalScaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     .vol-row { display: flex; align-items: center; gap: 10px; padding: 0 5px; }
     #vol { flex: 1; height: 4px; accent-color: var(--accent); cursor: pointer; border-radius: 2px; }
 
@@ -5214,48 +5124,8 @@
       <div class="sys-tools">
         <button onclick="copyRawUrl()" title="Copy URL Audio"><i class="fas fa-link"></i></button>
         <button onclick="openCopyLink()" title="Share Link"><i class="fas fa-share-alt"></i></button>
-        <button onclick="showDownloadDetail()" title="Download"><i class="fas fa-download"></i></button>
+        <button onclick="downloadSong()" title="Download"><i class="fas fa-download"></i></button>
         <button onclick="openReq()" title="Upload"><i class="fas fa-plus-circle"></i></button>
-      </div>
-      <div class="download-detail-modal" id="downloadDetailModal" style="display:none;">
-        <div class="download-detail-card">
-          <div class="download-detail-header">
-            <span>Download Details</span>
-            <button class="download-detail-close" onclick="closeDownloadDetail()">×</button>
-          </div>
-          <div class="download-detail-body" id="ddBody">
-            <div id="ddFormSection">
-              <div class="download-item"><b>Size:</b> <span id="ddSize">-</span></div>
-              <div class="download-item"><b>File:</b> <span id="ddFile">-</span></div>
-              <div class="download-item"><b>Link:</b> <a id="ddLink" href="#" target="_blank" rel="noopener">-</a></div>
-              <div class="download-item">
-                <label><input type="checkbox" id="ddCaptcha" /> Verif bukan robot</label>
-              </div>
-            </div>
-            <div id="ddProgressSection" style="display:none;">
-              <div style="text-align: center; margin-bottom: 16px;">
-                <div style="font-size: 16px; font-weight: 600; color: var(--accent2); margin-bottom: 8px;">📥 Downloading...</div>
-                <div class="download-progress-bar" style="margin-bottom:8px; height: 12px; border-radius: 6px; background: rgba(255,255,255,0.1); overflow: hidden; border: 1px solid rgba(0,255,136,0.3);">
-                  <div id="ddProgressFill" style="width:0%; height:100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition:width 0.3s ease; border-radius: 5px;"></div>
-                </div>
-                <div class="download-progress-text" id="ddProgressText" style="font-size: 14px; color: #fff; font-weight: 500;">Mempersiapkan...</div>
-              </div>
-            </div>
-            <div id="ddErrorSection" style="display:none;">
-              <div style="text-align: center; padding: 16px; background: rgba(255,59,48,0.1); border: 1px solid rgba(255,59,48,0.3); border-radius: 12px; margin-bottom: 12px;">
-                <div style="color:#ff6b6b; font-size: 16px; font-weight: 600; margin-bottom: 8px;">❌ Download Gagal</div>
-                <div class="download-item" style="color:#ccc; font-size: 13px; margin-bottom: 12px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;" id="ddErrorMsg"></div>
-                <div style="font-size: 13px; color: #bbb; margin-bottom: 8px;">Coba buka link langsung:</div>
-                <a id="ddErrorLink" href="#" target="_blank" rel="noopener" style="color: var(--accent2); font-weight: 600; text-decoration: none; padding: 8px 16px; background: rgba(0,255,136,0.1); border-radius: 8px; display: inline-block; transition: all 0.2s ease;">🔗 Buka di jendela baru</a>
-              </div>
-            </div>
-          </div>
-          <div class="download-detail-actions">
-            <button class="btn-act" id="ddStartBtn" onclick="startDownloadFromDetail()" disabled>Download</button>
-            <button class="btn-act" id="ddCancelBtn" style="background:rgba(255,255,255,0.1); color:#fff; box-shadow:none; display:none;" onclick="cancelDownload()">Cancel</button>
-            <button class="btn-act" style="background:rgba(255,255,255,0.1); color:#fff; box-shadow:none" onclick="closeDownloadDetail()">Tutup</button>
-          </div>
-        </div>
       </div>
       <div class="download-progress" id="downloadProgress" style="display:none;">
         <div class="download-progress-bar">
@@ -6125,51 +5995,6 @@
     const storage = firebase.storage();
 
     // ============================================================
-    // FIREBASE APP CHECK - Security Enhancement
-    // ============================================================
-    // App Check helps protect Firebase resources from abuse by ensuring
-    // that requests come from legitimate apps. It uses reCAPTCHA v3 to
-    // verify that requests are coming from real users and not bots.
-    // This adds an extra layer of security to database and storage operations.
-    // ============================================================
-    try {
-      const appCheck = firebase.appCheck();
-      appCheck.activate(
-        new firebase.appCheck.ReCaptchaV3Provider('6LcH7KIsAAAAAMzHThJ6DX3kXlKssbOsKMDQcXxb'),
-        true // Set to true for debug mode during development
-      );
-      console.log('🔒 Firebase App Check activated successfully with reCAPTCHA v3');
-
-      // Test App Check token generation
-      appCheck.getToken().then(token => {
-        if (token && token.token) {
-          console.log('✅ App Check token generated successfully');
-        } else {
-          console.warn('⚠️ App Check token generation returned empty token');
-        }
-      }).catch(error => {
-        console.warn('⚠️ App Check token generation failed:', error);
-      });
-
-    } catch (error) {
-      console.error('❌ Failed to initialize Firebase App Check:', error);
-      showToast('App Check initialization failed - some security features may not work', 'warning');
-    }
-
-    // Function to verify App Check status
-    function checkAppCheckStatus() {
-      try {
-        const appCheck = firebase.appCheck();
-        return appCheck.getToken().then(token => {
-          return !!(token && token.token);
-        }).catch(() => false);
-      } catch (error) {
-        console.error('❌ Cannot check App Check status:', error);
-        return false;
-      }
-    }
-
-    // ============================================================
     // SUPABASE CONFIGURATION - v3.2.3
     // ============================================================
     const supabaseUrl = 'https://rirernnkstrjjquvblge.supabase.co';
@@ -6412,7 +6237,6 @@
     let currentProfileUid = null;
     let adminFloatInterval = null;
     let userQuestState = { daily: {}, weekly: {} };
-    let currentDownloadAbort = null;
     let listenDailySeconds = 0;
     let listenWeeklySeconds = 0;
     let lastListenTick = 0;
@@ -7009,9 +6833,9 @@
       const profHeader = document.querySelector(headerSelector);
       if (!profHeader || !uid) return;
       
-      // Remove existing ranking badge container
-      const existingBadgeContainer = profHeader.querySelector('.mp-ranking-badges');
-      if (existingBadgeContainer) existingBadgeContainer.remove();
+      // Remove existing badge
+      const existingBadge = profHeader.querySelector('.mp-ranking-badge');
+      if (existingBadge) existingBadge.remove();
       
       try {
         // Get all users data
@@ -7570,8 +7394,7 @@
       { id: 'weekly_followers_50', title: 'Popular Creator', desc: 'Dapatkan 50 followers', reward: 100, max: 50, type: 'weekly', enabled: true },
       { id: 'weekly_new_tags_2', title: 'Tag Collector', desc: 'Dapatkan 2 tag baru', reward: 50, max: 2, type: 'weekly', enabled: true },
       { id: 'weekly_active_creator', title: 'Active Creator', desc: 'Upload 10 music', reward: 50, max: 10, type: 'weekly', enabled: true },
-      { id: 'weekly_ultra_uploader', title: 'Ultra Uploader', desc: 'Upload 20 music', reward: 120, max: 20, type: 'weekly', enabled: true },
-      { id: 'weekly_download_music_2', title: 'Music Collector', desc: 'Download 2 musik random', reward: 30, max: 2, type: 'weekly', enabled: true }
+      { id: 'weekly_ultra_uploader', title: 'Ultra Uploader', desc: 'Upload 20 music', reward: 120, max: 20, type: 'weekly', enabled: true }
     ];
       const key = getWeeklyKey();
       return defs.map(def => {
@@ -7657,40 +7480,25 @@
       if (id === 'weekly_new_tags_2') return { id, type, title: 'Tag Collector', reward: 50, max: 2, enabled: true };
       if (id === 'weekly_active_creator') return { id, type, title: 'Active Creator', reward: 50, max: 10, enabled: true };
       if (id === 'weekly_ultra_uploader') return { id, type, title: 'Ultra Uploader', reward: 120, max: 20, enabled: true };
-      if (id === 'weekly_download_music_2') return { id, type, title: 'Music Collector', reward: 30, max: 2, enabled: true };
     }
     return null;
   }
     function updateQuestProgress(type, id, delta, uidOverride) {
-      if (!auth || !auth.currentUser || !delta) {
-        console.warn('⚠️ updateQuestProgress: Missing auth, currentUser, or delta');
-        return Promise.reject(new Error('Missing required parameters'));
-      }
+      if (!auth || !auth.currentUser || !delta) return;
       const def = getQuestDef(type, id);
-      if (!def || def.enabled === false) {
-        console.warn('⚠️ updateQuestProgress: Quest not found or disabled:', type, id);
-        return Promise.reject(new Error('Quest not found or disabled'));
-      }
+      if (!def || def.enabled === false) return;
       const uid = uidOverride || auth.currentUser.uid;
       const periodKey = type === 'daily' ? getDailyKey() : getWeeklyKey();
-      console.log('📊 Updating quest:', { type, id, delta, uid, periodKey });
-
       const ref = db.ref('userQuests/' + uid + '/' + type + '/' + id);
       return ref.transaction(cur => {
         if (!cur || cur.periodKey !== periodKey) {
           const curVal = Math.min(delta, def.max);
-          console.log('📊 New quest period, setting cur to:', curVal);
           return { periodKey, cur: curVal, claimed: false };
         }
         const curVal = cur.cur || 0;
         const nextVal = Math.min(curVal + delta, def.max);
-        if (nextVal === curVal) {
-          console.log('📊 Quest already at max, no change needed');
-          return cur;
-        }
-
-        console.log('📊 Quest progress:', curVal, '->', nextVal, '/', def.max);
-
+        if (nextVal === curVal) return cur;
+        
         // Check if quest just completed
         if (curVal < def.max && nextVal >= def.max) {
           // Quest completed! Show toast
@@ -7700,31 +7508,21 @@
             'daily_listener': 'Active Listener',
             'weekly_active_creator': 'Active Creator',
             'weekly_social_butterfly': 'Social Butterfly',
-            'weekly_music_explorer': 'Music Explorer',
-            'weekly_download_music_2': 'Music Collector'
+            'weekly_music_explorer': 'Music Explorer'
           };
           const name = questNames[id] || id;
           const typeLabel = type === 'daily' ? 'Harian' : 'Mingguan';
-          console.log('🎉 Quest completed:', name);
           showToast(`[Misi ${typeLabel}] ${name} Selesai! 🎉`, 'success');
         }
-
+        
         return { ...cur, cur: nextVal };
       }).then(res => {
-        if (!res.committed) {
-          console.warn('⚠️ Quest transaction not committed');
-          return;
-        }
-        console.log('✅ Quest transaction committed successfully');
+        if (!res.committed) return;
         if (uid === (auth.currentUser && auth.currentUser.uid)) {
           if (!userQuestState[type]) userQuestState[type] = {};
           userQuestState[type][id] = res.snapshot.val() || {};
-          console.log('📊 Updated local quest state:', userQuestState[type][id]);
         }
-      }).catch(err => {
-        console.error('❌ Quest update error:', err);
-        throw err;
-      });
+      }).catch(() => {});
     }
     function grantCoins(uid, amount) {
       if (!uid || !amount || amount <= 0) return Promise.resolve();
@@ -9511,119 +9309,21 @@
     }
     function copyRawUrl() { document.getElementById('copyAudioText').textContent = songs[i]?.url || ''; document.getElementById('modalCopyAudio').style.display = 'block'; }
     function copyBuiltAudio() { const t = document.getElementById('copyAudioText').textContent; if (!t) return; navigator.clipboard.writeText(t).then(() => showToast('URL audio disalin')); document.getElementById('modalCopyAudio').style.display = 'none'; }
-    function showDownloadDetail() {
-      const url = songs[i]?.url;
-      if (!url) { msg('URL lagu tidak tersedia'); return; }
-
-      const ddModal = document.getElementById('downloadDetailModal');
-      const ddSize = document.getElementById('ddSize');
-      const ddFile = document.getElementById('ddFile');
-      const ddLink = document.getElementById('ddLink');
-      const ddCaptcha = document.getElementById('ddCaptcha');
-      const ddStartBtn = document.getElementById('ddStartBtn');
-      const ddFormSection = document.getElementById('ddFormSection');
-      const ddProgressSection = document.getElementById('ddProgressSection');
-      const ddErrorSection = document.getElementById('ddErrorSection');
-
-      if (!ddModal || !ddSize || !ddFile || !ddLink || !ddCaptcha || !ddStartBtn) return;
-
-      // Reset to form section
-      ddFormSection.style.display = 'block';
-      ddProgressSection.style.display = 'none';
-      ddErrorSection.style.display = 'none';
-      
-      ddFile.textContent = songs[i]?.title ? songs[i].title : 'Unknown';
-      ddLink.href = url;
-      ddLink.textContent = url;
-      ddSize.textContent = 'Menghitung...';
-      ddCaptcha.checked = false;
-      ddStartBtn.disabled = true;
-      ddStartBtn.style.display = 'block';
-      document.getElementById('ddCancelBtn').style.display = 'none';
-
-      ddCaptcha.onchange = () => {
-        ddStartBtn.disabled = !ddCaptcha.checked;
-      };
-
-      // Fetch content-length head if possible
-      fetch(url, { method: 'HEAD' })
-        .then(resp => {
-          const cl = resp.headers.get('content-length');
-          if (cl) {
-            const mb = (parseInt(cl, 10) / (1024 * 1024)).toFixed(2);
-            ddSize.textContent = `${mb} MB`;
-          } else {
-            ddSize.textContent = 'Tidak diketahui';
-          }
-        }).catch(() => {
-          ddSize.textContent = 'Tidak diketahui';
-        });
-
-      ddModal.style.display = 'flex';
-    }
-
-    function closeDownloadDetail() {
-      const ddModal = document.getElementById('downloadDetailModal');
-      if (ddModal) ddModal.style.display = 'none';
-      // Abort any ongoing download
-      if (currentDownloadAbort) {
-        currentDownloadAbort.abort();
-        currentDownloadAbort = null;
-      }
-    }
-
-    function cancelDownload() {
-      if (currentDownloadAbort) {
-        currentDownloadAbort.abort();
-        currentDownloadAbort = null;
-      }
-      const ddFormSection = document.getElementById('ddFormSection');
-      const ddProgressSection = document.getElementById('ddProgressSection');
-      if (ddFormSection) ddFormSection.style.display = 'block';
-      if (ddProgressSection) ddProgressSection.style.display = 'none';
-      
-      const ddStartBtn = document.getElementById('ddStartBtn');
-      const ddCancelBtn = document.getElementById('ddCancelBtn');
-      if (ddStartBtn) { ddStartBtn.disabled = false; ddStartBtn.style.display = 'block'; }
-      if (ddCancelBtn) ddCancelBtn.style.display = 'none';
-      
-      showToast('Download dibatalkan');
-    }
-
-    function startDownloadFromDetail() {
-      const ddCaptcha = document.getElementById('ddCaptcha');
-      if (!ddCaptcha || !ddCaptcha.checked) {
-        msg('Centang verifikasi captcha terlebih dahulu');
-        return;
-      }
-      downloadSong();
-    }
-
     async function downloadSong() {
       const url = songs[i]?.url;
       if (!url) { msg('URL lagu tidak tersedia'); return; }
 
-      const ddFormSection = document.getElementById('ddFormSection');
-      const ddProgressSection = document.getElementById('ddProgressSection');
-      const ddErrorSection = document.getElementById('ddErrorSection');
-      const ddProgressFill = document.getElementById('ddProgressFill');
-      const ddProgressText = document.getElementById('ddProgressText');
-      const ddStartBtn = document.getElementById('ddStartBtn');
-      const ddCancelBtn = document.getElementById('ddCancelBtn');
-
-      // Show progress section
-      if (ddFormSection) ddFormSection.style.display = 'none';
-      if (ddProgressSection) ddProgressSection.style.display = 'block';
-      if (ddErrorSection) ddErrorSection.style.display = 'none';
-      if (ddStartBtn) ddStartBtn.style.display = 'none';
-      if (ddCancelBtn) ddCancelBtn.style.display = 'block';
-
-      // Setup abort controller
-      currentDownloadAbort = new AbortController();
-      let downloadPercent = 0;
+      const progressEl = document.getElementById('downloadProgress');
+      const fillEl = document.getElementById('downloadProgressFill');
+      const textEl = document.getElementById('downloadProgressText');
+      if (progressEl && fillEl && textEl) {
+        progressEl.style.display = 'flex';
+        fillEl.style.width = '0%';
+        textEl.textContent = 'Mulai download...';
+      }
 
       try {
-        const response = await fetch(url, { signal: currentDownloadAbort.signal });
+        const response = await fetch(url);
         if (!response.ok) throw new Error('HTTP ' + response.status);
 
         const contentLength = response.headers.get('content-length');
@@ -9637,20 +9337,13 @@
           if (done) break;
           chunks.push(value);
           receivedLength += value.length;
-          
           let percent = totalBytes ? Math.round((receivedLength / totalBytes) * 100) : null;
-          downloadPercent = percent || 0;
-          
-          if (ddProgressFill && ddProgressText) {
+          if (progressEl && fillEl && textEl) {
             if (percent !== null) {
-              ddProgressFill.style.width = percent + '%';
-              ddProgressText.innerHTML = `<span class="download-spinner"></span>Downloading ${percent}%`;
-              // Disable cancel button at 60%
-              if (ddCancelBtn && percent >= 60) {
-                ddCancelBtn.disabled = true;
-              }
+              fillEl.style.width = percent + '%';
+              textEl.textContent = `Downloading ${percent}%`;
             } else {
-              ddProgressText.innerHTML = `<span class="download-spinner"></span>Downloading ${Math.round(receivedLength / 1024)} KB`;
+              textEl.textContent = `Downloading ${Math.round(receivedLength / 1024)} KB`; 
             }
           }
         }
@@ -9667,82 +9360,19 @@
         document.body.removeChild(a);
         URL.revokeObjectURL(objectUrl);
 
-        if (ddProgressFill && ddProgressText) {
-          ddProgressFill.style.width = '100%';
-          ddProgressText.innerHTML = '✅ Selesai!';
+        if (progressEl && fillEl && textEl) {
+          fillEl.style.width = '100%';
+          textEl.textContent = 'Selesai!';
         }
-
-        // Add success animation
-        const ddCard = document.getElementById('downloadDetailModal');
-        if (ddCard) {
-          ddCard.classList.add('download-complete');
-          setTimeout(() => {
-            ddCard.classList.remove('download-complete');
-          }, 600);
-        }
-
-        // Add quest progress
-        if (auth.currentUser && userData) {
-          console.log('🎵 Updating quest progress for download - user:', auth.currentUser.uid);
-          console.log('🎵 Quest ID: weekly_download_music_2, delta: 1');
-          updateQuestProgress('weekly', 'weekly_download_music_2', 1, auth.currentUser.uid).then(() => {
-            console.log('✅ Quest progress updated successfully for Music Collector');
-            // Refresh quest UI immediately
-            loadUserQuests().then(() => {
-              renderEventCenter();
-              console.log('🔄 Quest UI refreshed after download');
-              // Show success message
-              showToast('Quest "Music Collector" progress updated! 📥', 'success');
-            }).catch(err => {
-              console.error('❌ Failed to refresh quest UI:', err);
-            });
-          }).catch(err => {
-            console.error('❌ Failed to update quest progress:', err);
-            showToast('Quest update failed, but download successful', 'warning');
-          });
-        } else {
-          console.warn('⚠️ Cannot update quest: user not authenticated or userData missing');
-        }
-
         showToast('Download berhasil, check folder unduhan Anda.');
-        
-        // Disable cancel button
-        if (ddCancelBtn) ddCancelBtn.disabled = true;
-        
-        // Auto close after 2 seconds
-        setTimeout(() => {
-          closeDownloadDetail();
-        }, 2000);
-
       } catch (error) {
         console.error('Download error:', error);
-        
-        // If aborted, don't show error
-        if (error.name === 'AbortError') {
-          return;
-        }
-
-        // Show error section
-        if (ddFormSection) ddFormSection.style.display = 'none';
-        if (ddProgressSection) ddProgressSection.style.display = 'none';
-        if (ddErrorSection) ddErrorSection.style.display = 'block';
-        
-        const ddErrorMsg = document.getElementById('ddErrorMsg');
-        const ddErrorLink = document.getElementById('ddErrorLink');
-        
-        if (ddErrorMsg) {
-          ddErrorMsg.textContent = 'Karna: ' + (error.message || 'Terjadi kesalahan saat download');
-        }
-        
-        if (ddErrorLink) {
-          ddErrorLink.href = url;
-        }
-
-        if (ddStartBtn) { ddStartBtn.style.display = 'block'; ddStartBtn.disabled = false; }
-        if (ddCancelBtn) ddCancelBtn.style.display = 'none';
-
+        msg('Gagal download: ' + (error.message || 'Coba lagi')); 
+        if (textEl) textEl.textContent = 'Download gagal';
       } finally {
-        currentDownloadAbort = null;
+        setTimeout(() => {
+          if (progressEl) progressEl.style.display = 'none';
+        }, 2500);
       }
     }
     function openReq() { document.getElementById('modalReq').style.display = 'block'; }
