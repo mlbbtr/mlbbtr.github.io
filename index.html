@@ -7,12 +7,14 @@
   <link rel="icon" type="image/png" href="exemusicicon.png">
 
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app-check.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app-check.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js" defer></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Exo+2:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -2049,8 +2051,20 @@
     #ddErrorSection #ddErrorLink { color: var(--accent2); text-decoration: none; font-weight: 600; transition: all 0.3s ease; }
     #ddErrorSection #ddErrorLink:hover { color: #00ff88; text-shadow: 0 0 8px rgba(0,255,136,0.5); }
 
-    /* Checkbox styling */
-    .download-item input[type="checkbox"] { margin-right: 8px; accent-color: var(--accent2); transform: scale(1.2); }
+    /* reCAPTCHA styling */
+    .g-recaptcha {
+      display: inline-block;
+      transform: scale(0.85);
+      transform-origin: center;
+      margin: 0 auto;
+    }
+
+    /* Responsive reCAPTCHA */
+    @media (max-width: 480px) {
+      .g-recaptcha {
+        transform: scale(0.75);
+      }
+    }
 
     @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes modalScaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -5229,7 +5243,10 @@
               <div class="download-item"><b>File:</b> <span id="ddFile">-</span></div>
               <div class="download-item"><b>Link:</b> <a id="ddLink" href="#" target="_blank" rel="noopener">-</a></div>
               <div class="download-item">
-                <label><input type="checkbox" id="ddCaptcha" /> Verif bukan robot</label>
+                <div style="text-align: center; margin: 12px 0;">
+                  <div class="g-recaptcha" data-sitekey="6LcH7KIsAAAAAMzHThJ6DX3kXlKssbOsKMDQcXxb" data-callback="onRecaptchaSuccess" data-expired-callback="onRecaptchaExpired" data-error-callback="onRecaptchaError"></div>
+                  <div style="font-size: 12px; color: #888; margin-top: 8px;">Verifikasi bahwa Anda bukan robot</div>
+                </div>
               </div>
             </div>
             <div id="ddProgressSection" style="display:none;">
@@ -9519,31 +9536,35 @@
       const ddSize = document.getElementById('ddSize');
       const ddFile = document.getElementById('ddFile');
       const ddLink = document.getElementById('ddLink');
-      const ddCaptcha = document.getElementById('ddCaptcha');
       const ddStartBtn = document.getElementById('ddStartBtn');
       const ddFormSection = document.getElementById('ddFormSection');
       const ddProgressSection = document.getElementById('ddProgressSection');
       const ddErrorSection = document.getElementById('ddErrorSection');
 
-      if (!ddModal || !ddSize || !ddFile || !ddLink || !ddCaptcha || !ddStartBtn) return;
+      if (!ddModal || !ddSize || !ddFile || !ddLink || !ddStartBtn) return;
 
       // Reset to form section
       ddFormSection.style.display = 'block';
       ddProgressSection.style.display = 'none';
       ddErrorSection.style.display = 'none';
-      
+
       ddFile.textContent = songs[i]?.title ? songs[i].title : 'Unknown';
       ddLink.href = url;
       ddLink.textContent = url;
       ddSize.textContent = 'Menghitung...';
-      ddCaptcha.checked = false;
+
+      // Reset reCAPTCHA and disable download button
+      if (window.grecaptcha) {
+        try {
+          window.grecaptcha.reset();
+        } catch (e) {
+          console.warn('reCAPTCHA reset failed:', e);
+        }
+      }
+      window.recaptchaToken = null;
       ddStartBtn.disabled = true;
       ddStartBtn.style.display = 'block';
       document.getElementById('ddCancelBtn').style.display = 'none';
-
-      ddCaptcha.onchange = () => {
-        ddStartBtn.disabled = !ddCaptcha.checked;
-      };
 
       // Fetch content-length head if possible
       fetch(url, { method: 'HEAD' })
@@ -9565,6 +9586,15 @@
     function closeDownloadDetail() {
       const ddModal = document.getElementById('downloadDetailModal');
       if (ddModal) ddModal.style.display = 'none';
+      // Reset reCAPTCHA when closing
+      if (window.grecaptcha) {
+        try {
+          window.grecaptcha.reset();
+        } catch (e) {
+          console.warn('reCAPTCHA reset on close failed:', e);
+        }
+      }
+      window.recaptchaToken = null;
       // Abort any ongoing download
       if (currentDownloadAbort) {
         currentDownloadAbort.abort();
@@ -9591,12 +9621,41 @@
     }
 
     function startDownloadFromDetail() {
-      const ddCaptcha = document.getElementById('ddCaptcha');
-      if (!ddCaptcha || !ddCaptcha.checked) {
-        msg('Centang verifikasi captcha terlebih dahulu');
+      if (!window.recaptchaToken) {
+        msg('Silakan lengkapi verifikasi reCAPTCHA terlebih dahulu');
         return;
       }
       downloadSong();
+    }
+
+    // reCAPTCHA callback functions
+    function onRecaptchaSuccess(token) {
+      console.log('✅ reCAPTCHA berhasil:', token ? 'Token valid' : 'Token kosong');
+      window.recaptchaToken = token;
+      const ddStartBtn = document.getElementById('ddStartBtn');
+      if (ddStartBtn) {
+        ddStartBtn.disabled = false;
+      }
+    }
+
+    function onRecaptchaExpired() {
+      console.log('⏰ reCAPTCHA expired');
+      window.recaptchaToken = null;
+      const ddStartBtn = document.getElementById('ddStartBtn');
+      if (ddStartBtn) {
+        ddStartBtn.disabled = true;
+      }
+      showToast('Verifikasi reCAPTCHA telah kedaluwarsa, silakan verifikasi ulang', 'warning');
+    }
+
+    function onRecaptchaError() {
+      console.error('❌ reCAPTCHA error');
+      window.recaptchaToken = null;
+      const ddStartBtn = document.getElementById('ddStartBtn');
+      if (ddStartBtn) {
+        ddStartBtn.disabled = true;
+      }
+      showToast('Terjadi kesalahan pada verifikasi reCAPTCHA', 'error');
     }
 
     async function downloadSong() {
