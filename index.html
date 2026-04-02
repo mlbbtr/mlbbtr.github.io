@@ -12,8 +12,10 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js" defer></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Exo+2:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6304042271148186" crossorigin="anonymous"></script>
@@ -60,7 +62,6 @@
                   linear-gradient(180deg, #030308 0%, #06060f 50%, #030308 100%);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       transition: opacity 0.8s ease, transform 0.8s ease;
-      pointer-events: none;
     }
     #gameLoadScreen.fade-out {
       opacity: 0;
@@ -2050,30 +2051,18 @@
     #ddErrorSection #ddErrorLink { color: var(--accent2); text-decoration: none; font-weight: 600; transition: all 0.3s ease; }
     #ddErrorSection #ddErrorLink:hover { color: #00ff88; text-shadow: 0 0 8px rgba(0,255,136,0.5); }
 
-    /* Cloudflare Turnstile styling */
-    .turnstile-container {
+    /* reCAPTCHA styling */
+    .g-recaptcha {
       display: inline-block;
-      max-width: 100%;
+      transform: scale(0.85);
+      transform-origin: center;
       margin: 0 auto;
     }
 
-    .cf-turnstile {
-      margin: 0 auto;
-      display: block;
-    }
-
-    /* Responsive Turnstile */
-    @media (max-width: 768px) {
-      .cf-turnstile {
-        transform: scale(0.85) !important;
-        transform-origin: center !important;
-      }
-    }
-
+    /* Responsive reCAPTCHA */
     @media (max-width: 480px) {
-      .cf-turnstile {
-        transform: scale(0.75) !important;
-        transform-origin: center !important;
+      .g-recaptcha {
+        transform: scale(0.75);
       }
     }
 
@@ -3599,164 +3588,46 @@
     .log-time { color: #444; }
 
     /* ============================================================
-       TOAST NOTIFICATIONS - UPDATED
+       TOAST
     ============================================================ */
     #toast-container {
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      bottom: 20px;
+      right: 20px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
       z-index: 99999;
       pointer-events: none;
-      max-width: 90vw;
     }
-
     .toast {
-      background: linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,41,59,0.95) 100%);
-      border: 1px solid rgba(148,163,184,0.3);
-      border-left: 4px solid var(--accent);
+      background: rgba(10,10,18,0.95);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-left: 3px solid var(--accent);
       color: #fff;
-      padding: 14px 20px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 500;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 12px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
-      animation: toastIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
-      backdrop-filter: blur(20px);
+      gap: 9px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+      animation: toastIn 0.3s cubic-bezier(0.68,-0.55,0.27,1.55);
+      backdrop-filter: blur(10px);
       white-space: nowrap;
       pointer-events: auto;
-      min-width: 280px;
-      max-width: 500px;
     }
-
-    .toast-content {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex: 1;
-    }
-
-    .toast-icon {
-      font-size: 16px;
-      min-width: 16px;
-    }
-
-    .toast-text {
-      flex: 1;
-      line-height: 1.4;
-    }
-
-    .toast-close {
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.6);
-      cursor: pointer;
-      padding: 4px;
-      border-radius: 4px;
-      transition: all 0.2s ease;
-      font-size: 12px;
-      opacity: 0;
-      transform: scale(0.8);
-    }
-
-    .toast:hover .toast-close {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .toast-close:hover {
-      color: #fff;
-      background: rgba(255,255,255,0.1);
-    }
-
-    .toast.hide {
-      animation: toastOut 0.3s forwards;
-    }
-
-    .toast.toast-success {
-      border-left-color: #22c55e;
-      background: linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(15,23,42,0.95) 100%);
-    }
-
-    .toast.toast-error {
-      border-left-color: #f97316;
-      background: linear-gradient(135deg, rgba(249,115,22,0.1) 0%, rgba(15,23,42,0.95) 100%);
-    }
-
-    .toast.toast-event {
-      border-left-color: #38bdf8;
-      background: linear-gradient(135deg, rgba(56,189,248,0.1) 0%, rgba(15,23,42,0.95) 100%);
-    }
-
-    .toast.toast-info {
-      border-left-color: #8b5cf6;
-      background: linear-gradient(135deg, rgba(139,92,246,0.1) 0%, rgba(15,23,42,0.95) 100%);
-    }
-
+    .toast.hide { animation: toastOut 0.3s forwards; }
+    .toast.toast-success { border-left-color: #22c55e; }
+    .toast.toast-error { border-left-color: #f97316; }
+    .toast.toast-event { border-left-color: #38bdf8; }
     @keyframes toastIn {
-      from {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.8) translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1) translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
-
     @keyframes toastOut {
-      from {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1) translateY(0);
-      }
-      to {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.9) translateY(-10px);
-      }
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .toast {
-        min-width: 250px;
-        max-width: 85vw;
-        padding: 12px 16px;
-        font-size: 13px;
-      }
-
-      .toast-content {
-        gap: 10px;
-      }
-
-      .toast-icon {
-        font-size: 14px;
-        min-width: 14px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .toast {
-        min-width: 200px;
-        max-width: 90vw;
-        padding: 10px 14px;
-        font-size: 12px;
-      }
-
-      .toast-content {
-        gap: 8px;
-      }
-
-      .toast-icon {
-        font-size: 12px;
-        min-width: 12px;
-      }
+      from { opacity: 1; transform: translateY(0) scale(1); }
+      to { opacity: 0; transform: translateY(-12px) scale(0.96); }
     }
 
     .global-event-pill {
@@ -5372,21 +5243,9 @@
               <div class="download-item"><b>File:</b> <span id="ddFile">-</span></div>
               <div class="download-item"><b>Link:</b> <a id="ddLink" href="#" target="_blank" rel="noopener">-</a></div>
               <div class="download-item">
-                <div style="text-align: center; margin: 16px 0;">
-                  <div class="turnstile-container" style="display: inline-block; max-width: 100%; margin-bottom: 8px;">
-                    <div
-                      id="download-turnstile"
-                      class="cf-turnstile"
-                      data-sitekey="0x4AAAAAACvnkQO28G3-oFga"
-                      data-theme="dark"
-                      data-callback="onDownloadCaptchaSuccess"
-                      data-expired-callback="onDownloadCaptchaExpired"
-                      data-error-callback="onDownloadCaptchaError"
-                      data-size="normal"
-                      style="transform: scale(0.9); transform-origin: center;"
-                    ></div>
-                  </div>
-                  <div style="font-size: 12px; color: #888; margin-top: 4px;">Verifikasi keamanan Cloudflare</div>
+                <div style="text-align: center; margin: 12px 0;">
+                  <div class="g-recaptcha" data-sitekey="6LcH7KIsAAAAAMzHThJ6DX3kXlKssbOsKMDQcXxb" data-callback="onRecaptchaSuccess" data-expired-callback="onRecaptchaExpired" data-error-callback="onRecaptchaError"></div>
+                  <div style="font-size: 12px; color: #888; margin-top: 8px;">Verifikasi bahwa Anda bukan robot</div>
                 </div>
               </div>
             </div>
@@ -6226,60 +6085,44 @@
     // WELCOME ANIMATION
     // ============================================================
     function showWelcomeAnimation() {
-      try {
-        console.log('🎉 Starting welcome animation...');
-        const overlay = document.getElementById('welcomeOverlay');
-        const sparklesContainer = document.getElementById('welcomeSparklesContainer');
-        const welcomeText = document.getElementById('welcomeText');
-
-        if (overlay && welcomeText) {
-          // Set welcome text based on login status
-          if (typeof auth !== 'undefined' && auth && auth.currentUser && userData && userData.username) {
-            welcomeText.innerHTML = `Welcome Back<br>${userData.username}!!`;
-          } else {
-            welcomeText.innerHTML = 'Welcome To<br>ExeMusic!!';
-          }
-
-          overlay.classList.add('show');
-
-          // Create sparkles
-          if (sparklesContainer) {
-            for (let i = 0; i < 30; i++) {
-              setTimeout(() => {
-                try {
-                  const sparkle = document.createElement('div');
-                  sparkle.className = 'sparkle';
-                  sparkle.style.left = Math.random() * 100 + '%';
-                  sparkle.style.top = 50 + Math.random() * 20 + '%';
-                  sparkle.style.animationDelay = Math.random() * 0.5 + 's';
-                  sparklesContainer.appendChild(sparkle);
-
-                  setTimeout(() => sparkle.remove(), 2500);
-                } catch (e) {
-                  console.warn('⚠️ Error creating sparkle:', e);
-                }
-              }, i * 50);
-            }
-          }
-
-          // Hide after 3 seconds
-          setTimeout(() => {
-            try {
-              overlay.style.animation = 'welcomeFadeIn 0.5s ease reverse';
-              setTimeout(() => {
-                overlay.classList.remove('show');
-                overlay.style.animation = '';
-              }, 500);
-            } catch (e) {
-              console.warn('⚠️ Error hiding welcome overlay:', e);
-              overlay.classList.remove('show');
-            }
-          }, 3000);
+      const overlay = document.getElementById('welcomeOverlay');
+      const sparklesContainer = document.getElementById('welcomeSparklesContainer');
+      const welcomeText = document.getElementById('welcomeText');
+      
+      if (overlay && welcomeText) {
+        // Set welcome text based on login status
+        if (auth.currentUser && userData && userData.username) {
+          welcomeText.innerHTML = `Welcome Back<br>${userData.username}!!`;
         } else {
-          console.warn('⚠️ Welcome overlay elements not found');
+          welcomeText.innerHTML = 'Welcome To<br>ExeMusic!!';
         }
-      } catch (e) {
-        console.error('❌ Error in showWelcomeAnimation:', e);
+        
+        overlay.classList.add('show');
+        
+        // Create sparkles
+        if (sparklesContainer) {
+          for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+              const sparkle = document.createElement('div');
+              sparkle.className = 'sparkle';
+              sparkle.style.left = Math.random() * 100 + '%';
+              sparkle.style.top = 50 + Math.random() * 20 + '%';
+              sparkle.style.animationDelay = Math.random() * 0.5 + 's';
+              sparklesContainer.appendChild(sparkle);
+              
+              setTimeout(() => sparkle.remove(), 2500);
+            }, i * 50);
+          }
+        }
+        
+        // Hide after 3 seconds
+        setTimeout(() => {
+          overlay.style.animation = 'welcomeFadeIn 0.5s ease reverse';
+          setTimeout(() => {
+            overlay.classList.remove('show');
+            overlay.style.animation = '';
+          }, 500);
+        }, 3000);
       }
     }
 
@@ -6293,48 +6136,42 @@
       appId: "1:722057744401:web:cd6a6a103692059bda61b0",
       measurementId: "G-2P56Y7QQ18"
     };
-    // Initialize Firebase after DOM is ready
-    window.addEventListener('DOMContentLoaded', function() {
-      console.log('🚀 DOM Content Loaded - Starting initialization...');
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+    const storage = firebase.storage();
 
-      // Force dismiss loading screen immediately as backup
-      setTimeout(() => {
-        const screen = document.getElementById('gameLoadScreen');
-        if (screen && screen.style.display !== 'none') {
-          console.log('🔧 Force dismissing loading screen on DOM load');
-          screen.style.display = 'none';
-          try {
-            showWelcomeAnimation();
-          } catch (e) {
-            console.warn('⚠️ Welcome animation failed:', e);
-          }
+    // ============================================================
+    // FIREBASE APP CHECK - Security Enhancement
+    // ============================================================
+    // App Check helps protect Firebase resources from abuse by ensuring
+    // that requests come from legitimate apps. It uses reCAPTCHA v3 to
+    // verify that requests are coming from real users and not bots.
+    // This adds an extra layer of security to database and storage operations.
+    // ============================================================
+    try {
+      const appCheck = firebase.appCheck();
+      appCheck.activate(
+        new firebase.appCheck.ReCaptchaV3Provider('6LcH7KIsAAAAAMzHThJ6DX3kXlKssbOsKMDQcXxb'),
+        true // Set to true for debug mode during development
+      );
+      console.log('🔒 Firebase App Check activated successfully with reCAPTCHA v3');
+
+      // Test App Check token generation
+      appCheck.getToken().then(token => {
+        if (token && token.token) {
+          console.log('✅ App Check token generated successfully');
+        } else {
+          console.warn('⚠️ App Check token generation returned empty token');
         }
-      }, 1000);
+      }).catch(error => {
+        console.warn('⚠️ App Check token generation failed:', error);
+      });
 
-      console.log('🚀 Initializing Firebase...');
-      firebase.initializeApp(firebaseConfig);
-      console.log('✅ Firebase initialized successfully');
-      const auth = firebase.auth();
-      const db = firebase.database();
-      const storage = firebase.storage();
-        console.log('✅ Firebase services initialized');
-
-      // ============================================================
-      // FIREBASE APP CHECK - Security Enhancement
-      // ============================================================
-      try {
-        console.log('🔒 Initializing Firebase App Check...');
-        const appCheck = firebase.appCheck();
-        appCheck.activate(
-          new firebase.appCheck.ReCaptchaV3Provider('6LcH7KIsAAAAAMzHThJ6DX3kXlKssbOsKMDQcXxb'),
-          true // Set to true for debug mode during development
-        );
-        console.log('🔒 Firebase App Check activated successfully with reCAPTCHA v3');
-      } catch (error) {
-        console.error('❌ Failed to initialize Firebase App Check:', error);
-        console.warn('⚠️ Continuing without App Check - some security features may not work');
-        showToast('App Check initialization failed - some security features may not work', 'warning');
-      }
+    } catch (error) {
+      console.error('❌ Failed to initialize Firebase App Check:', error);
+      showToast('App Check initialization failed - some security features may not work', 'warning');
+    }
 
     // Function to verify App Check status
     function checkAppCheckStatus() {
@@ -6395,102 +6232,27 @@
       next();
     }
     function dismissLoader() {
-      try {
-        console.log('✅ Dismissing loader...');
-        advanceLoader(100, 'READY!');
-        setTimeout(() => {
-          const screen = document.getElementById('gameLoadScreen');
-          if (screen) {
-            console.log('🎬 Fading out loading screen...');
-            screen.classList.add('fade-out');
-            setTimeout(() => {
-              screen.style.display = 'none';
-              console.log('✨ Loading screen hidden, showing welcome animation...');
-              // Show welcome animation after loading completes
-              try {
-                showWelcomeAnimation();
-              } catch (e) {
-                console.error('❌ Error in showWelcomeAnimation:', e);
-              }
-            }, 800);
-          }
-        }, 400);
-      } catch (e) {
-        console.error('❌ Error in dismissLoader:', e);
-        // Force hide loading screen on error
+      advanceLoader(100, 'READY!');
+      setTimeout(() => {
         const screen = document.getElementById('gameLoadScreen');
         if (screen) {
-          screen.style.display = 'none';
-          console.log('✨ Force hidden loading screen due to error');
+          screen.classList.add('fade-out');
+          setTimeout(() => { 
+            screen.style.display = 'none';
+            // Show welcome animation after loading completes
+            showWelcomeAnimation();
+          }, 800);
         }
-      }
+      }, 400);
     }
     runLoadSequence();
 
-    // Safety timeout - force dismiss loader after 15 seconds if Firebase fails
-    setTimeout(() => {
-      const screen = document.getElementById('gameLoadScreen');
-      if (screen && screen.style.display !== 'none') {
-        console.warn('⚠️ Loading timeout reached - forcing loader dismissal');
-        dismissLoader();
-      }
-    }, 15000);
-
-    // Additional safety - force dismiss after 8 seconds regardless
-    setTimeout(() => {
-      const screen = document.getElementById('gameLoadScreen');
-      if (screen && screen.style.display !== 'none') {
-        console.warn('🚨 Emergency loading timeout - forcing dismissal');
-        screen.classList.add('fade-out');
-        setTimeout(() => {
-          screen.style.display = 'none';
-          showWelcomeAnimation();
-          console.log('✨ Emergency dismissal completed');
-        }, 500);
-      }
-    }, 8000);
-
-    // Ultra safety - force dismiss after 3 seconds as last resort
-    setTimeout(() => {
-      const screen = document.getElementById('gameLoadScreen');
-      if (screen && screen.style.display !== 'none') {
-        console.error('🚨🚨 CRITICAL: Force dismissing loading screen');
-        screen.style.display = 'none';
-        screen.style.opacity = '0';
-        showWelcomeAnimation();
-        console.log('✨ Critical dismissal completed');
-      }
-    }, 3000);
-
-    // Global error handler for debugging
-    window.addEventListener('error', function(e) {
-      console.error('🚨 Global error caught:', e.error);
-      console.error('🚨 Error message:', e.message);
-      console.error('🚨 Error file:', e.filename);
-      console.error('🚨 Error line:', e.lineno);
-
-      // Force hide loading screen on any error
-      setTimeout(() => {
-        const screen = document.getElementById('gameLoadScreen');
-        if (screen && screen.style.display !== 'none') {
-          console.log('🚨 Force hiding loading screen due to error');
-          screen.style.display = 'none';
-        }
-      }, 100);
-    });
-
-    window.addEventListener('unhandledrejection', function(e) {
-      console.error('🚨 Unhandled promise rejection:', e.reason);
-
-      // Force hide loading screen on promise rejection
-      setTimeout(() => {
-        const screen = document.getElementById('gameLoadScreen');
-        if (screen && screen.style.display !== 'none') {
-          console.log('🚨 Force hiding loading screen due to promise rejection');
-          screen.style.display = 'none';
-        }
-      }, 100);
-    });
+    let heartsInterval = null;
+    let heartsMode = 'love';
+    let ketupatInterval = null;
+    let profileMusicInterval = null;
+    let profileMusicDuration = 0;
+    let profileMusicElapsed = 0;
     
     function createHeart() {
       const c = document.getElementById('heartsContainer');
@@ -8104,22 +7866,16 @@
     }
 
     // ============================================================
-    // TOAST NOTIFICATIONS - UPDATED
+    // TOAST
     // ============================================================
     function showToast(text, type = 'info') {
       const container = document.getElementById('toast-container');
       if (!container) return;
-
-      // Remove oldest toast if we have 3 already
       if (container.children.length >= 3) {
-        const oldestToast = container.firstElementChild;
-        oldestToast.classList.add('hide');
-        setTimeout(() => oldestToast.remove(), 300);
+        container.removeChild(container.firstElementChild);
       }
-
       const el = document.createElement('div');
-      el.className = 'toast toast-' + type;
-
+      el.className = 'toast';
       let icon = 'fa-info-circle';
       if (type === 'success') icon = 'fa-check-circle';
       else if (type === 'error') icon = 'fa-exclamation-triangle';
@@ -8132,33 +7888,11 @@
         else if (text.includes('✅') || text.includes('berhasil')) icon = 'fa-check-circle';
         else if (text.includes('Error') || text.includes('❌')) icon = 'fa-exclamation-triangle';
       }
-
-      el.innerHTML = `
-        <div class="toast-content">
-          <i class="fas ${icon} toast-icon"></i>
-          <span class="toast-text">${text}</span>
-        </div>
-        <button class="toast-close" onclick="this.parentElement.classList.add('hide'); setTimeout(() => this.parentElement.remove(), 300);">
-          <i class="fas fa-times"></i>
-        </button>
-      `;
-
+      el.classList.add('toast-' + type);
+      el.innerHTML = `<i class="fas ${icon}"></i> <span>${text}</span>`;
       container.appendChild(el);
-
-      // Auto-hide after 3 seconds (increased from 2.5s for better UX)
-      const autoHideTimeout = setTimeout(() => {
-        if (el.parentElement) { // Check if still attached
-          el.classList.add('hide');
-          setTimeout(() => el.remove(), 300);
-        }
-      }, 3000);
-
-      // Clear timeout if manually closed
-      el.addEventListener('click', (e) => {
-        if (e.target.closest('.toast-close')) {
-          clearTimeout(autoHideTimeout);
-        }
-      });
+      setTimeout(() => el.classList.add('hide'), 2500);
+      setTimeout(() => el.remove(), 2900);
     }
     function msg(m) { showToast(m); }
     function closeModal() {
@@ -8679,13 +8413,11 @@
     setupGlobalNotifsWatcher();
     setupAdminFloatChatWatcher();
 
-      // ============================================================
-      // AUTH
-      // ============================================================
-      console.log('🔄 Setting up auth state listener...');
-      auth.onAuthStateChanged(u => {
-        console.log('🔄 Auth state changed:', u ? 'User logged in' : 'No user');
-        if (u) {
+    // ============================================================
+    // AUTH
+    // ============================================================
+    auth.onAuthStateChanged(u => {
+      if (u) {
         db.ref('users/' + u.uid).on('value', snap => {
           userData = snap.val();
           if (!userData) { dismissLoader(); return; }
@@ -8804,7 +8536,7 @@
       }
     });
 
-    }); // End of DOMContentLoaded
+    // ============================================================
     // VIP TRIAL BANNER
     // ============================================================
     function updateVipTrialBanner(expireAt) {
@@ -9821,15 +9553,15 @@
       ddLink.textContent = url;
       ddSize.textContent = 'Menghitung...';
 
-      // Reset Turnstile and disable download button
-      if (window.turnstile) {
+      // Reset reCAPTCHA and disable download button
+      if (window.grecaptcha) {
         try {
-          window.turnstile.reset('#download-turnstile');
+          window.grecaptcha.reset();
         } catch (e) {
-          console.warn('Turnstile reset failed:', e);
+          console.warn('reCAPTCHA reset failed:', e);
         }
       }
-      window.downloadCaptchaToken = null;
+      window.recaptchaToken = null;
       ddStartBtn.disabled = true;
       ddStartBtn.style.display = 'block';
       document.getElementById('ddCancelBtn').style.display = 'none';
@@ -9889,41 +9621,41 @@
     }
 
     function startDownloadFromDetail() {
-      if (!window.downloadCaptchaToken) {
-        msg('Silakan lengkapi verifikasi Turnstile terlebih dahulu');
+      if (!window.recaptchaToken) {
+        msg('Silakan lengkapi verifikasi reCAPTCHA terlebih dahulu');
         return;
       }
       downloadSong();
     }
 
-    // Cloudflare Turnstile callback functions for download
-    function onDownloadCaptchaSuccess(token) {
-      console.log('✅ Turnstile download berhasil:', token ? 'Token valid' : 'Token kosong');
-      window.downloadCaptchaToken = token;
+    // reCAPTCHA callback functions
+    function onRecaptchaSuccess(token) {
+      console.log('✅ reCAPTCHA berhasil:', token ? 'Token valid' : 'Token kosong');
+      window.recaptchaToken = token;
       const ddStartBtn = document.getElementById('ddStartBtn');
       if (ddStartBtn) {
         ddStartBtn.disabled = false;
       }
     }
 
-    function onDownloadCaptchaExpired() {
-      console.log('⏰ Turnstile download expired');
-      window.downloadCaptchaToken = null;
+    function onRecaptchaExpired() {
+      console.log('⏰ reCAPTCHA expired');
+      window.recaptchaToken = null;
       const ddStartBtn = document.getElementById('ddStartBtn');
       if (ddStartBtn) {
         ddStartBtn.disabled = true;
       }
-      showToast('Verifikasi Turnstile telah kedaluwarsa, silakan verifikasi ulang', 'warning');
+      showToast('Verifikasi reCAPTCHA telah kedaluwarsa, silakan verifikasi ulang', 'warning');
     }
 
-    function onDownloadCaptchaError() {
-      console.error('❌ Turnstile download error');
-      window.downloadCaptchaToken = null;
+    function onRecaptchaError() {
+      console.error('❌ reCAPTCHA error');
+      window.recaptchaToken = null;
       const ddStartBtn = document.getElementById('ddStartBtn');
       if (ddStartBtn) {
         ddStartBtn.disabled = true;
       }
-      showToast('Terjadi kesalahan pada verifikasi Turnstile', 'error');
+      showToast('Terjadi kesalahan pada verifikasi reCAPTCHA', 'error');
     }
 
     async function downloadSong() {
