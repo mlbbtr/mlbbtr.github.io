@@ -8534,16 +8534,18 @@
       }
     });
 
-    async function setup(idx, play = true) {
+    async function setup(idx, play = true, direction = 'next') {
       if (!songs[idx]) return;
       i = idx;
       
       // Check if song is blacklisted
       const songId = songs[i].key;
       if (userData?.blacklist?.includes(songId)) {
-        showToast('Lagu di-blacklist, skip ke lagu berikutnya');
-        next();
-        return;
+        showToast(`Lagu di-blacklist, skip ke lagu ${direction === 'prev' ? 'sebelumnya' : 'berikutnya'}`);
+        const nextIdx = isShuf
+          ? Math.floor(Math.random() * songs.length)
+          : (direction === 'prev' ? (i - 1 + songs.length) % songs.length : (i + 1) % songs.length);
+        return setup(nextIdx, play, direction);
       }
       
       applyProfileUrl(true);
@@ -8578,8 +8580,8 @@
       }
       else { audio.pause(); document.getElementById('playBtn').innerHTML = '<i class="fas fa-play"></i>'; document.getElementById('eq').classList.remove('playing'); }
     }
-    function next() { setup(isShuf ? Math.floor(Math.random() * songs.length) : (i + 1) % songs.length); }
-    function prev() { setup(isShuf ? Math.floor(Math.random() * songs.length) : (i - 1 + songs.length) % songs.length); }
+    function next() { setup(isShuf ? Math.floor(Math.random() * songs.length) : (i + 1) % songs.length, true, 'next'); }
+    function prev() { setup(isShuf ? Math.floor(Math.random() * songs.length) : (i - 1 + songs.length) % songs.length, true, 'prev'); }
 
     audio.ontimeupdate = () => {
       document.getElementById('seek').value = (audio.currentTime / audio.duration) * 100 || 0;
