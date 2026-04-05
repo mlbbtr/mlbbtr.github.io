@@ -2058,22 +2058,18 @@
       justify-content: center;
       width: 100%;
     }
-    .download-card {
+    .download-card-modal {
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.15);
       border-radius: 18px;
-      padding: 16px;
-      display: none;
-      flex-direction: column;
-      gap: 14px;
-      margin-bottom: 10px;
+      padding: 20px;
+      width: 100%;
+      max-width: 450px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
       backdrop-filter: blur(10px);
       position: relative;
-      max-width: 400px;
-      width: 100%;
     }
-    .download-card::before {
+    .download-card-modal::before {
       content: '';
       position: absolute;
       top: 0;
@@ -5252,41 +5248,6 @@
       </div>
     </div>
 
-    <!-- Download Card - Separated from main controls -->
-    <div class="download-card-container">
-      <div class="download-card" id="downloadCard" style="display:none;">
-        <div class="download-card-header">
-          <h4>Download Detail</h4>
-        </div>
-        <div class="download-card-body">
-          <div class="download-card-row">
-            <span>Detail</span>
-            <span id="downloadDetailLabel"></span>
-          </div>
-          <div class="download-card-row">
-            <span>Size :</span>
-            <span id="downloadSize">none</span>
-          </div>
-          <div class="download-card-row">
-            <span>File Name :</span>
-            <span id="downloadFilename">none</span>
-          </div>
-          <div class="download-card-message" id="downloadMessage"></div>
-          <div class="download-card-progress" id="downloadProgressSection">
-            <div class="download-card-progress-bar">
-              <div id="downloadProgressFill"></div>
-            </div>
-            <div class="download-card-progress-text" id="downloadProgressText">0%</div>
-          </div>
-          <div class="download-card-actions">
-            <button id="downloadCancelBtn" class="download-card-btn danger" onclick="cancelDownload()">Cancel</button>
-            <button id="downloadToggleBtn" class="download-card-btn primary" onclick="toggleDownloadPause()">Pause</button>
-            <button id="downloadGotoBtn" class="download-card-btn primary" onclick="gotoTop4TopDownload()" style="display:none;">Goto Top4Top URL</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="prog-area">
       <input type="range" id="seek" value="0">
       <div class="time">
@@ -5992,11 +5953,44 @@
     </div>
   </div>
 
-  <div id="globalEventPill" class="global-event-pill">
-    <span class="pill-icon">🎁</span>
-    <span class="pill-time" id="globalEventPillTime">--:--</span>
+  <!-- Download Modal -->
+  <div class="modal" id="modalDownload" onclick="if(event.target==this){this.style.display='none';cancelDownload(false);}">
+    <div class="sheet">
+      <div class="download-card-modal">
+        <div class="download-card-header">
+          <h4>Download Detail</h4>
+        </div>
+        <div class="download-card-body">
+          <div class="download-card-row">
+            <span>Detail</span>
+            <span id="downloadDetailLabel"></span>
+          </div>
+          <div class="download-card-row">
+            <span>Size :</span>
+            <span id="downloadSize">none</span>
+          </div>
+          <div class="download-card-row">
+            <span>File Name :</span>
+            <span id="downloadFilename">none</span>
+          </div>
+          <div class="download-card-message" id="downloadMessage"></div>
+          <div class="download-card-progress" id="downloadProgressSection">
+            <div class="download-card-progress-bar">
+              <div id="downloadProgressFill"></div>
+            </div>
+            <div class="download-card-progress-text" id="downloadProgressText">0%</div>
+          </div>
+          <div class="download-card-actions">
+            <button id="downloadCancelBtn" class="download-card-btn danger" onclick="cancelDownload()">Cancel</button>
+            <button id="downloadToggleBtn" class="download-card-btn primary" onclick="toggleDownloadPause()">Pause</button>
+            <button id="downloadGotoBtn" class="download-card-btn primary" onclick="gotoTop4TopDownload()" style="display:none;">Goto Top4Top URL</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div id="toast-container"></div>
+
+  <div id="globalEventPill" class="global-event-pill">
 
   <!-- CREATOR PANEL (Side Panel - Draggable) -->
   <div class="creator-panel-overlay" id="creatorPanelOverlay">
@@ -9621,7 +9615,7 @@
     }
 
     function updateDownloadCard({ detail, size, filename, message, messageType, progressText, progressPercent, showGoto, showToggle, showProgress, isDownloading = false }) {
-      const card = document.getElementById('downloadCard');
+      const modal = document.getElementById('modalDownload');
       const detailLabel = document.getElementById('downloadDetailLabel');
       const sizeLabel = document.getElementById('downloadSize');
       const fileLabel = document.getElementById('downloadFilename');
@@ -9632,7 +9626,7 @@
       const toggleBtn = document.getElementById('downloadToggleBtn');
       const gotoBtn = document.getElementById('downloadGotoBtn');
 
-      if (card) card.style.display = 'flex';
+      if (modal) modal.style.display = 'flex';
       if (detailLabel) detailLabel.textContent = detail || '';
       if (sizeLabel) sizeLabel.textContent = size || 'none';
       if (fileLabel) fileLabel.textContent = filename || 'none';
@@ -9656,8 +9650,8 @@
 
     function hideDownloadCard(delay = 2500) {
       setTimeout(() => {
-        const card = document.getElementById('downloadCard');
-        if (card) card.style.display = 'none';
+        const modal = document.getElementById('modalDownload');
+        if (modal) modal.style.display = 'none';
       }, delay);
     }
 
@@ -9695,6 +9689,10 @@
       window.open(currentDownloadUrl, '_blank');
       updateDownloadCard({ message: 'Halaman Top4Top dibuka. Silakan selesaikan download di sana.', messageType: 'info', progressText: '', progressPercent: 100, showGoto: true, showToggle: false, showProgress: false });
       hideDownloadCard(3000);
+    }
+
+    function openDownloadModal() {
+      document.getElementById('modalDownload').style.display = 'flex';
     }
 
     async function downloadSong() {
