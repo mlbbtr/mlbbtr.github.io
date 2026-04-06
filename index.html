@@ -6884,10 +6884,15 @@
     }
 
     function openLeaderboard(defaultCategory = 'followers') {
+      console.log('openLeaderboard called with category:', defaultCategory);
+      console.log('auth.currentUser:', auth.currentUser);
+      console.log('userData:', userData);
+      
       const eventModal = document.getElementById('modalEventCenter');
       const lbModal = document.getElementById('modalLeaderboard');
       
       if (!auth.currentUser) {
+        console.log('No auth.currentUser, showing login message');
         msg('Login dulu untuk akses leaderboard');
         return;
       }
@@ -6895,6 +6900,7 @@
         console.warn('Leaderboard dibuka sebelum userData selesai dimuat. Proses tetap dilanjutkan.');
       }
 
+      console.log('Opening leaderboard modal...');
       // store URL before leaderboard
       if (!lastNonLeaderboardUrl) {
         lastNonLeaderboardUrl = window.location.href;
@@ -6903,6 +6909,7 @@
       // Close event center, open leaderboard
       if (eventModal) eventModal.style.display = 'none';
       if (lbModal) {
+        console.log('Setting leaderboard modal to visible');
         lbModal.style.display = 'flex';
         lbModal.style.alignItems = 'center';
         lbModal.style.justifyContent = 'center';
