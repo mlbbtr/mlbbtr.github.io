@@ -5443,6 +5443,7 @@
       <button onclick="openList(false)"><i class="fas fa-list-ul"></i></button>
       <button onclick="openList(true)"><i class="fas fa-heart"></i></button>
       <button id="rep" onclick="toggleRepeat()"><i class="fas fa-redo"></i></button>
+      <button onclick="openLeaderboard('followers')" title="Leaderboard" style="color:var(--accent)"><i class="fas fa-trophy"></i></button>
     </div>
   </div>
 
@@ -6195,8 +6196,8 @@
   </div>
 
   <!-- LEADERBOARD MODAL -->
-  <div class="modal" id="modalLeaderboard" onclick="if(event.target==this)closeLeaderboard()">
-    <div class="leaderboard-sheet">
+  <div class="modal" id="modalLeaderboard" style="display:none" onclick="if(event.target==this)closeLeaderboard()">
+    <div class="leaderboard-sheet" style="max-height:90vh;overflow-y:auto">
       <div class="leaderboard-header">
         <div class="leaderboard-title">
           <i class="fas fa-trophy"></i>
@@ -7027,10 +7028,13 @@
     }
 
     function openLeaderboard(defaultCategory = 'followers') {
+      console.log('openLeaderboard called with category:', defaultCategory);
+      
       const eventModal = document.getElementById('modalEventCenter');
       const lbModal = document.getElementById('modalLeaderboard');
       
       if (!auth.currentUser) {
+        console.log('User not logged in');
         msg('Login dulu untuk akses leaderboard');
         return;
       }
@@ -7050,6 +7054,7 @@
         lbModal.style.alignItems = 'center';
         lbModal.style.justifyContent = 'center';
         lbModal.style.zIndex = '99999';
+        console.log('Leaderboard modal should be visible now');
       }
 
       // Set leaderboard URL
@@ -8972,11 +8977,29 @@
         const isLeaderboard = urlParams.get('leaderboard');
         const leaderboardCategory = window.location.hash.substring(1) || 'followers';
 
-        if (isLeaderboard && auth.currentUser) {
-          // Auto-open leaderboard if URL contains ?leaderboard
-          setTimeout(() => {
-            openLeaderboard(leaderboardCategory);
-          }, 1000); // Delay to ensure userData is loaded
+        // Handle leaderboard URL - wait for auth to be ready
+        if (isLeaderboard) {
+          // Check auth state and open leaderboard
+          const checkAuthAndOpen = () => {
+            if (auth.currentUser) {
+              setTimeout(() => {
+                openLeaderboard(leaderboardCategory);
+              }, 1500); // Delay to ensure userData is loaded
+            } else {
+              // If not logged in, show login first
+              console.log('Leaderboard requires login');
+            }
+          };
+          
+          // If auth is already ready, open immediately
+          if (auth.currentUser) {
+            checkAuthAndOpen();
+          } else {
+            // Wait for auth state to restore
+            auth.onAuthStateChanged(() => {
+              checkAuthAndOpen();
+            });
+          }
         } else if (profileUid && auth.currentUser) {
           if (profileUid === auth.currentUser.uid) openProfile();
           else openCreatorByUid(profileUid);
