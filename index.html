@@ -1385,65 +1385,111 @@
     }
 
     /* ============================================================
-       LEADERBOARD SYSTEM - v3.2.3
+       LEADERBOARD SYSTEM - v3.2.3 - NEW DESIGN
     ============================================================ */
     .leaderboard-sheet {
       margin: 40px auto;
       max-width: 900px;
       width: calc(100% - 32px);
-      padding: 18px 20px;
-      background: linear-gradient(180deg, #0f172a, #020617);
-      border-radius: 20px;
-      border: 1px solid rgba(251,191,36,0.7);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.8);
+      padding: 20px 22px;
+      background: 
+        radial-gradient(ellipse at 0% 0%, rgba(251,191,36,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(245,158,11,0.12) 0%, transparent 50%),
+        linear-gradient(180deg, #0a0f1a 0%, #02040d 50%, #0a0f1a 100%);
+      border-radius: 24px;
+      border: 1px solid rgba(251,191,36,0.25);
+      box-shadow: 
+        0 25px 60px rgba(0,0,0,0.8),
+        0 0 40px rgba(251,191,36,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.05);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
       max-height: calc(100vh - 80px);
       overflow-y: auto;
+      position: relative;
+    }
+    .leaderboard-sheet::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(251,191,36,0.5), transparent);
     }
     .leaderboard-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(251,191,36,0.35);
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(251,191,36,0.2);
     }
     .leaderboard-title {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       font-family: 'Rajdhani', sans-serif;
-      letter-spacing: 1.1px;
-      font-size: 15px;
+      letter-spacing: 2px;
+      font-size: 18px;
       color: #fbbf24;
       text-transform: uppercase;
+      position: relative;
+    }
+    .leaderboard-title::after {
+      content: '🔥';
+      position: absolute;
+      right: -28px;
+      font-size: 14px;
+      animation: fireFlicker 1.5s ease-in-out infinite;
+    }
+    @keyframes fireFlicker {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.1); }
     }
     .leaderboard-title i {
-      padding: 7px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, rgba(250,204,21,0.3), transparent),
-                  linear-gradient(135deg, #fbbf24, #f59e0b);
-      color: #0b1120;
-      box-shadow: 0 0 18px rgba(251,191,36,0.7);
+      padding: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+      color: #0a0f1a;
+      box-shadow: 
+        0 0 25px rgba(251,191,36,0.6),
+        0 4px 15px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.4);
+      font-size: 16px;
+      animation: trophyGlow 2s ease-in-out infinite;
+    }
+    @keyframes trophyGlow {
+      0%, 100% { box-shadow: 0 0 25px rgba(251,191,36,0.6), 0 4px 15px rgba(0,0,0,0.3); }
+      50% { box-shadow: 0 0 35px rgba(251,191,36,0.9), 0 4px 20px rgba(0,0,0,0.4); }
     }
     .leaderboard-refresh {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
+      gap: 8px;
+      padding: 8px 14px;
       border-radius: 999px;
-      background: rgba(251,191,36,0.1);
-      border: 1px solid rgba(251,191,36,0.4);
+      background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.1));
+      border: 1px solid rgba(251,191,36,0.35);
       color: #fbbf24;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .leaderboard-refresh:hover {
+      background: linear-gradient(135deg, rgba(251,191,36,0.25), rgba(245,158,11,0.15));
+      border-color: rgba(251,191,36,0.6);
+      transform: scale(1.02);
     }
     .leaderboard-refresh i {
-      font-size: 11px;
-      animation: refreshSpin 2s linear infinite;
+      font-size: 12px;
+    }
+    .leaderboard-refresh.loading i {
+      animation: refreshSpin 1s linear infinite;
     }
     @keyframes refreshSpin {
       from { transform: rotate(0deg); }
@@ -1453,65 +1499,97 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
+      padding: 4px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 16px;
     }
     .leaderboard-tab-btn {
-      border-radius: 18px;
-      border: 1px solid rgba(251,191,36,0.5);
-      background: radial-gradient(circle at 0 0, rgba(251,191,36,0.12), transparent 60%),
-                  rgba(15,23,42,0.98);
-      color: #9ca3af;
+      flex: 1;
+      min-width: 100px;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 12px;
+      background: transparent;
+      color: rgba(255,255,255,0.5);
       font-size: 11px;
-      padding: 7px 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      outline: none;
-      transition: 0.18s;
       font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.5px;
     }
     .leaderboard-tab-btn i {
-      font-size: 13px;
+      font-size: 12px;
+    }
+    .leaderboard-tab-btn:hover {
+      color: rgba(255,255,255,0.8);
+      background: rgba(251,191,36,0.08);
     }
     .leaderboard-tab-btn.active {
-      background: linear-gradient(135deg, rgba(251,191,36,0.3), rgba(245,158,11,0.3));
-      border-color: rgba(251,191,36,0.9);
+      background: linear-gradient(135deg, rgba(251,191,36,0.35), rgba(245,158,11,0.25));
       color: #fbbf24;
-      box-shadow: 0 0 0 1px rgba(15,23,42,0.9), 0 0 20px rgba(251,191,36,0.5);
+      box-shadow: 
+        0 0 20px rgba(251,191,36,0.25),
+        inset 0 1px 0 rgba(255,255,255,0.1);
     }
     .leaderboard-tab-view {
       display: none;
     }
     .leaderboard-tab-view.active {
       display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .leaderboard-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
     .leaderboard-item {
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: radial-gradient(circle at 0 0, rgba(251,191,36,0.08), transparent 60%),
-                  rgba(15,23,42,0.97);
-      border: 1px solid rgba(148,163,184,0.4);
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: 
+        linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+      border: 1px solid rgba(255,255,255,0.06);
       display: flex;
       align-items: center;
-      gap: 12px;
-      transition: all 0.3s ease;
-      animation: leaderboardItemIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+      gap: 14px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .leaderboard-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, rgba(251,191,36,0.4), rgba(245,158,11,0.2));
+      opacity: 0;
+      transition: opacity 0.3s;
     }
     .leaderboard-item:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-      border-color: rgba(251,191,36,0.6);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+      border-color: rgba(251,191,36,0.3);
+      background: linear-gradient(135deg, rgba(251,191,36,0.05) 0%, rgba(255,255,255,0.02) 100%);
+    }
+    .leaderboard-item:hover::before {
+      opacity: 1;
     }
     @keyframes leaderboardItemIn {
       from {
         opacity: 0;
-        transform: translateY(10px) scale(0.98);
+        transform: translateY(15px) scale(0.95);
       }
       to {
         opacity: 1;
@@ -1519,54 +1597,99 @@
       }
     }
     .leaderboard-item.rank-1 {
-      background: radial-gradient(circle at 0 0, rgba(255,215,0,0.25), transparent 60%),
-                  radial-gradient(circle at 100% 100%, rgba(255,193,7,0.2), transparent 60%),
-                  rgba(15,23,42,0.97);
-      border: 2px solid rgba(255,215,0,0.8);
-      box-shadow: 0 0 30px rgba(255,215,0,0.4), inset 0 0 20px rgba(255,215,0,0.05);
+      background: 
+        radial-gradient(circle at 0% 50%, rgba(255,215,0,0.2) 0%, transparent 60%),
+        radial-gradient(circle at 100% 50%, rgba(255,193,7,0.15) 0%, transparent 60%),
+        linear-gradient(135deg, rgba(255,215,0,0.08) 0%, rgba(0,0,0,0.4) 100%);
+      border: 2px solid rgba(255,215,0,0.5);
+      box-shadow: 
+        0 8px 30px rgba(255,215,0,0.25),
+        0 0 40px rgba(255,215,0,0.1),
+        inset 0 0 20px rgba(255,215,0,0.03);
+    }
+    .leaderboard-item.rank-1::before {
+      background: linear-gradient(180deg, #ffd700, #ffb700);
+      opacity: 1;
+      width: 5px;
     }
     .leaderboard-item.rank-2 {
-      background: radial-gradient(circle at 0 0, rgba(192,192,192,0.25), transparent 60%),
-                  radial-gradient(circle at 100% 100%, rgba(148,163,184,0.2), transparent 60%),
-                  rgba(15,23,42,0.97);
-      border: 2px solid rgba(192,192,192,0.7);
-      box-shadow: 0 0 25px rgba(192,192,192,0.3), inset 0 0 15px rgba(192,192,192,0.05);
+      background: 
+        radial-gradient(circle at 0% 50%, rgba(192,192,192,0.18) 0%, transparent 60%),
+        radial-gradient(circle at 100% 50%, rgba(169,169,169,0.12) 0%, transparent 60%),
+        linear-gradient(135deg, rgba(192,192,192,0.06) 0%, rgba(0,0,0,0.35) 100%);
+      border: 2px solid rgba(192,192,192,0.4);
+      box-shadow: 
+        0 6px 25px rgba(192,192,192,0.2),
+        0 0 30px rgba(192,192,192,0.08);
+    }
+    .leaderboard-item.rank-2::before {
+      background: linear-gradient(180deg, #c0c0c0, #a8a8a8);
+      opacity: 1;
+      width: 4px;
     }
     .leaderboard-item.rank-3 {
-      background: radial-gradient(circle at 0 0, rgba(205,127,50,0.25), transparent 60%),
-                  radial-gradient(circle at 100% 100%, rgba(180,100,30,0.2), transparent 60%),
-                  rgba(15,23,42,0.97);
-      border: 2px solid rgba(205,127,50,0.7);
-      box-shadow: 0 0 25px rgba(205,127,50,0.3), inset 0 0 15px rgba(205,127,50,0.05);
+      background: 
+        radial-gradient(circle at 0% 50%, rgba(205,127,50,0.18) 0%, transparent 60%),
+        radial-gradient(circle at 100% 50%, rgba(184,134,11,0.12) 0%, transparent 60%),
+        linear-gradient(135deg, rgba(205,127,50,0.06) 0%, rgba(0,0,0,0.35) 100%);
+      border: 2px solid rgba(205,127,50,0.4);
+      box-shadow: 
+        0 6px 25px rgba(205,127,50,0.2),
+        0 0 30px rgba(205,127,50,0.08);
+    }
+    .leaderboard-item.rank-3::before {
+      background: linear-gradient(180deg, #cd7f32, #b87333);
+      opacity: 1;
+      width: 4px;
     }
     .leaderboard-rank {
-      width: 50px;
-      height: 50px;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 32px;
+      font-size: 28px;
       flex-shrink: 0;
       position: relative;
+      background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+      border: 2px solid rgba(255,255,255,0.1);
     }
     .leaderboard-item.rank-1 .leaderboard-rank {
+      background: linear-gradient(135deg, #ffd700, #ffb700);
+      border: none;
+      box-shadow: 
+        0 0 25px rgba(255,215,0,0.6),
+        0 4px 15px rgba(0,0,0,0.4),
+        inset 0 2px 0 rgba(255,255,255,0.4);
       animation: goldPulse 2s ease-in-out infinite;
     }
     .leaderboard-item.rank-2 .leaderboard-rank {
+      background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
+      border: none;
+      box-shadow: 
+        0 0 20px rgba(192,192,192,0.5),
+        0 4px 12px rgba(0,0,0,0.3),
+        inset 0 2px 0 rgba(255,255,255,0.3);
       animation: silverPulse 2s ease-in-out infinite;
     }
     .leaderboard-item.rank-3 .leaderboard-rank {
+      background: linear-gradient(135deg, #cd7f32, #b87333);
+      border: none;
+      box-shadow: 
+        0 0 20px rgba(205,127,50,0.5),
+        0 4px 12px rgba(0,0,0,0.3),
+        inset 0 2px 0 rgba(255,255,255,0.3);
       animation: bronzePulse 2s ease-in-out infinite;
     }
     @keyframes goldPulse {
       0%, 100% { 
-        filter: drop-shadow(0 0 8px rgba(255,215,0,0.6));
+        filter: drop-shadow(0 0 10px rgba(255,215,0,0.7));
         transform: scale(1);
       }
       50% { 
-        filter: drop-shadow(0 0 20px rgba(255,215,0,1));
-        transform: scale(1.1);
+        filter: drop-shadow(0 0 25px rgba(255,215,0,1));
+        transform: scale(1.08);
       }
     }
     @keyframes silverPulse {
@@ -1575,8 +1698,8 @@
         transform: scale(1);
       }
       50% { 
-        filter: drop-shadow(0 0 18px rgba(192,192,192,0.9));
-        transform: scale(1.08);
+        filter: drop-shadow(0 0 20px rgba(192,192,192,0.9));
+        transform: scale(1.06);
       }
     }
     @keyframes bronzePulse {
@@ -1585,22 +1708,22 @@
         transform: scale(1);
       }
       50% { 
-        filter: drop-shadow(0 0 18px rgba(205,127,50,0.9));
-        transform: scale(1.08);
+        filter: drop-shadow(0 0 20px rgba(205,127,50,0.9));
+        transform: scale(1.06);
       }
     }
     .leaderboard-rank-number {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: rgba(148,163,184,0.2);
-      border: 1px solid rgba(148,163,184,0.4);
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.15);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
-      color: #94a3b8;
+      color: rgba(255,255,255,0.6);
       font-family: 'Rajdhani', sans-serif;
     }
     .leaderboard-user {
@@ -1611,31 +1734,31 @@
       gap: 4px;
     }
     .leaderboard-username {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
       color: #e5e7eb;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .leaderboard-item.rank-1 .leaderboard-username {
       color: #ffd700;
-      text-shadow: 0 0 10px rgba(255,215,0,0.6);
+      text-shadow: 0 0 15px rgba(255,215,0,0.6);
     }
     .leaderboard-item.rank-2 .leaderboard-username {
       color: #c0c0c0;
-      text-shadow: 0 0 10px rgba(192,192,192,0.6);
+      text-shadow: 0 0 12px rgba(192,192,192,0.5);
     }
     .leaderboard-item.rank-3 .leaderboard-username {
       color: #cd7f32;
-      text-shadow: 0 0 10px rgba(205,127,50,0.6);
+      text-shadow: 0 0 12px rgba(205,127,50,0.5);
     }
     .leaderboard-stats {
       font-size: 10px;
-      color: #9ca3af;
+      color: #6b7280;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -1647,61 +1770,81 @@
       gap: 2px;
     }
     .leaderboard-value-number {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 800;
       color: #fbbf24;
       font-family: 'Rajdhani', sans-serif;
-      text-shadow: 0 0 10px rgba(251,191,36,0.4);
+      text-shadow: 0 0 12px rgba(251,191,36,0.4);
+      letter-spacing: 1px;
     }
     .leaderboard-item.rank-1 .leaderboard-value-number {
       color: #ffd700;
-      text-shadow: 0 0 15px rgba(255,215,0,0.8);
+      text-shadow: 0 0 20px rgba(255,215,0,0.8);
     }
     .leaderboard-item.rank-2 .leaderboard-value-number {
       color: #c0c0c0;
-      text-shadow: 0 0 15px rgba(192,192,192,0.8);
+      text-shadow: 0 0 15px rgba(192,192,192,0.7);
     }
     .leaderboard-item.rank-3 .leaderboard-value-number {
       color: #cd7f32;
-      text-shadow: 0 0 15px rgba(205,127,50,0.8);
+      text-shadow: 0 0 15px rgba(205,127,50,0.7);
     }
     .leaderboard-value-label {
-      font-size: 9px;
+      font-size: 10px;
       color: #6b7280;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
     .leaderboard-empty {
-      padding: 40px 20px;
+      padding: 50px 20px;
       text-align: center;
-      color: #6b7280;
-      font-size: 12px;
+      color: #4b5563;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .leaderboard-empty i {
+      font-size: 48px;
+      opacity: 0.2;
+      color: #fbbf24;
     }
     @media (max-width: 640px) {
       .leaderboard-sheet {
         margin: 20px auto;
-        width: calc(100% - 20px);
-        padding: 14px 12px;
+        width: calc(100% - 16px);
+        padding: 16px 14px;
+        border-radius: 20px;
+      }
+      .leaderboard-title {
+        font-size: 15px;
+        letter-spacing: 1px;
+      }
+      .leaderboard-tab-btn {
+        min-width: 70px;
+        padding: 8px 10px;
+        font-size: 10px;
       }
       .leaderboard-item {
-        padding: 10px 12px;
+        padding: 12px 14px;
         gap: 10px;
       }
       .leaderboard-rank {
-        width: 40px;
-        height: 40px;
-        font-size: 26px;
+        width: 42px;
+        height: 42px;
+        font-size: 22px;
       }
       .leaderboard-rank-number {
-        width: 32px;
-        height: 32px;
-        font-size: 14px;
+        width: 30px;
+        height: 30px;
+        font-size: 13px;
       }
       .leaderboard-username {
-        font-size: 12px;
+        font-size: 13px;
       }
       .leaderboard-value-number {
-        font-size: 16px;
+        font-size: 18px;
       }
     }
 
@@ -6084,7 +6227,7 @@
       <div id="lbTabFollowers" class="leaderboard-tab-view active">
         <div class="leaderboard-list" id="lbFollowersList">
           <div class="leaderboard-empty">
-            <i class="fas fa-spinner fa-spin" style="font-size:24px;color:#fbbf24;margin-bottom:10px"></i>
+            <i class="fas fa-trophy"></i>
             <div>Memuat data...</div>
           </div>
         </div>
@@ -6094,7 +6237,7 @@
       <div id="lbTabTags" class="leaderboard-tab-view">
         <div class="leaderboard-list" id="lbTagsList">
           <div class="leaderboard-empty">
-            <i class="fas fa-spinner fa-spin" style="font-size:24px;color:#fbbf24;margin-bottom:10px"></i>
+            <i class="fas fa-trophy"></i>
             <div>Memuat data...</div>
           </div>
         </div>
@@ -6104,7 +6247,7 @@
       <div id="lbTabUploads" class="leaderboard-tab-view">
         <div class="leaderboard-list" id="lbUploadsList">
           <div class="leaderboard-empty">
-            <i class="fas fa-spinner fa-spin" style="font-size:24px;color:#fbbf24;margin-bottom:10px"></i>
+            <i class="fas fa-trophy"></i>
             <div>Memuat data...</div>
           </div>
         </div>
@@ -6114,7 +6257,7 @@
       <div id="lbTabExecoin" class="leaderboard-tab-view">
         <div class="leaderboard-list" id="lbExecoinList">
           <div class="leaderboard-empty">
-            <i class="fas fa-spinner fa-spin" style="font-size:24px;color:#fbbf24;margin-bottom:10px"></i>
+            <i class="fas fa-trophy"></i>
             <div>Memuat data...</div>
           </div>
         </div>
@@ -6935,7 +7078,14 @@
       
       const tab = document.getElementById(tabMap[category]);
       if (tab) tab.classList.add('active');
-      if (btn) btn.classList.add('active');
+      
+      // Find the button that matches the category
+      const buttons = document.querySelectorAll('.leaderboard-tab-btn');
+      buttons.forEach(button => {
+        if (button.textContent.toLowerCase().includes(category === 'execoin' ? 'execoin' : category)) {
+          button.classList.add('active');
+        }
+      });
     }
 
     function startLeaderboardRefresh() {
@@ -6946,6 +7096,22 @@
       
       leaderboardRefreshCountdown = 60;
       const timerEl = document.getElementById('lbRefreshTimer');
+      const refreshBtn = document.querySelector('.leaderboard-refresh');
+      
+      // Make refresh button clickable
+      if (refreshBtn) {
+        refreshBtn.style.cursor = 'pointer';
+        refreshBtn.onclick = function() {
+          this.classList.add('loading');
+          loadLeaderboardData().then(() => {
+            leaderboardRefreshCountdown = 60;
+            this.classList.remove('loading');
+          }).catch(() => {
+            leaderboardRefreshCountdown = 60;
+            this.classList.remove('loading');
+          });
+        };
+      }
       
       leaderboardRefreshInterval = setInterval(() => {
         leaderboardRefreshCountdown--;
@@ -6959,6 +7125,23 @@
     }
 
     async function loadLeaderboardData() {
+      const lbFollowersList = document.getElementById('lbFollowersList');
+      const lbTagsList = document.getElementById('lbTagsList');
+      const lbUploadsList = document.getElementById('lbUploadsList');
+      const lbExecoinList = document.getElementById('lbExecoinList');
+      
+      // Show loading state
+      const loadingHtml = `
+        <div class="leaderboard-empty">
+          <i class="fas fa-spinner fa-spin" style="font-size:24px;color:#fbbf24;margin-bottom:10px"></i>
+          <div>Memuat data...</div>
+        </div>
+      `;
+      if (lbFollowersList) lbFollowersList.innerHTML = loadingHtml;
+      if (lbTagsList) lbTagsList.innerHTML = loadingHtml;
+      if (lbUploadsList) lbUploadsList.innerHTML = loadingHtml;
+      if (lbExecoinList) lbExecoinList.innerHTML = loadingHtml;
+      
       try {
         // Get all users data
         const usersSnapshot = await db.ref('users').once('value');
@@ -7015,8 +7198,24 @@
         renderLeaderboardCategory('uploads', users, 'lbUploadsList');
         renderLeaderboardCategory('execoin', users, 'lbExecoinList');
         
+        console.log('Leaderboard loaded successfully, users:', users.length);
+        
       } catch (error) {
         console.error('Error loading leaderboard:', error);
+        
+        // Show error state
+        const errorHtml = `
+          <div class="leaderboard-empty">
+            <i class="fas fa-exclamation-triangle" style="font-size:32px;color:#ff6b6b;margin-bottom:10px"></i>
+            <div>Gagal memuat data</div>
+            <button onclick="loadLeaderboardData()" style="margin-top:10px;padding:8px 16px;background:rgba(251,191,36,0.2);border:1px solid rgba(251,191,36,0.4);border-radius:8px;color:#fbbf24;cursor:pointer;font-size:11px">Coba Lagi</button>
+          </div>
+        `;
+        if (lbFollowersList) lbFollowersList.innerHTML = errorHtml;
+        if (lbTagsList) lbTagsList.innerHTML = errorHtml;
+        if (lbUploadsList) lbUploadsList.innerHTML = errorHtml;
+        if (lbExecoinList) lbExecoinList.innerHTML = errorHtml;
+        
         showToast('Gagal memuat leaderboard');
       }
     }
@@ -7031,7 +7230,7 @@
       if (sorted.length === 0 || sorted[0][category] === 0) {
         container.innerHTML = `
           <div class="leaderboard-empty">
-            <i class="fas fa-trophy" style="font-size:32px;color:#6b7280;margin-bottom:10px;opacity:0.3"></i>
+            <i class="fas fa-trophy"></i>
             <div>Belum ada data untuk kategori ini</div>
           </div>
         `;
@@ -7068,7 +7267,7 @@
               </div>
               <div class="leaderboard-stats">
                 <span>Rank #${rank}</span>
-                ${isCurrentUser ? '<span style="color:#fbbf24">• You</span>' : ''}
+                ${isCurrentUser ? '<span style="color:#fbbf24"> • You</span>' : ''}
               </div>
             </div>
             <div class="leaderboard-value">
