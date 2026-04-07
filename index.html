@@ -1385,111 +1385,65 @@
     }
 
     /* ============================================================
-       LEADERBOARD SYSTEM - v3.2.3 - NEW DESIGN
+       LEADERBOARD SYSTEM - v3.2.3
     ============================================================ */
     .leaderboard-sheet {
       margin: 40px auto;
       max-width: 900px;
       width: calc(100% - 32px);
-      padding: 20px 22px;
-      background: 
-        radial-gradient(ellipse at 0% 0%, rgba(251,191,36,0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 100% 100%, rgba(245,158,11,0.12) 0%, transparent 50%),
-        linear-gradient(180deg, #0a0f1a 0%, #02040d 50%, #0a0f1a 100%);
-      border-radius: 24px;
-      border: 1px solid rgba(251,191,36,0.25);
-      box-shadow: 
-        0 25px 60px rgba(0,0,0,0.8),
-        0 0 40px rgba(251,191,36,0.08),
-        inset 0 1px 0 rgba(255,255,255,0.05);
+      padding: 18px 20px;
+      background: linear-gradient(180deg, #0f172a, #020617);
+      border-radius: 20px;
+      border: 1px solid rgba(251,191,36,0.7);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.8);
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 16px;
       max-height: calc(100vh - 80px);
       overflow-y: auto;
-      position: relative;
-    }
-    .leaderboard-sheet::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(251,191,36,0.5), transparent);
     }
     .leaderboard-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid rgba(251,191,36,0.2);
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(251,191,36,0.35);
     }
     .leaderboard-title {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       font-family: 'Rajdhani', sans-serif;
-      letter-spacing: 2px;
-      font-size: 18px;
+      letter-spacing: 1.1px;
+      font-size: 15px;
       color: #fbbf24;
       text-transform: uppercase;
-      position: relative;
-    }
-    .leaderboard-title::after {
-      content: '🔥';
-      position: absolute;
-      right: -28px;
-      font-size: 14px;
-      animation: fireFlicker 1.5s ease-in-out infinite;
-    }
-    @keyframes fireFlicker {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.1); }
     }
     .leaderboard-title i {
-      padding: 10px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
-      color: #0a0f1a;
-      box-shadow: 
-        0 0 25px rgba(251,191,36,0.6),
-        0 4px 15px rgba(0,0,0,0.3),
-        inset 0 1px 0 rgba(255,255,255,0.4);
-      font-size: 16px;
-      animation: trophyGlow 2s ease-in-out infinite;
-    }
-    @keyframes trophyGlow {
-      0%, 100% { box-shadow: 0 0 25px rgba(251,191,36,0.6), 0 4px 15px rgba(0,0,0,0.3); }
-      50% { box-shadow: 0 0 35px rgba(251,191,36,0.9), 0 4px 20px rgba(0,0,0,0.4); }
+      padding: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, rgba(250,204,21,0.3), transparent),
+                  linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #0b1120;
+      box-shadow: 0 0 18px rgba(251,191,36,0.7);
     }
     .leaderboard-refresh {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
+      gap: 6px;
+      padding: 6px 12px;
       border-radius: 999px;
-      background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.1));
-      border: 1px solid rgba(251,191,36,0.35);
+      background: rgba(251,191,36,0.1);
+      border: 1px solid rgba(251,191,36,0.4);
       color: #fbbf24;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.5px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .leaderboard-refresh:hover {
-      background: linear-gradient(135deg, rgba(251,191,36,0.25), rgba(245,158,11,0.15));
-      border-color: rgba(251,191,36,0.6);
-      transform: scale(1.02);
     }
     .leaderboard-refresh i {
-      font-size: 12px;
-    }
-    .leaderboard-refresh.loading i {
-      animation: refreshSpin 1s linear infinite;
+      font-size: 11px;
+      animation: refreshSpin 2s linear infinite;
     }
     @keyframes refreshSpin {
       from { transform: rotate(0deg); }
@@ -1499,97 +1453,65 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 4px;
-      padding: 4px;
-      background: rgba(0,0,0,0.3);
-      border-radius: 16px;
+      margin-bottom: 6px;
     }
     .leaderboard-tab-btn {
-      flex: 1;
-      min-width: 100px;
-      padding: 10px 14px;
-      border: none;
-      border-radius: 12px;
-      background: transparent;
-      color: rgba(255,255,255,0.5);
+      border-radius: 18px;
+      border: 1px solid rgba(251,191,36,0.5);
+      background: radial-gradient(circle at 0 0, rgba(251,191,36,0.12), transparent 60%),
+                  rgba(15,23,42,0.98);
+      color: #9ca3af;
       font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      display: flex;
+      padding: 7px 12px;
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
-      font-family: 'Rajdhani', sans-serif;
-      letter-spacing: 0.5px;
+      gap: 8px;
+      cursor: pointer;
+      outline: none;
+      transition: 0.18s;
+      font-weight: 600;
     }
     .leaderboard-tab-btn i {
-      font-size: 12px;
-    }
-    .leaderboard-tab-btn:hover {
-      color: rgba(255,255,255,0.8);
-      background: rgba(251,191,36,0.08);
+      font-size: 13px;
     }
     .leaderboard-tab-btn.active {
-      background: linear-gradient(135deg, rgba(251,191,36,0.35), rgba(245,158,11,0.25));
+      background: linear-gradient(135deg, rgba(251,191,36,0.3), rgba(245,158,11,0.3));
+      border-color: rgba(251,191,36,0.9);
       color: #fbbf24;
-      box-shadow: 
-        0 0 20px rgba(251,191,36,0.25),
-        inset 0 1px 0 rgba(255,255,255,0.1);
+      box-shadow: 0 0 0 1px rgba(15,23,42,0.9), 0 0 20px rgba(251,191,36,0.5);
     }
     .leaderboard-tab-view {
       display: none;
     }
     .leaderboard-tab-view.active {
       display: block;
-      animation: fadeIn 0.3s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
     }
     .leaderboard-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
     .leaderboard-item {
-      padding: 16px 18px;
-      border-radius: 18px;
-      background: 
-        linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-      border: 1px solid rgba(255,255,255,0.06);
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: radial-gradient(circle at 0 0, rgba(251,191,36,0.08), transparent 60%),
+                  rgba(15,23,42,0.97);
+      border: 1px solid rgba(148,163,184,0.4);
       display: flex;
       align-items: center;
-      gap: 14px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-    .leaderboard-item::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      background: linear-gradient(180deg, rgba(251,191,36,0.4), rgba(245,158,11,0.2));
-      opacity: 0;
-      transition: opacity 0.3s;
+      gap: 12px;
+      transition: all 0.3s ease;
+      animation: leaderboardItemIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
     }
     .leaderboard-item:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
-      border-color: rgba(251,191,36,0.3);
-      background: linear-gradient(135deg, rgba(251,191,36,0.05) 0%, rgba(255,255,255,0.02) 100%);
-    }
-    .leaderboard-item:hover::before {
-      opacity: 1;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      border-color: rgba(251,191,36,0.6);
     }
     @keyframes leaderboardItemIn {
       from {
         opacity: 0;
-        transform: translateY(15px) scale(0.95);
+        transform: translateY(10px) scale(0.98);
       }
       to {
         opacity: 1;
@@ -1597,99 +1519,54 @@
       }
     }
     .leaderboard-item.rank-1 {
-      background: 
-        radial-gradient(circle at 0% 50%, rgba(255,215,0,0.2) 0%, transparent 60%),
-        radial-gradient(circle at 100% 50%, rgba(255,193,7,0.15) 0%, transparent 60%),
-        linear-gradient(135deg, rgba(255,215,0,0.08) 0%, rgba(0,0,0,0.4) 100%);
-      border: 2px solid rgba(255,215,0,0.5);
-      box-shadow: 
-        0 8px 30px rgba(255,215,0,0.25),
-        0 0 40px rgba(255,215,0,0.1),
-        inset 0 0 20px rgba(255,215,0,0.03);
-    }
-    .leaderboard-item.rank-1::before {
-      background: linear-gradient(180deg, #ffd700, #ffb700);
-      opacity: 1;
-      width: 5px;
+      background: radial-gradient(circle at 0 0, rgba(255,215,0,0.25), transparent 60%),
+                  radial-gradient(circle at 100% 100%, rgba(255,193,7,0.2), transparent 60%),
+                  rgba(15,23,42,0.97);
+      border: 2px solid rgba(255,215,0,0.8);
+      box-shadow: 0 0 30px rgba(255,215,0,0.4), inset 0 0 20px rgba(255,215,0,0.05);
     }
     .leaderboard-item.rank-2 {
-      background: 
-        radial-gradient(circle at 0% 50%, rgba(192,192,192,0.18) 0%, transparent 60%),
-        radial-gradient(circle at 100% 50%, rgba(169,169,169,0.12) 0%, transparent 60%),
-        linear-gradient(135deg, rgba(192,192,192,0.06) 0%, rgba(0,0,0,0.35) 100%);
-      border: 2px solid rgba(192,192,192,0.4);
-      box-shadow: 
-        0 6px 25px rgba(192,192,192,0.2),
-        0 0 30px rgba(192,192,192,0.08);
-    }
-    .leaderboard-item.rank-2::before {
-      background: linear-gradient(180deg, #c0c0c0, #a8a8a8);
-      opacity: 1;
-      width: 4px;
+      background: radial-gradient(circle at 0 0, rgba(192,192,192,0.25), transparent 60%),
+                  radial-gradient(circle at 100% 100%, rgba(148,163,184,0.2), transparent 60%),
+                  rgba(15,23,42,0.97);
+      border: 2px solid rgba(192,192,192,0.7);
+      box-shadow: 0 0 25px rgba(192,192,192,0.3), inset 0 0 15px rgba(192,192,192,0.05);
     }
     .leaderboard-item.rank-3 {
-      background: 
-        radial-gradient(circle at 0% 50%, rgba(205,127,50,0.18) 0%, transparent 60%),
-        radial-gradient(circle at 100% 50%, rgba(184,134,11,0.12) 0%, transparent 60%),
-        linear-gradient(135deg, rgba(205,127,50,0.06) 0%, rgba(0,0,0,0.35) 100%);
-      border: 2px solid rgba(205,127,50,0.4);
-      box-shadow: 
-        0 6px 25px rgba(205,127,50,0.2),
-        0 0 30px rgba(205,127,50,0.08);
-    }
-    .leaderboard-item.rank-3::before {
-      background: linear-gradient(180deg, #cd7f32, #b87333);
-      opacity: 1;
-      width: 4px;
+      background: radial-gradient(circle at 0 0, rgba(205,127,50,0.25), transparent 60%),
+                  radial-gradient(circle at 100% 100%, rgba(180,100,30,0.2), transparent 60%),
+                  rgba(15,23,42,0.97);
+      border: 2px solid rgba(205,127,50,0.7);
+      box-shadow: 0 0 25px rgba(205,127,50,0.3), inset 0 0 15px rgba(205,127,50,0.05);
     }
     .leaderboard-rank {
-      width: 52px;
-      height: 52px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 32px;
       flex-shrink: 0;
       position: relative;
-      background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
-      border: 2px solid rgba(255,255,255,0.1);
     }
     .leaderboard-item.rank-1 .leaderboard-rank {
-      background: linear-gradient(135deg, #ffd700, #ffb700);
-      border: none;
-      box-shadow: 
-        0 0 25px rgba(255,215,0,0.6),
-        0 4px 15px rgba(0,0,0,0.4),
-        inset 0 2px 0 rgba(255,255,255,0.4);
       animation: goldPulse 2s ease-in-out infinite;
     }
     .leaderboard-item.rank-2 .leaderboard-rank {
-      background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
-      border: none;
-      box-shadow: 
-        0 0 20px rgba(192,192,192,0.5),
-        0 4px 12px rgba(0,0,0,0.3),
-        inset 0 2px 0 rgba(255,255,255,0.3);
       animation: silverPulse 2s ease-in-out infinite;
     }
     .leaderboard-item.rank-3 .leaderboard-rank {
-      background: linear-gradient(135deg, #cd7f32, #b87333);
-      border: none;
-      box-shadow: 
-        0 0 20px rgba(205,127,50,0.5),
-        0 4px 12px rgba(0,0,0,0.3),
-        inset 0 2px 0 rgba(255,255,255,0.3);
       animation: bronzePulse 2s ease-in-out infinite;
     }
     @keyframes goldPulse {
       0%, 100% { 
-        filter: drop-shadow(0 0 10px rgba(255,215,0,0.7));
+        filter: drop-shadow(0 0 8px rgba(255,215,0,0.6));
         transform: scale(1);
       }
       50% { 
-        filter: drop-shadow(0 0 25px rgba(255,215,0,1));
-        transform: scale(1.08);
+        filter: drop-shadow(0 0 20px rgba(255,215,0,1));
+        transform: scale(1.1);
       }
     }
     @keyframes silverPulse {
@@ -1698,8 +1575,8 @@
         transform: scale(1);
       }
       50% { 
-        filter: drop-shadow(0 0 20px rgba(192,192,192,0.9));
-        transform: scale(1.06);
+        filter: drop-shadow(0 0 18px rgba(192,192,192,0.9));
+        transform: scale(1.08);
       }
     }
     @keyframes bronzePulse {
@@ -1708,22 +1585,22 @@
         transform: scale(1);
       }
       50% { 
-        filter: drop-shadow(0 0 20px rgba(205,127,50,0.9));
-        transform: scale(1.06);
+        filter: drop-shadow(0 0 18px rgba(205,127,50,0.9));
+        transform: scale(1.08);
       }
     }
     .leaderboard-rank-number {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(148,163,184,0.2);
+      border: 1px solid rgba(148,163,184,0.4);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 800;
-      color: rgba(255,255,255,0.6);
+      color: #94a3b8;
       font-family: 'Rajdhani', sans-serif;
     }
     .leaderboard-user {
@@ -1734,31 +1611,31 @@
       gap: 4px;
     }
     .leaderboard-username {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       color: #e5e7eb;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .leaderboard-item.rank-1 .leaderboard-username {
       color: #ffd700;
-      text-shadow: 0 0 15px rgba(255,215,0,0.6);
+      text-shadow: 0 0 10px rgba(255,215,0,0.6);
     }
     .leaderboard-item.rank-2 .leaderboard-username {
       color: #c0c0c0;
-      text-shadow: 0 0 12px rgba(192,192,192,0.5);
+      text-shadow: 0 0 10px rgba(192,192,192,0.6);
     }
     .leaderboard-item.rank-3 .leaderboard-username {
       color: #cd7f32;
-      text-shadow: 0 0 12px rgba(205,127,50,0.5);
+      text-shadow: 0 0 10px rgba(205,127,50,0.6);
     }
     .leaderboard-stats {
       font-size: 10px;
-      color: #6b7280;
+      color: #9ca3af;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -1770,81 +1647,61 @@
       gap: 2px;
     }
     .leaderboard-value-number {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 800;
       color: #fbbf24;
       font-family: 'Rajdhani', sans-serif;
-      text-shadow: 0 0 12px rgba(251,191,36,0.4);
-      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(251,191,36,0.4);
     }
     .leaderboard-item.rank-1 .leaderboard-value-number {
       color: #ffd700;
-      text-shadow: 0 0 20px rgba(255,215,0,0.8);
+      text-shadow: 0 0 15px rgba(255,215,0,0.8);
     }
     .leaderboard-item.rank-2 .leaderboard-value-number {
       color: #c0c0c0;
-      text-shadow: 0 0 15px rgba(192,192,192,0.7);
+      text-shadow: 0 0 15px rgba(192,192,192,0.8);
     }
     .leaderboard-item.rank-3 .leaderboard-value-number {
       color: #cd7f32;
-      text-shadow: 0 0 15px rgba(205,127,50,0.7);
+      text-shadow: 0 0 15px rgba(205,127,50,0.8);
     }
     .leaderboard-value-label {
-      font-size: 10px;
+      font-size: 9px;
       color: #6b7280;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
     .leaderboard-empty {
-      padding: 50px 20px;
+      padding: 40px 20px;
       text-align: center;
-      color: #4b5563;
-      font-size: 13px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-    .leaderboard-empty i {
-      font-size: 48px;
-      opacity: 0.2;
-      color: #fbbf24;
+      color: #6b7280;
+      font-size: 12px;
     }
     @media (max-width: 640px) {
       .leaderboard-sheet {
         margin: 20px auto;
-        width: calc(100% - 16px);
-        padding: 16px 14px;
-        border-radius: 20px;
-      }
-      .leaderboard-title {
-        font-size: 15px;
-        letter-spacing: 1px;
-      }
-      .leaderboard-tab-btn {
-        min-width: 70px;
-        padding: 8px 10px;
-        font-size: 10px;
+        width: calc(100% - 20px);
+        padding: 14px 12px;
       }
       .leaderboard-item {
-        padding: 12px 14px;
+        padding: 10px 12px;
         gap: 10px;
       }
       .leaderboard-rank {
-        width: 42px;
-        height: 42px;
-        font-size: 22px;
+        width: 40px;
+        height: 40px;
+        font-size: 26px;
       }
       .leaderboard-rank-number {
-        width: 30px;
-        height: 30px;
-        font-size: 13px;
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
       }
       .leaderboard-username {
-        font-size: 13px;
+        font-size: 12px;
       }
       .leaderboard-value-number {
-        font-size: 18px;
+        font-size: 16px;
       }
     }
 
@@ -5443,7 +5300,6 @@
       <button onclick="openList(false)"><i class="fas fa-list-ul"></i></button>
       <button onclick="openList(true)"><i class="fas fa-heart"></i></button>
       <button id="rep" onclick="toggleRepeat()"><i class="fas fa-redo"></i></button>
-      <button onclick="openLeaderboard()" title="Leaderboard" style="color:var(--accent)"><i class="fas fa-trophy"></i></button>
     </div>
   </div>
 
@@ -6196,7 +6052,7 @@
   </div>
 
   <!-- LEADERBOARD MODAL -->
-  <div class="modal" id="modalLeaderboard" onclick="if(event.target==this)this.style.display='none'">
+  <div class="modal" id="modalLeaderboard" onclick="if(event.target==this)closeLeaderboard()">
     <div class="leaderboard-sheet">
       <div class="leaderboard-header">
         <div class="leaderboard-title">
@@ -6228,7 +6084,7 @@
       <div id="lbTabFollowers" class="leaderboard-tab-view active">
         <div class="leaderboard-list" id="lbFollowersList">
           <div class="leaderboard-empty">
-            <i class="fas fa-trophy"></i>
+            <i class="fas fa-spinner fa-spin" style="font-size:24px;color:#fbbf24;margin-bottom:10px"></i>
             <div>Memuat data...</div>
           </div>
         </div>
@@ -6238,7 +6094,7 @@
       <div id="lbTabTags" class="leaderboard-tab-view">
         <div class="leaderboard-list" id="lbTagsList">
           <div class="leaderboard-empty">
-            <i class="fas fa-trophy"></i>
+            <i class="fas fa-spinner fa-spin" style="font-size:24px;color:#fbbf24;margin-bottom:10px"></i>
             <div>Memuat data...</div>
           </div>
         </div>
@@ -6248,7 +6104,7 @@
       <div id="lbTabUploads" class="leaderboard-tab-view">
         <div class="leaderboard-list" id="lbUploadsList">
           <div class="leaderboard-empty">
-            <i class="fas fa-trophy"></i>
+            <i class="fas fa-spinner fa-spin" style="font-size:24px;color:#fbbf24;margin-bottom:10px"></i>
             <div>Memuat data...</div>
           </div>
         </div>
@@ -6258,7 +6114,7 @@
       <div id="lbTabExecoin" class="leaderboard-tab-view">
         <div class="leaderboard-list" id="lbExecoinList">
           <div class="leaderboard-empty">
-            <i class="fas fa-trophy"></i>
+            <i class="fas fa-spinner fa-spin" style="font-size:24px;color:#fbbf24;margin-bottom:10px"></i>
             <div>Memuat data...</div>
           </div>
         </div>
@@ -6416,6 +6272,2186 @@
     }
     runLoadSequence();
 
+    let heartsInterval = null;
+    let heartsMode = 'love';
+    let starsInterval = null;
+    let ketupatInterval = null;
+    let profileMusicInterval = null;
+    let profileMusicDuration = 0;
+    let profileMusicElapsed = 0;
+    
+    function createHeart() {
+      const c = document.getElementById('heartsContainer');
+      if (!c) return;
+      const h = document.createElement('div');
+      h.className = 'heart-particle';
+      let set = ['❤️','💗','💓','💕','💖','🩷'];
+      if (heartsMode === 'game') {
+        set = ['🎮','🕹️','🎧','🎲','🎯','💿'];
+      }
+      h.textContent = set[Math.floor(Math.random() * set.length)];
+      h.style.left = Math.random() * 100 + 'vw';
+      h.style.fontSize = (10 + Math.random() * 16) + 'px';
+      h.style.animationDuration = (4 + Math.random() * 4) + 's';
+      h.style.animationDelay = (Math.random() * 1) + 's';
+      c.appendChild(h);
+      setTimeout(() => h.remove(), 9000);
+    }
+    function startHearts(mode) {
+      const c = document.getElementById('heartsContainer');
+      if (!c) return;
+      heartsMode = mode || 'love';
+      c.classList.add('active');
+      if (heartsInterval) return;
+      heartsInterval = setInterval(createHeart, 600);
+    }
+    function stopHearts() {
+      const c = document.getElementById('heartsContainer');
+      if (c) c.classList.remove('active');
+      if (heartsInterval) { clearInterval(heartsInterval); heartsInterval = null; }
+    }
+    
+    function createStar() {
+      const c = document.getElementById('starsContainer');
+      if (!c) return;
+      const s = document.createElement('div');
+      s.className = 'star-particle';
+      s.textContent = '⭐';
+      s.style.left = Math.random() * 100 + 'vw';
+      s.style.fontSize = (8 + Math.random() * 12) + 'px';
+      s.style.animationDuration = (3 + Math.random() * 3) + 's';
+      s.style.animationDelay = (Math.random() * 1) + 's';
+      c.appendChild(s);
+      setTimeout(() => s.remove(), 7000);
+    }
+    function startStars() {
+      const c = document.getElementById('starsContainer');
+      if (!c) return;
+      c.classList.add('active');
+      if (starsInterval) return;
+      starsInterval = setInterval(createStar, 500);
+    }
+    function stopStars() {
+      const c = document.getElementById('starsContainer');
+      if (c) c.classList.remove('active');
+      if (starsInterval) { clearInterval(starsInterval); starsInterval = null; }
+    }
+    
+    function createKetupat() {
+      const c = document.getElementById('ketupatContainer');
+      if (!c) return;
+      const k = document.createElement('div');
+      k.className = 'ketupat-particle';
+      const ketupatEmojis = ['🎋','🌾','🍃','✨','⭐'];
+      k.textContent = ketupatEmojis[Math.floor(Math.random() * ketupatEmojis.length)];
+      k.style.left = Math.random() * 100 + 'vw';
+      k.style.fontSize = (12 + Math.random() * 18) + 'px';
+      k.style.animationDuration = (5 + Math.random() * 5) + 's';
+      k.style.animationDelay = (Math.random() * 1) + 's';
+      c.appendChild(k);
+      setTimeout(() => k.remove(), 11000);
+    }
+    function startKetupat() {
+      const c = document.getElementById('ketupatContainer');
+      if (!c) return;
+      c.classList.add('active');
+      if (ketupatInterval) return;
+      ketupatInterval = setInterval(createKetupat, 700);
+    }
+    function stopKetupat() {
+      const c = document.getElementById('ketupatContainer');
+      if (c) c.classList.remove('active');
+      if (ketupatInterval) { clearInterval(ketupatInterval); ketupatInterval = null; }
+    }
+    
+    // ============================================================
+    // FIRST TIME TUTORIAL - v3.2.3
+    // ============================================================
+    function showFirstTimeTutorial() {
+      const tutorial = document.getElementById('firstTimeTutorial');
+      if (tutorial) tutorial.classList.add('show');
+    }
+    
+    function closeFirstTimeTutorial() {
+      const tutorial = document.getElementById('firstTimeTutorial');
+      if (tutorial) tutorial.classList.remove('show');
+      localStorage.setItem('exeTutorialSeen', '1');
+    }
+    
+    function startProfileMusicCountdown(duration) {
+      profileMusicDuration = duration;
+      profileMusicElapsed = 0;
+      const player = document.getElementById('profileMusicPlayer');
+      if (player) player.classList.add('active');
+      
+      if (profileMusicInterval) clearInterval(profileMusicInterval);
+      profileMusicInterval = setInterval(() => {
+        profileMusicElapsed++;
+        const remaining = profileMusicDuration - profileMusicElapsed;
+        const pct = (profileMusicElapsed / profileMusicDuration) * 100;
+        
+        // Update timer
+        const mins = Math.floor(remaining / 60);
+        const secs = remaining % 60;
+        const timerEl = document.getElementById('pmpTimer');
+        if (timerEl) timerEl.textContent = `${mins}:${secs.toString().padStart(2,'0')}`;
+        
+        // Update ring
+        const circle = document.getElementById('pmpCircle');
+        const circumference = 138.23;
+        const offset = circumference * (1 - (pct / 100));
+        if (circle) {
+          circle.setAttribute('stroke-dashoffset', offset);
+          // Change color based on remaining time
+          if (remaining <= 3) {
+            circle.setAttribute('stroke', '#ff0050');
+            circle.parentElement.classList.add('critical');
+          } else if (remaining <= 10) {
+            circle.setAttribute('stroke', '#ffcc00');
+            circle.parentElement.classList.add('warning');
+            circle.parentElement.classList.remove('critical');
+          } else {
+            circle.setAttribute('stroke', '#ff3333');
+            circle.parentElement.classList.remove('warning', 'critical');
+          }
+        }
+        
+        if (remaining <= 0) {
+          stopProfileMusicCountdown();
+        }
+      }, 1000);
+    }
+    
+    function stopProfileMusicCountdown() {
+      if (profileMusicInterval) {
+        clearInterval(profileMusicInterval);
+        profileMusicInterval = null;
+      }
+      const player = document.getElementById('profileMusicPlayer');
+      if (player) player.classList.remove('active');
+      if (profileAudio) {
+        profileAudio.pause();
+        profileAudio.currentTime = 0;
+      }
+    }
+    
+    function toggleProfileMusic() {
+      if (profileAudio && !profileAudio.paused) {
+        stopProfileMusicCountdown();
+      } else if (profileAudio && profileAudio.src) {
+        profileAudio.play();
+        // Get duration and start countdown
+        profileAudio.addEventListener('loadedmetadata', () => {
+          startProfileMusicCountdown(Math.floor(profileAudio.duration));
+        }, { once: true });
+      }
+    }
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    let songs = [], i = 0, isLoginMode = true;
+    let repeatMode = parseInt(localStorage.getItem('exeRepeat') || '0');
+    let isShuf = localStorage.getItem('exeShuffle') === 'true';
+    let fav = JSON.parse(localStorage.getItem('exeFav') || '[]');
+    let savedVol = parseFloat(localStorage.getItem('exeVolume') || '0.8');
+    let userData = null;
+    let profileAudio = null;
+    let broadcastTimeout;
+    let notifList = [], _globalNotifs = [], _userNotifs = [];
+    const lastReadNotifTimeKey = 'exeNotifRead';
+    let userCache = {};
+    let isFirstTimeUser = false;
+    let trendingSongs = {};
+    let adAllUsers = [], adAllSongs = [];
+    let adminLoaded = false;
+    let adminDrag = { active: false, offsetX: 0, offsetY: 0 };
+    let adminMode = 'normal';
+    let creatorDrag = { active: false, offsetX: 0, offsetY: 0 };
+    let creatorMode = 'normal';
+    let tagDropInterval = null;
+    let tagDropBannerInterval = null;
+    let currentTagDrop = null;
+    let lastTagDropToastKey = null;
+    let lebaranInterval = null;
+    let globalCountdownInterval = null;
+    let tagUnlockTimeout = null;
+    let vipTrialBannerClosed = false;
+    let uploadCooldownInterval = null;
+    let isAdminUnlocked = localStorage.getItem('exeAdminUnlocked') === '1';
+    let currentProfileUid = null;
+    let adminFloatInterval = null;
+    let userQuestState = { daily: {}, weekly: {} };
+    let listenDailySeconds = 0;
+    let listenWeeklySeconds = 0;
+    let lastListenTick = 0;
+
+    const audio = new Audio();
+    audio.volume = savedVol;
+
+    // Init UI
+    window.addEventListener('DOMContentLoaded', () => {
+      const repBtn = document.getElementById('rep');
+      if (repBtn) {
+        if (repeatMode === 1) {
+          repBtn.classList.add('active-btn');
+          repBtn.innerHTML = '<i class="fas fa-redo"></i><span style="font-size:7px;position:absolute;top:7px;right:5px;font-weight:bold">1</span>';
+        } else if (repeatMode === 2) {
+          repBtn.classList.add('active-btn');
+        }
+      }
+      document.getElementById('shuf').classList.toggle('active-btn', isShuf);
+      document.getElementById('vol').value = savedVol;
+      
+      // Close capsule menu when clicking outside - v3.2.3
+      document.addEventListener('click', (e) => {
+        const capsuleMenu = document.getElementById('capsuleMenuPanel');
+        const capsuleBtn = document.getElementById('btnMenu');
+        if (capsuleMenu && capsuleBtn) {
+          if (!capsuleMenu.contains(e.target) && !capsuleBtn.contains(e.target)) {
+            capsuleMenu.classList.remove('show');
+          }
+        }
+      });
+    });
+
+    // ============================================================
+    // HELPERS
+    // ============================================================
+    function escapeHtml(text) {
+      const d = document.createElement('div'); d.textContent = text; return d.innerHTML;
+    }
+    function getTagHTML(tag) {
+      if (!tag || tag === 'none') return '';
+      const t = tag.toLowerCase();
+      return `<span class="user-tag tag-${t}">${tag.toUpperCase()}</span>`;
+    }
+    function buyShopItem(id) {
+      if (!auth.currentUser || !userData) {
+        msg('Login dulu untuk tukar ExeCoin');
+        return;
+      }
+      const uid = auth.currentUser.uid;
+      const items = [
+        { id: 'shop_tag_gamers', type: 'tag', tag: 'gamers', price: 100 },
+        { id: 'shop_tag_legend', type: 'tag', tag: 'legend', price: 500 },
+        { id: 'shop_tag_execurive', type: 'tag', tag: 'execurive', price: 1000 },
+        { id: 'shop_vip_3', type: 'vip', days: 3, price: 200 },
+        { id: 'shop_vip_7', type: 'vip', days: 7, price: 500 },
+        { id: 'shop_vip_30', type: 'vip', days: 30, price: 1200 }
+      ];
+      const it = items.find(x => x.id === id);
+      if (!it) return;
+      const coinsRef = db.ref('users/' + uid + '/coins');
+      coinsRef.transaction(cur => {
+        const base = typeof cur === 'number' ? cur : 0;
+        if (base < it.price) return;
+        return base - it.price;
+      }).then(res => {
+        if (!res.committed) {
+          showToast('ExeCoin belum cukup');
+          return;
+        }
+        if (it.type === 'tag') {
+          const tagLower = String(it.tag || '').toLowerCase();
+          const updates = {};
+          updates['users/' + uid + '/tag'] = tagLower;
+          updates['users/' + uid + '/alltag/' + tagLower] = true;
+          db.ref().update(updates).then(() => {
+            userData.tag = tagLower;
+            if (!userData.alltag) userData.alltag = {};
+            userData.alltag[tagLower] = true;
+            const tagEl = document.getElementById('pTagDisplay');
+            if (tagEl) tagEl.innerHTML = getTagHTML(userData.tag);
+            showToast('Tag ' + tagLower.toUpperCase() + ' berhasil ditukar');
+            showTagUnlockBanner([tagLower]);
+          });
+        } else if (it.type === 'vip') {
+          const now = Date.now();
+          const ms = (it.days || 0) * 24 * 60 * 60 * 1000;
+          const expireAt = now + ms;
+          db.ref('users/' + uid + '/trialvip').set({ expireAt }).then(() => {
+            if (!userData.trialvip) userData.trialvip = {};
+            userData.trialvip.expireAt = expireAt;
+            showToast('VIP Trial ' + it.days + ' hari aktif');
+            updateVipTrialBanner(expireAt);
+          });
+        }
+        return coinsRef.once('value').then(csnap => {
+          userData.coins = csnap.val() || 0;
+          renderEventCenter();
+        });
+      });
+    }
+    function showTagUnlockBanner(tags) {
+      const wrap = document.getElementById('tagUnlockBanner');
+      const listEl = document.getElementById('tagUnlockTags');
+      if (!wrap || !listEl) return;
+      listEl.innerHTML = '';
+      (tags || []).forEach(raw => {
+        const t = String(raw || '').toLowerCase();
+        if (!t) return;
+        const span = document.createElement('span');
+        span.className = 'user-tag tag-' + t;
+        span.textContent = t.toUpperCase();
+        listEl.appendChild(span);
+      });
+      wrap.classList.add('show');
+      if (tagUnlockTimeout) {
+        clearTimeout(tagUnlockTimeout);
+        tagUnlockTimeout = null;
+      }
+      tagUnlockTimeout = setTimeout(() => {
+        wrap.classList.remove('show');
+      }, 5000);
+    }
+    function closeTagUnlockBanner() {
+      const wrap = document.getElementById('tagUnlockBanner');
+      if (wrap) wrap.classList.remove('show');
+      if (tagUnlockTimeout) {
+        clearTimeout(tagUnlockTimeout);
+        tagUnlockTimeout = null;
+      }
+    }
+    function playProfileMusic(url) {
+      if (!url) return;
+      if (!profileAudio) profileAudio = new Audio();
+      if (!audio.paused) {
+        audio.pause();
+        document.getElementById('playBtn').innerHTML = '<i class="fas fa-play"></i>';
+        document.getElementById('eq').classList.remove('playing');
+      }
+      profileAudio.src = url;
+      profileAudio.loop = true;
+      profileAudio.play().catch(() => {});
+    }
+    function stopProfileMusic() {
+      if (profileAudio) {
+        profileAudio.pause();
+        profileAudio.currentTime = 0;
+      }
+    }
+    function getVipStatus(u) {
+      const now = Date.now();
+      if (u && u.vip) return 'permanent';
+      if (u && u.trialvip && u.trialvip.expireAt && now < u.trialvip.expireAt) return 'trial';
+      return false;
+    }
+    function computeQuestTags(u, folCount, flgCount) {
+      const tags = {};
+      tags.user = true;
+      const vipType = getVipStatus(u);
+      if (vipType) tags.vip = true;
+      if (typeof folCount === 'number') {
+        if (folCount >= 10) tags.newbie = true;
+        if (folCount >= 50) tags.pro = true;
+        if (folCount >= 150) { tags.terkeren = true; tags.tersulit = true; }
+      }
+      return tags;
+    }
+    function syncUserQuestTags(uid, u, folCount, flgCount) {
+      if (!uid || !u) return;
+      const quest = computeQuestTags(u, folCount, flgCount);
+      const existing = u.alltag || {};
+      const merged = {};
+      let changed = false;
+      let newCount = 0;
+      Object.keys(existing).forEach(k => {
+        merged[k] = existing[k];
+      });
+      Object.keys(quest).forEach(k => {
+        if (!merged[k]) {
+          merged[k] = true;
+          changed = true;
+          newCount++;
+        }
+      });
+      if (changed) {
+        db.ref('users/' + uid + '/alltag').set(merged);
+        if (newCount > 0) {
+          updateQuestProgress('weekly', 'weekly_new_tags_2', newCount, uid);
+        }
+      }
+    }
+    function ensureCurrentTagInAlltag(uid, u) {
+      if (!uid || !u) return;
+      const t = (u.tag || '').toLowerCase();
+      if (!t || t === 'none') return;
+      const all = u.alltag || {};
+      if (all[t]) return;
+      db.ref('users/' + uid + '/alltag/' + t).set(true);
+    }
+    function setupTagDropWatcher() {
+      if (tagDropInterval) {
+        clearInterval(tagDropInterval);
+        tagDropInterval = null;
+      }
+      if (tagDropBannerInterval) {
+        clearInterval(tagDropBannerInterval);
+        tagDropBannerInterval = null;
+      }
+      const banner = document.getElementById('eventTagBanner');
+      const pill = document.getElementById('globalEventPill');
+      const pillTime = document.getElementById('globalEventPillTime');
+      if (!auth.currentUser || !userData || !currentTagDrop || !currentTagDrop.active || !currentTagDrop.tag || !currentTagDrop.chance) {
+        if (banner) banner.classList.remove('show');
+        if (pill) {
+          pill.classList.remove('show', 'urgent', 'pulse');
+        }
+        if (pillTime) pillTime.textContent = '--:--';
+        updateEventSideFromTagDrop();
+        return;
+      }
+      if (banner) banner.classList.remove('show');
+      const eventKey = String(currentTagDrop.tag || '') + '|' + String(currentTagDrop.endAt || 0);
+      if (eventKey && lastTagDropToastKey !== eventKey) {
+        lastTagDropToastKey = eventKey;
+        showToast('🎁 Tag Drop Event has started!', 'event');
+        const chancePct = Math.round((currentTagDrop.chance || 0) * 100);
+        const tagName = String(currentTagDrop.tag || '').toUpperCase();
+        const winnersText = currentTagDrop.maxWinners ? `only ${currentTagDrop.maxWinners} winners` : 'unlimited winners';
+        showToast(`tag drop: ${chancePct}% chance, tag: ${tagName}, ${winnersText}`, 'event');
+      }
+      if (pill && pillTime) {
+        const updatePill = () => {
+          const now = Date.now();
+          const diff = currentTagDrop.endAt ? currentTagDrop.endAt - now : 0;
+          if (!currentTagDrop.endAt || diff <= 0) {
+            pill.classList.remove('show', 'urgent', 'pulse');
+            pillTime.textContent = '0:00';
+            if (tagDropBannerInterval) {
+              clearInterval(tagDropBannerInterval);
+              tagDropBannerInterval = null;
+            }
+            updateEventSideFromTagDrop();
+            return;
+          }
+          const totalSec = Math.floor(diff / 1000);
+          const m = Math.floor(totalSec / 60);
+          const s = totalSec % 60;
+          pillTime.textContent = `${m}:${String(s).padStart(2, '0')}`;
+          pill.classList.add('show', 'pulse');
+          if (totalSec <= 10) pill.classList.add('urgent');
+          else pill.classList.remove('urgent');
+        };
+        updatePill();
+        tagDropBannerInterval = setInterval(updatePill, 1000);
+      }
+      updateEventSideFromTagDrop();
+      tagDropInterval = setInterval(() => {
+        if (!auth.currentUser || !userData || !currentTagDrop || !currentTagDrop.active) return;
+        if (currentTagDrop.maxWinners && currentTagDrop.obtainedCount >= currentTagDrop.maxWinners) return;
+        if (Math.random() < currentTagDrop.chance) {
+          const tag = String(currentTagDrop.tag).toLowerCase();
+          const all = userData.alltag || {};
+          if (!all[tag]) {
+            const updates = {};
+            updates['users/' + auth.currentUser.uid + '/alltag/' + tag] = true;
+            const countRef = db.ref('settings/tagDrop/obtainedCount');
+            countRef.transaction(cur => {
+              const base = typeof cur === 'number' ? cur : 0;
+              if (currentTagDrop.maxWinners && base >= currentTagDrop.maxWinners) return;
+              return base + 1;
+            }).then(res => {
+              if (!res.committed) return;
+              currentTagDrop.obtainedCount = res.snapshot.val() || 0;
+              db.ref().update(updates).then(() => {
+                showToast('🎉 You won the ' + tag.toUpperCase() + ' tag!', 'success');
+                updateQuestProgress('weekly', 'weekly_new_tags_2', 1, auth.currentUser.uid);
+                showTagUnlockBanner([tag]);
+                const payload = {
+                  type: 'event',
+                  text: 'Kamu mendapatkan tag ' + tag.toUpperCase() + ' dari event Tag Drop',
+                  fromName: 'System',
+                  timestamp: Date.now()
+                };
+                db.ref('users/' + auth.currentUser.uid + '/notifications').push(payload);
+              });
+            });
+          }
+        }
+      }, 30000);
+    }
+    function updateUploadCooldownCard() {
+      const card = document.getElementById('uploadCdCard');
+      const timerEl = document.getElementById('uploadCdTimer');
+      const subEl = document.getElementById('uploadCdSub');
+      if (!card || !timerEl || !subEl || !userData) return;
+      const lastUpload = userData.lastUpload || 0;
+      const now = Date.now();
+      const vipType = getVipStatus(userData);
+      const isAdmin = userData.role === 'admin';
+      const cooldown = isAdmin ? 0 : (vipType ? 15 : 30);
+      if (!cooldown) {
+        card.style.display = 'none';
+        return;
+      }
+      const nextAt = lastUpload + cooldown * 60 * 1000;
+      const diffMs = nextAt - now;
+      if (diffMs <= 0) {
+        card.style.display = 'none';
+        return;
+      }
+      card.style.display = 'block';
+      const totalSec = Math.floor(diffMs / 1000);
+      const m = String(Math.floor(totalSec / 60)).padStart(2, '0');
+      const s = String(totalSec % 60).padStart(2, '0');
+      timerEl.textContent = m + ':' + s;
+      if (vipType) subEl.textContent = 'VIP cooldown 15 menit';
+      else subEl.textContent = 'Non-VIP cooldown 30 menit';
+    }
+    function startUploadCooldownWatcher() {
+      if (uploadCooldownInterval) clearInterval(uploadCooldownInterval);
+      updateUploadCooldownCard();
+      uploadCooldownInterval = setInterval(updateUploadCooldownCard, 1000);
+    }
+    function stopUploadCooldownWatcher() {
+      if (uploadCooldownInterval) {
+        clearInterval(uploadCooldownInterval);
+        uploadCooldownInterval = null;
+      }
+      const card = document.getElementById('uploadCdCard');
+      if (card) card.style.display = 'none';
+    }
+    function closeEventTagBanner() {
+      const el = document.getElementById('eventTagBanner');
+      if (el) el.classList.remove('show');
+    }
+    function openEventCenter() {
+      const modal = document.getElementById('modalEventCenter');
+      if (!auth.currentUser || !userData) {
+        msg('Login dulu untuk akses event');
+        return;
+      }
+      if (!modal) return;
+      modal.style.display = 'block';
+      loadUserQuests().then(() => {
+        renderEventCenter();
+      });
+    }
+    function switchEventTab(id, btn) {
+      document.querySelectorAll('.event-tab-view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.event-tab-btn').forEach(b => b.classList.remove('active'));
+      const tabMap = {
+        'daily': 'evTabDaily',
+        'weekly': 'evTabWeekly',
+        'ramadhan': 'evTabRamadhan',
+        'shop': 'evTabShop'
+      };
+      const tab = document.getElementById(tabMap[id] || 'evTabDaily');
+      if (tab) tab.classList.add('active');
+      if (btn) btn.classList.add('active');
+      if (id === 'ramadhan') {
+        updateRamadhanProgress();
+      }
+      renderEventCenter();
+    }
+
+    // ============================================================
+    // LEADERBOARD SYSTEM - v3.2.3
+    // ============================================================
+    let leaderboardRefreshInterval = null;
+    let leaderboardRefreshCountdown = 60;
+
+    let lastNonLeaderboardUrl = null;
+
+    function setLeaderboardUrl(category) {
+      const base = window.location.protocol + '//' + window.location.host + window.location.pathname;
+      const leaderboardUrl = base + '?leaderboard#' + category;
+      window.history.pushState({ path: leaderboardUrl }, '', leaderboardUrl);
+    }
+
+    function restoreUrlAfterLeaderboard() {
+      if (lastNonLeaderboardUrl) {
+        window.history.pushState({ path: lastNonLeaderboardUrl }, '', lastNonLeaderboardUrl);
+      } else {
+        applyProfileUrl(true); // default fallback
+      }
+      lastNonLeaderboardUrl = null;
+    }
+
+    function closeLeaderboard() {
+      const lbModal = document.getElementById('modalLeaderboard');
+      if (lbModal) {
+        lbModal.style.display = 'none';
+        lbModal.style.zIndex = '';
+      }
+      restoreUrlAfterLeaderboard();
+      if (leaderboardRefreshInterval) {
+        clearInterval(leaderboardRefreshInterval);
+        leaderboardRefreshInterval = null;
+      }
+    }
+
+    function openLeaderboard(defaultCategory = 'followers') {
+      const eventModal = document.getElementById('modalEventCenter');
+      const lbModal = document.getElementById('modalLeaderboard');
+      
+      if (!auth.currentUser) {
+        msg('Login dulu untuk akses leaderboard');
+        return;
+      }
+      if (!userData) {
+        console.warn('Leaderboard dibuka sebelum userData selesai dimuat. Proses tetap dilanjutkan.');
+      }
+
+      // store URL before leaderboard
+      if (!lastNonLeaderboardUrl) {
+        lastNonLeaderboardUrl = window.location.href;
+      }
+      
+      // Close event center, open leaderboard
+      if (eventModal) eventModal.style.display = 'none';
+      if (lbModal) {
+        lbModal.style.display = 'flex';
+        lbModal.style.alignItems = 'center';
+        lbModal.style.justifyContent = 'center';
+        lbModal.style.zIndex = '99999';
+      }
+
+      // Set leaderboard URL
+      setLeaderboardUrl(defaultCategory);
+      
+      // Load leaderboard data
+      loadLeaderboardData();
+      
+      // Switch to default category
+      switchLeaderboardTab(defaultCategory, null);
+      
+      // Start refresh timer
+      startLeaderboardRefresh();
+    }
+
+    function switchLeaderboardTab(category, btn) {
+      document.querySelectorAll('.leaderboard-tab-view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.leaderboard-tab-btn').forEach(b => b.classList.remove('active'));
+      
+      const tabMap = {
+        'followers': 'lbTabFollowers',
+        'tags': 'lbTabTags',
+        'uploads': 'lbTabUploads',
+        'execoin': 'lbTabExecoin'
+      };
+      
+      const tab = document.getElementById(tabMap[category]);
+      if (tab) tab.classList.add('active');
+      if (btn) btn.classList.add('active');
+    }
+
+    function startLeaderboardRefresh() {
+      // Clear existing interval
+      if (leaderboardRefreshInterval) {
+        clearInterval(leaderboardRefreshInterval);
+      }
+      
+      leaderboardRefreshCountdown = 60;
+      const timerEl = document.getElementById('lbRefreshTimer');
+      
+      leaderboardRefreshInterval = setInterval(() => {
+        leaderboardRefreshCountdown--;
+        if (timerEl) timerEl.textContent = leaderboardRefreshCountdown + 's';
+        
+        if (leaderboardRefreshCountdown <= 0) {
+          leaderboardRefreshCountdown = 60;
+          loadLeaderboardData();
+        }
+      }, 1000);
+    }
+
+    async function loadLeaderboardData() {
+      try {
+        // Get all users data
+        const usersSnapshot = await db.ref('users').once('value');
+        
+        // Get all songs to count uploads per user
+        const songsSnapshot = await db.ref('songs').once('value');
+        const uploadCounts = {};
+        
+        songsSnapshot.forEach(snap => {
+          const song = snap.val();
+          if (song && song.uid) {
+            uploadCounts[song.uid] = (uploadCounts[song.uid] || 0) + 1;
+          }
+        });
+        
+        const users = [];
+        
+        usersSnapshot.forEach(snap => {
+          const data = snap.val();
+          if (!data || !data.username) return;
+          
+          const uid = snap.key;
+          
+          // Count followers
+          const followersCount = data.followers 
+            ? (Array.isArray(data.followers) ? data.followers.length : Object.keys(data.followers).length)
+            : 0;
+          
+          // Count tags
+          const tagsCount = data.alltag 
+            ? (Array.isArray(data.alltag) ? data.alltag.length : Object.keys(data.alltag).length)
+            : 0;
+          
+          // Get uploads count from songs collection
+          const uploadsCount = uploadCounts[uid] || 0;
+          
+          // Get execoin
+          const execoin = data.coins || 0;
+          
+          users.push({
+            uid: uid,
+            username: data.username,
+            tag: data.tag || 'user',
+            followers: followersCount,
+            tags: tagsCount,
+            uploads: uploadsCount,
+            execoin: execoin
+          });
+        });
+        
+        // Render each category
+        renderLeaderboardCategory('followers', users, 'lbFollowersList');
+        renderLeaderboardCategory('tags', users, 'lbTagsList');
+        renderLeaderboardCategory('uploads', users, 'lbUploadsList');
+        renderLeaderboardCategory('execoin', users, 'lbExecoinList');
+        
+      } catch (error) {
+        console.error('Error loading leaderboard:', error);
+        showToast('Gagal memuat leaderboard');
+      }
+    }
+
+    function renderLeaderboardCategory(category, users, containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      
+      // Sort users by category
+      const sorted = users.sort((a, b) => b[category] - a[category]).slice(0, 5);
+      
+      if (sorted.length === 0 || sorted[0][category] === 0) {
+        container.innerHTML = `
+          <div class="leaderboard-empty">
+            <i class="fas fa-trophy" style="font-size:32px;color:#6b7280;margin-bottom:10px;opacity:0.3"></i>
+            <div>Belum ada data untuk kategori ini</div>
+          </div>
+        `;
+        return;
+      }
+      
+      const medals = ['🥇', '🥈', '🥉'];
+      const rankClasses = ['rank-1', 'rank-2', 'rank-3'];
+      
+      const labels = {
+        followers: 'Followers',
+        tags: 'Tags',
+        uploads: 'Uploads',
+        execoin: 'ExeCoin'
+      };
+      
+      let html = '';
+      sorted.forEach((user, index) => {
+        const rank = index + 1;
+        const rankClass = index < 3 ? rankClasses[index] : '';
+        const medal = index < 3 ? medals[index] : '';
+        const isCurrentUser = auth.currentUser && user.uid === auth.currentUser.uid;
+        
+        html += `
+          <div class="leaderboard-item ${rankClass}" style="animation-delay: ${index * 0.1}s">
+            <div class="leaderboard-rank">
+              ${medal || `<div class="leaderboard-rank-number">${rank}</div>`}
+            </div>
+            <div class="leaderboard-user">
+              <div class="leaderboard-username">
+                ${user.username}
+                ${isCurrentUser ? '<i class="fas fa-star" style="color:#fbbf24;font-size:10px"></i>' : ''}
+                <span class="user-tag tag-${user.tag}">${user.tag.toUpperCase()}</span>
+              </div>
+              <div class="leaderboard-stats">
+                <span>Rank #${rank}</span>
+                ${isCurrentUser ? '<span style="color:#fbbf24">• You</span>' : ''}
+              </div>
+            </div>
+            <div class="leaderboard-value">
+              <div class="leaderboard-value-number">${user[category].toLocaleString()}</div>
+              <div class="leaderboard-value-label">${labels[category]}</div>
+            </div>
+          </div>
+        `;
+      });
+      
+      container.innerHTML = html;
+    }
+
+    // ============================================================
+    // PROFILE RANKING BADGE - v3.2.3
+    // ============================================================
+    async function updateProfileRankingBadge(uid, headerSelector = '#profileHeader') {
+      const profHeader = document.querySelector(headerSelector);
+      if (!profHeader || !uid) return;
+      
+      // Remove existing badge
+      const existingBadge = profHeader.querySelector('.mp-ranking-badges');
+      if (existingBadge) existingBadge.remove();
+      
+      try {
+        // Get all users data
+        const usersSnapshot = await db.ref('users').once('value');
+        
+        // Get all songs to count uploads per user
+        const songsSnapshot = await db.ref('songs').once('value');
+        const uploadCounts = {};
+        
+        songsSnapshot.forEach(snap => {
+          const song = snap.val();
+          if (song && song.uid) {
+            uploadCounts[song.uid] = (uploadCounts[song.uid] || 0) + 1;
+          }
+        });
+        
+        const allUsers = [];
+        
+        usersSnapshot.forEach(snap => {
+          const u = snap.val();
+          if (!u) return;
+          const followers = u.followers ? Object.keys(u.followers).length : 0;
+          const tags = u.alltag ? Object.keys(u.alltag).length : 0;
+          const uploads = uploadCounts[snap.key] || 0;
+          const execoin = u.coins || 0;
+          allUsers.push({
+            uid: snap.key,
+            username: u.username || 'User',
+            followers,
+            tags,
+            uploads,
+            execoin
+          });
+        });
+        
+        // Check ranking in each category
+        const categories = ['followers', 'tags', 'uploads', 'execoin'];
+        const userRanks = [];
+        
+        categories.forEach(cat => {
+          const sorted = allUsers.sort((a, b) => b[cat] - a[cat]);
+          const rank = sorted.findIndex(u => u.uid === uid) + 1;
+          if (rank > 0 && rank <= 5) {
+            userRanks.push({ category: cat, rank: rank });
+          }
+        });
+        
+        // If user has ranks, show badges
+        if (userRanks.length > 0) {
+          const categoryLabels = {
+            followers: 'Followers',
+            tags: 'Tags',
+            uploads: 'Uploads',
+            execoin: 'ExeCoin'
+          };
+          
+          const badgesContainer = document.createElement('div');
+          badgesContainer.className = 'mp-ranking-badges';
+          
+          userRanks.forEach(({ category, rank }) => {
+            const badge = document.createElement('div');
+            badge.className = `mp-ranking-badge rank-${rank}`;
+            badge.innerHTML = `
+              <span class="mp-ranking-icon">🔥</span>
+              <span class="mp-ranking-text">#${rank} ${categoryLabels[category]}</span>
+            `;
+            badge.onclick = () => openLeaderboard(category);
+            badgesContainer.appendChild(badge);
+          });
+          
+          profHeader.appendChild(badgesContainer);
+        }
+      } catch (err) {
+        console.error('Error loading ranking badge:', err);
+      }
+    }
+
+    // Handle browser back/forward navigation for leaderboard
+    window.addEventListener('popstate', (event) => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isLeaderboard = urlParams.get('leaderboard');
+      const leaderboardCategory = window.location.hash.substring(1) || 'followers';
+
+      if (isLeaderboard && auth.currentUser) {
+        openLeaderboard(leaderboardCategory);
+      } else {
+        // Close leaderboard if navigating away
+        closeLeaderboard();
+      }
+    });
+
+    // ============================================================
+    // CREATOR PANEL V2 - v3.2.3
+    // ============================================================
+    function openCreatorPanel() {
+      const overlay = document.getElementById('creatorPanelOverlay');
+      const inner = document.getElementById('creatorPanelInner');
+      if (!auth.currentUser || !userData) {
+        showToast('Login dulu untuk akses creator panel');
+        return;
+      }
+      if (!userData.admpanel) {
+        showToast('Kamu tidak punya akses ke Creator Panel');
+        return;
+      }
+      if (overlay) {
+        overlay.classList.add('show');
+        if (inner) { inner.style.display = 'flex'; }
+      }
+    }
+
+    function closeCreatorPanel() {
+      const overlay = document.getElementById('creatorPanelOverlay');
+      const inner = document.getElementById('creatorPanelInner');
+      if (!overlay || !inner) return;
+      overlay.classList.remove('show');
+      inner.style.display = 'none';
+      creatorMode = 'normal';
+      inner.classList.remove('creator-full', 'creator-mini');
+      overlay.classList.remove('creator-overlay-mini');
+      inner.style.position = '';
+      inner.style.top = '';
+      inner.style.left = '';
+      inner.style.right = '';
+      inner.style.bottom = '';
+    }
+
+    function startCreatorDrag(e) {
+      const panel = document.getElementById('creatorPanelInner');
+      if (!panel || creatorMode === 'full') return;
+      if (e.target.closest('button')) return;
+      creatorDrag.active = true;
+      const rect = panel.getBoundingClientRect();
+      creatorDrag.offsetX = e.clientX - rect.left;
+      creatorDrag.offsetY = e.clientY - rect.top;
+      document.addEventListener('mousemove', onCreatorDrag);
+      document.addEventListener('mouseup', stopCreatorDrag);
+    }
+    function startCreatorDragTouch(e) {
+      const panel = document.getElementById('creatorPanelInner');
+      if (!panel || creatorMode === 'full') return;
+      if (e.target.closest('button')) return;
+      const touch = e.touches[0];
+      creatorDrag.active = true;
+      const rect = panel.getBoundingClientRect();
+      creatorDrag.offsetX = touch.clientX - rect.left;
+      creatorDrag.offsetY = touch.clientY - rect.top;
+      document.addEventListener('touchmove', onCreatorDragTouch, { passive: false });
+      document.addEventListener('touchend', stopCreatorDragTouch);
+    }
+    function onCreatorDrag(e) {
+      if (!creatorDrag.active) return;
+      const panel = document.getElementById('creatorPanelInner');
+      if (!panel) return;
+      panel.style.position = 'fixed';
+      panel.style.top = (e.clientY - creatorDrag.offsetY) + 'px';
+      panel.style.left = (e.clientX - creatorDrag.offsetX) + 'px';
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
+    }
+    function onCreatorDragTouch(e) {
+      if (!creatorDrag.active) return;
+      e.preventDefault();
+      const touch = e.touches[0];
+      const panel = document.getElementById('creatorPanelInner');
+      if (!panel) return;
+      panel.style.position = 'fixed';
+      panel.style.top = (touch.clientY - creatorDrag.offsetY) + 'px';
+      panel.style.left = (touch.clientX - creatorDrag.offsetX) + 'px';
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
+    }
+    function stopCreatorDrag() {
+      creatorDrag.active = false;
+      document.removeEventListener('mousemove', onCreatorDrag);
+      document.removeEventListener('mouseup', stopCreatorDrag);
+    }
+    function stopCreatorDragTouch() {
+      creatorDrag.active = false;
+      document.removeEventListener('touchmove', onCreatorDragTouch);
+      document.removeEventListener('touchend', stopCreatorDragTouch);
+    }
+    function toggleCreatorSize(mode) {
+      const overlay = document.getElementById('creatorPanelOverlay');
+      const panel = document.getElementById('creatorPanelInner');
+      if (!overlay || !panel) return;
+      if (mode === 'full') {
+        creatorMode = creatorMode === 'full' ? 'normal' : 'full';
+      } else if (mode === 'mini') {
+        creatorMode = creatorMode === 'mini' ? 'normal' : 'mini';
+      }
+      panel.classList.remove('creator-full', 'creator-mini');
+      overlay.classList.remove('creator-overlay-mini');
+      if (creatorMode === 'full') {
+        panel.classList.add('creator-full');
+        panel.style.position = '';
+        panel.style.top = '';
+        panel.style.left = '';
+      } else if (creatorMode === 'mini') {
+        panel.classList.add('creator-mini');
+        overlay.classList.add('creator-overlay-mini');
+        panel.style.position = '';
+        panel.style.top = '';
+        panel.style.left = '';
+      } else {
+        panel.style.position = '';
+        panel.style.top = '';
+        panel.style.left = '';
+      }
+    }
+
+    async function sendCreatorBroadcast() {
+      const msgText = document.getElementById('cpBroadcastMsg').value.trim();
+      if (!msgText) {
+        showToast('Tulis pesan dulu!');
+        return;
+      }
+      
+      try {
+        // Send to broadcast collection (same as admin panel)
+        await db.ref('broadcast').set({
+          message: msgText,
+          from: userData.username,
+          timestamp: Date.now(),
+          type: 'creator'
+        });
+        
+        showToast('✅ Broadcast terkirim ke semua user!', 'success');
+        document.getElementById('cpBroadcastMsg').value = '';
+      } catch (error) {
+        showToast('Gagal kirim broadcast');
+        console.error(error);
+      }
+    }
+
+    async function sendCreatorFloatChat() {
+      const msgText = document.getElementById('cpFloatMsg').value.trim();
+      if (!msgText) {
+        showToast('Tulis pesan dulu!');
+        return;
+      }
+      
+      try {
+        const now = Date.now();
+        const data = {
+          name: userData.username || 'Creator',
+          msg: msgText,
+          createdAt: now,
+          expireAt: now + 15000 // 15 seconds for creator panel
+        };
+        
+        console.log('Creator Panel sending:', data);
+        
+        // Send to adminFloatChat/current (same path as admin panel)
+        await db.ref('adminFloatChat/current').set(data);
+        
+        showToast('✅ Float chat terkirim!', 'success');
+        document.getElementById('cpFloatMsg').value = '';
+      } catch (error) {
+        showToast('Gagal kirim float chat');
+        console.error(error);
+      }
+    }
+
+    async function spawnRainCoins() {
+      try {
+        // Create notification for all users
+        const notifData = {
+          type: 'system',
+          title: '💰 RAIN COINS EVENT!',
+          message: `${userData.username} spawned Rain Coins! Semua user dapat 50 ExeCoin gratis!`,
+          timestamp: Date.now(),
+          icon: 'coins'
+        };
+        
+        await db.ref('globalNotifications').push(notifData);
+        
+        // Give 50 execoin to all users
+        const usersSnap = await db.ref('users').once('value');
+        const updates = {};
+        
+        usersSnap.forEach(snap => {
+          const uid = snap.key;
+          const currentExecoin = snap.val().execoin || 0;
+          updates[`users/${uid}/execoin`] = currentExecoin + 50;
+          updates[`users/${uid}/notifications/${Date.now()}_${uid}`] = {
+            type: 'system',
+            text: '💰 Rain Coins Event! Kamu dapat 50 ExeCoin gratis!',
+            fromName: 'CREATOR',
+            timestamp: Date.now()
+          };
+        });
+        
+        await db.ref().update(updates);
+        
+        showToast('🎉 Rain Coins event spawned! Semua user dapat 50 ExeCoin!', 'success');
+      } catch (error) {
+        showToast('Gagal spawn event');
+        console.error(error);
+      }
+    }
+
+    async function spawnBonusExecoin() {
+      try {
+        const notifData = {
+          type: 'system',
+          title: '💎 BONUS EXECOIN EVENT!',
+          message: `${userData.username} activated Bonus ExeCoin! Upload lagu sekarang dapat 2x ExeCoin!`,
+          timestamp: Date.now(),
+          icon: 'gem'
+        };
+        
+        await db.ref('globalNotifications').push(notifData);
+        
+        // Set bonus multiplier in settings
+        await db.ref('settings/bonusExecoin').set({
+          active: true,
+          multiplier: 2,
+          startTime: Date.now(),
+          duration: 3600000, // 1 hour
+          createdBy: userData.username
+        });
+        
+        showToast('🎉 Bonus ExeCoin event spawned! Upload dapat 2x ExeCoin selama 1 jam!', 'success');
+      } catch (error) {
+        showToast('Gagal spawn event');
+        console.error(error);
+      }
+    }
+
+    async function spawnDoubleXP() {
+      try {
+        const notifData = {
+          type: 'system',
+          title: '🔥 DOUBLE XP EVENT!',
+          message: `${userData.username} activated Double XP! Semua quest memberikan 2x reward selama 1 jam!`,
+          timestamp: Date.now(),
+          icon: 'fire'
+        };
+        
+        await db.ref('globalNotifications').push(notifData);
+        
+        // Set double XP in settings
+        await db.ref('settings/doubleXP').set({
+          active: true,
+          multiplier: 2,
+          startTime: Date.now(),
+          duration: 3600000, // 1 hour
+          createdBy: userData.username
+        });
+        
+        showToast('🎉 Double XP event spawned! Quest dapat 2x reward selama 1 jam!', 'success');
+      } catch (error) {
+        showToast('Gagal spawn event');
+        console.error(error);
+      }
+    }
+
+    async function spawnLuckyDraw() {
+      try {
+        const usersSnap = await db.ref('users').once('value');
+        const allUsers = [];
+        
+        usersSnap.forEach(snap => {
+          allUsers.push({
+            uid: snap.key,
+            username: snap.val().username,
+            execoin: snap.val().execoin || 0
+          });
+        });
+        
+        // Shuffle and pick 10 random winners
+        const shuffled = allUsers.sort(() => 0.5 - Math.random());
+        const winners = shuffled.slice(0, 10);
+        
+        const updates = {};
+        const winnerNames = [];
+        
+        winners.forEach(winner => {
+          updates[`users/${winner.uid}/execoin`] = winner.execoin + 500;
+          updates[`users/${winner.uid}/notifications/${Date.now()}_${winner.uid}`] = {
+            type: 'system',
+            text: '🎲 SELAMAT! Kamu menang Lucky Draw dan dapat 500 ExeCoin!',
+            fromName: 'CREATOR',
+            timestamp: Date.now()
+          };
+          winnerNames.push(winner.username);
+        });
+        
+        await db.ref().update(updates);
+        
+        // Send global notification
+        const notifData = {
+          type: 'system',
+          title: '🎲 LUCKY DRAW EVENT!',
+          message: `${userData.username} spawned Lucky Draw! 10 user beruntung dapat 500 ExeCoin! Winners: ${winnerNames.slice(0, 3).join(', ')}...`,
+          timestamp: Date.now(),
+          icon: 'dice'
+        };
+        
+        await db.ref('globalNotifications').push(notifData);
+        
+        showToast(`🎉 Lucky Draw spawned! 10 winners: ${winnerNames.slice(0, 3).join(', ')}...`, 'success');
+      } catch (error) {
+        showToast('Gagal spawn event');
+        console.error(error);
+      }
+    }
+
+    async function giveCreatorReward() {
+      const username = document.getElementById('cpRewardUsername').value.trim();
+      const amount = parseInt(document.getElementById('cpRewardAmount').value) || 0;
+      
+      if (!username) {
+        showToast('Masukkan username!');
+        return;
+      }
+      
+      if (amount <= 0) {
+        showToast('Jumlah harus lebih dari 0!');
+        return;
+      }
+      
+      try {
+        // Find user by username
+        const usersSnap = await db.ref('users').orderByChild('username').equalTo(username).once('value');
+        
+        if (!usersSnap.exists()) {
+          showToast('User tidak ditemukan!');
+          return;
+        }
+        
+        let targetUid = null;
+        usersSnap.forEach(snap => {
+          targetUid = snap.key;
+        });
+        
+        if (!targetUid) {
+          showToast('User tidak ditemukan!');
+          return;
+        }
+        
+        // Get current execoin
+        const userSnap = await db.ref('users/' + targetUid).once('value');
+        const currentExecoin = userSnap.val().execoin || 0;
+        
+        // Give reward
+        await db.ref('users/' + targetUid).update({
+          execoin: currentExecoin + amount
+        });
+        
+        // Send notification
+        await db.ref('users/' + targetUid + '/notifications').push({
+          type: 'system',
+          text: `🎁 Kamu dapat ${amount} ExeCoin dari Creator ${userData.username}!`,
+          fromName: 'CREATOR',
+          timestamp: Date.now()
+        });
+        
+        showToast(`✅ Berhasil kirim ${amount} ExeCoin ke ${username}!`, 'success');
+        document.getElementById('cpRewardUsername').value = '';
+      } catch (error) {
+        showToast('Gagal memberikan reward');
+        console.error(error);
+      }
+    }
+    function applyProfileUrl(push = false) {
+      try {
+        // If currently in leaderboard mode, do not override URL
+        if (window.location.search.startsWith('?leaderboard')) return;
+
+        const base = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        let newUrl;
+        if (currentProfileUid) newUrl = base + '?profile_userid=' + encodeURIComponent(currentProfileUid);
+        else newUrl = base + '?id=' + i;
+        if (push) window.history.pushState({ path: newUrl }, '', newUrl);
+        else window.history.replaceState({ path: newUrl }, '', newUrl);
+      } catch (e) {}
+    }
+    function fmt(s) { if (isNaN(s)) return '0:00'; let m = Math.floor(s / 60), sec = Math.floor(s % 60); return m + ':' + (sec < 10 ? '0' + sec : sec); }
+    function addLog(msg) { db.ref('logs').push({ msg, time: new Date().toLocaleTimeString() }); }
+
+    function renderEventCenter() {
+      if (!auth.currentUser || !userData) return;
+      const coinsEl = document.getElementById('evCoinBalance');
+      if (coinsEl) coinsEl.textContent = String(userData.coins || 0);
+      const dailyEl = document.getElementById('evDailyList');
+      const weeklyEl = document.getElementById('evWeeklyList');
+      const shopEl = document.getElementById('evShopList');
+      if (dailyEl) dailyEl.innerHTML = buildDailyQuestsHtml();
+      if (weeklyEl) weeklyEl.innerHTML = buildWeeklyQuestsHtml();
+      if (shopEl) shopEl.innerHTML = buildShopHtml();
+      updateEventSideFromTagDrop();
+    }
+    function getDailyKey() {
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return y + '-' + m + '-' + day;
+    }
+    function getWeeklyKey() {
+      const d = new Date();
+      const onejan = new Date(d.getFullYear(), 0, 1);
+      const week = Math.ceil((((d - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+      return d.getFullYear() + '-w' + String(week).padStart(2, '0');
+    }
+    function loadUserQuests() {
+      if (!auth.currentUser) return Promise.resolve();
+      return db.ref('userQuests/' + auth.currentUser.uid).once('value').then(snap => {
+        const val = snap.val() || {};
+        userQuestState.daily = val.daily || {};
+        userQuestState.weekly = val.weekly || {};
+        listenDailySeconds = 0;
+        listenWeeklySeconds = 0;
+        lastListenTick = 0;
+      }).catch(() => {
+        userQuestState = { daily: {}, weekly: {} };
+        listenDailySeconds = 0;
+        listenWeeklySeconds = 0;
+        lastListenTick = 0;
+      });
+    }
+   function buildDailyQuestsHtml() {
+    const defs = [
+      { id: 'daily_first_upload', title: 'First Upload', desc: 'Upload 1 music', reward: 5, max: 1, type: 'daily', enabled: true },
+      { id: 'daily_music_producer', title: 'Music Producer', desc: 'Upload 5 music', reward: 10, max: 5, type: 'daily', enabled: true },
+      { id: 'daily_top_listener_1', title: 'Top Listener I', desc: 'Dengarkan musik 30 menit', reward: 5, max: 30, type: 'daily', enabled: true },
+      { id: 'daily_follower_boost', title: 'Follower Boost', desc: 'Dapatkan 5 followers', reward: 5, max: 5, type: 'daily', enabled: true }
+    ];
+      const key = getDailyKey();
+      return defs.map(def => {
+        const st = (userQuestState.daily && userQuestState.daily[def.id]) || {};
+        const samePeriod = st.periodKey === key;
+        const cur = samePeriod ? (st.cur || 0) : 0;
+        const claimed = samePeriod && !!st.claimed;
+        return renderQuestCard({
+          id: def.id,
+          title: def.title,
+          desc: def.desc,
+          reward: def.reward,
+          max: def.max,
+          cur,
+          claimed,
+          type: def.type,
+          enabled: def.enabled
+        });
+      }).join('');
+    }
+  function buildWeeklyQuestsHtml() {
+    const defs = [
+      { id: 'weekly_social_hunter', title: 'Social Hunter', desc: 'Follow 2 url creator', reward: 25, max: 2, type: 'weekly', enabled: true },
+      { id: 'weekly_top_listener_2', title: 'Top Listener II', desc: 'Dengarkan musik 2 jam total', reward: 25, max: 120, type: 'weekly', enabled: true },
+      { id: 'weekly_followers_20', title: 'Rising Followers', desc: 'Dapatkan 20 followers', reward: 50, max: 20, type: 'weekly', enabled: true },
+      { id: 'weekly_followers_50', title: 'Popular Creator', desc: 'Dapatkan 50 followers', reward: 100, max: 50, type: 'weekly', enabled: true },
+      { id: 'weekly_new_tags_2', title: 'Tag Collector', desc: 'Dapatkan 2 tag baru', reward: 50, max: 2, type: 'weekly', enabled: true },
+      { id: 'weekly_active_creator', title: 'Active Creator', desc: 'Upload 10 music', reward: 50, max: 10, type: 'weekly', enabled: true },
+      { id: 'weekly_ultra_uploader', title: 'Ultra Uploader', desc: 'Upload 20 music', reward: 120, max: 20, type: 'weekly', enabled: true }
+    ];
+      const key = getWeeklyKey();
+      return defs.map(def => {
+        const st = (userQuestState.weekly && userQuestState.weekly[def.id]) || {};
+        const samePeriod = st.periodKey === key;
+        const cur = samePeriod ? (st.cur || 0) : 0;
+        const claimed = samePeriod && !!st.claimed;
+        return renderQuestCard({
+          id: def.id,
+          title: def.title,
+          desc: def.desc,
+          reward: def.reward,
+          max: def.max,
+          cur,
+          claimed,
+          type: def.type,
+          enabled: def.enabled
+        });
+      }).join('');
+    }
+    function buildShopHtml() {
+      const tags = [
+        { id: 'shop_tag_gamers', title: 'Tag [GAMERS]', desc: 'Profile dark + aksen neon green', price: 100, badge: 'Tag ExeCoin' },
+        { id: 'shop_tag_legend', title: 'Tag [LEGEND]', desc: 'Nama glow + border emas', price: 500, badge: 'Tag Premium' },
+        { id: 'shop_tag_execurive', title: 'Tag [EXECURIVE]', desc: 'Boost visibility dan akses VIP', price: 1000, badge: 'Tag Ultra' }
+      ];
+      const vips = [
+        { id: 'shop_vip_3', title: 'VIP 3 Hari', desc: 'Akses VIP sementara', price: 200, badge: 'VIP Bronze' },
+        { id: 'shop_vip_7', title: 'VIP 7 Hari', desc: 'Durasi VIP lebih lama', price: 500, badge: 'VIP Silver' },
+        { id: 'shop_vip_30', title: 'VIP 30 Hari', desc: 'Paket VIP bulanan', price: 1200, badge: 'VIP Gold' }
+      ];
+      const renderItem = it => {
+        const coins = userData.coins || 0;
+        const progressText = coins + '/' + it.price;
+        const pct = Math.max(0, Math.min(1, coins / it.price));
+        const canBuy = coins >= it.price;
+        const btnAttrs = canBuy ? ('onclick="buyShopItem(\'' + it.id + '\')"') : 'disabled';
+        const btnLabel = canBuy ? 'Tukar sekarang' : 'Coin belum cukup';
+        return '<div class="event-shop-card">' +
+          '<div class="event-shop-main">' +
+            '<div class="event-shop-title-row">' +
+              '<div class="event-shop-title">' + escapeHtml(it.title) + '</div>' +
+              '<div class="event-shop-price"><i class="fas fa-coins"></i>' + it.price + '</div>' +
+            '</div>' +
+            '<div class="event-shop-desc">' + escapeHtml(it.desc) + '</div>' +
+            '<div class="event-shop-progress-wrap">' +
+              '<div class="event-shop-progress-bar"><div class="event-shop-progress-fill" style="transform:scaleX(' + pct + ')"></div></div>' +
+              '<div class="event-shop-progress-text">' + escapeHtml(progressText) + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="event-shop-action">' +
+            '<div class="event-shop-badge">' + escapeHtml(it.badge) + '</div>' +
+            '<button class="event-shop-btn" ' + btnAttrs + '>' + escapeHtml(btnLabel) + '</button>' +
+          '</div>' +
+        '</div>';
+      };
+      let html = '';
+      html += '<div class="event-shop-section">' +
+                '<div class="event-shop-section-title">Tag Eksklusif</div>' +
+                '<div class="event-shop-list">' +
+                  tags.map(renderItem).join('') +
+                '</div>' +
+              '</div>';
+      html += '<div class="event-shop-section">' +
+                '<div class="event-shop-section-title">Paket VIP</div>' +
+                '<div class="event-shop-list">' +
+                  vips.map(renderItem).join('') +
+                '</div>' +
+              '</div>';
+      return html;
+    }
+  function getQuestDef(type, id) {
+    if (type === 'daily') {
+      if (id === 'daily_first_upload') return { id, type, title: 'First Upload', reward: 5, max: 1, enabled: true };
+      if (id === 'daily_music_producer') return { id, type, title: 'Music Producer', reward: 10, max: 5, enabled: true };
+      if (id === 'daily_top_listener_1') return { id, type, title: 'Top Listener I', reward: 5, max: 30, enabled: true };
+      if (id === 'daily_follower_boost') return { id, type, title: 'Follower Boost', reward: 5, max: 5, enabled: true };
+    } else if (type === 'weekly') {
+      if (id === 'weekly_social_hunter') return { id, type, title: 'Social Hunter', reward: 25, max: 2, enabled: true };
+      if (id === 'weekly_top_listener_2') return { id, type, title: 'Top Listener II', reward: 25, max: 120, enabled: true };
+      if (id === 'weekly_followers_20') return { id, type, title: 'Rising Followers', reward: 50, max: 20, enabled: true };
+      if (id === 'weekly_followers_50') return { id, type, title: 'Popular Creator', reward: 100, max: 50, enabled: true };
+      if (id === 'weekly_new_tags_2') return { id, type, title: 'Tag Collector', reward: 50, max: 2, enabled: true };
+      if (id === 'weekly_active_creator') return { id, type, title: 'Active Creator', reward: 50, max: 10, enabled: true };
+      if (id === 'weekly_ultra_uploader') return { id, type, title: 'Ultra Uploader', reward: 120, max: 20, enabled: true };
+    }
+    return null;
+  }
+    function updateQuestProgress(type, id, delta, uidOverride) {
+      if (!auth || !auth.currentUser || !delta) return;
+      const def = getQuestDef(type, id);
+      if (!def || def.enabled === false) return;
+      const uid = uidOverride || auth.currentUser.uid;
+      const periodKey = type === 'daily' ? getDailyKey() : getWeeklyKey();
+      const ref = db.ref('userQuests/' + uid + '/' + type + '/' + id);
+      return ref.transaction(cur => {
+        if (!cur || cur.periodKey !== periodKey) {
+          const curVal = Math.min(delta, def.max);
+          return { periodKey, cur: curVal, claimed: false };
+        }
+        const curVal = cur.cur || 0;
+        const nextVal = Math.min(curVal + delta, def.max);
+        if (nextVal === curVal) return cur;
+        
+        // Check if quest just completed
+        if (curVal < def.max && nextVal >= def.max) {
+          // Quest completed! Show toast
+          const questNames = {
+            'daily_first_upload': 'First Upload',
+            'daily_music_producer': 'Music Producer',
+            'daily_listener': 'Active Listener',
+            'weekly_active_creator': 'Active Creator',
+            'weekly_social_butterfly': 'Social Butterfly',
+            'weekly_music_explorer': 'Music Explorer'
+          };
+          const name = questNames[id] || id;
+          const typeLabel = type === 'daily' ? 'Harian' : 'Mingguan';
+          showToast(`[Misi ${typeLabel}] ${name} Selesai! 🎉`, 'success');
+        }
+        
+        return { ...cur, cur: nextVal };
+      }).then(res => {
+        if (!res.committed) return;
+        if (uid === (auth.currentUser && auth.currentUser.uid)) {
+          if (!userQuestState[type]) userQuestState[type] = {};
+          userQuestState[type][id] = res.snapshot.val() || {};
+        }
+      }).catch(() => {});
+    }
+    function grantCoins(uid, amount) {
+      if (!uid || !amount || amount <= 0) return Promise.resolve();
+      let remaining = amount;
+      const step = () => {
+        if (remaining <= 0) return Promise.resolve();
+        const chunk = remaining > 10 ? 10 : remaining;
+        remaining -= chunk;
+        const ref = db.ref('users/' + uid + '/coins');
+        return ref.transaction(cur => {
+          const base = typeof cur === 'number' ? cur : 0;
+          return base + chunk;
+        }).then(res => {
+          if (!res.committed) {
+            remaining += chunk;
+            return Promise.resolve();
+          }
+          return step();
+        });
+      };
+      return step();
+    }
+    function claimQuest(type, id) {
+      if (!auth || !auth.currentUser || !userData) return msg('Login dulu!');
+      const def = getQuestDef(type, id);
+      if (!def) return;
+      if (def.enabled === false) { showToast('Quest belum aktif'); return; }
+      const uid = auth.currentUser.uid;
+      const periodKey = type === 'daily' ? getDailyKey() : getWeeklyKey();
+      const ref = db.ref('userQuests/' + uid + '/' + type + '/' + id);
+      ref.once('value').then(snap => {
+        const st = snap.val() || {};
+        if (st.periodKey !== periodKey) { showToast('Quest sudah reset'); return; }
+        const cur = st.cur || 0;
+        if (cur < def.max) { showToast('Progress belum penuh'); return; }
+        if (st.claimed) { showToast('Quest sudah diklaim'); return; }
+        return grantCoins(uid, def.reward).then(() => {
+          return ref.update({ claimed: true, claimedAt: Date.now(), periodKey, cur });
+        }).then(() => {
+          return db.ref('users/' + uid + '/coins').once('value');
+        }).then(csnap => {
+          const newCoins = csnap.val() || 0;
+          userData.coins = newCoins;
+          if (!userQuestState[type]) userQuestState[type] = {};
+          userQuestState[type][id] = { periodKey, cur, claimed: true };
+          renderEventCenter();
+          const iconEl = document.querySelector('.event-coins-icon');
+          if (iconEl) {
+            iconEl.classList.add('gain');
+            setTimeout(() => iconEl.classList.remove('gain'), 600);
+          }
+          showToast('Kamu mendapatkan ' + def.reward + ' ExeCoin dari quest ' + def.title);
+        });
+      }).catch(() => {
+        showToast('Gagal klaim quest');
+      });
+    }
+    function renderQuestCard(q) {
+      const pct = Math.max(0, Math.min(1, q.max ? (q.cur || 0) / q.max : 0));
+      const progressText = (q.cur || 0) + '/' + q.max;
+      const completed = (q.cur || 0) >= q.max;
+      const claimed = !!q.claimed;
+      const enabled = q.enabled !== false;
+      let badgeText = 'Berjalan';
+      if (!enabled) badgeText = 'Segera hadir';
+      else if (claimed) badgeText = 'Selesai';
+      else if (completed) badgeText = 'Siap diklaim';
+      let btnLabel = 'Progress ' + progressText;
+      let btnAttrs = 'disabled';
+      if (!enabled) {
+        btnLabel = 'Belum tersedia';
+      } else if (claimed) {
+        btnLabel = 'Sudah diklaim';
+      } else if (completed) {
+        btnLabel = 'Klaim ' + q.reward + ' ExeCoin';
+        btnAttrs = 'onclick="claimQuest(\'' + q.type + '\', \'' + q.id + '\')"';
+      }
+      return '<div class="event-quest-card">' +
+        '<div class="event-quest-main">' +
+          '<div class="event-quest-title-row">' +
+            '<div class="event-quest-title">' + escapeHtml(q.title) + '</div>' +
+            '<div class="event-quest-reward"><i class="fas fa-coins"></i>' + q.reward + '</div>' +
+          '</div>' +
+          '<div class="event-quest-desc">' + escapeHtml(q.desc) + '</div>' +
+        '</div>' +
+        '<div class="event-quest-progress-wrap">' +
+          '<div class="event-quest-progress-bar"><div class="event-quest-progress-fill" style="transform:scaleX(' + pct + ')"></div></div>' +
+          '<div class="event-quest-progress-text">' + escapeHtml(progressText) + '</div>' +
+        '</div>' +
+        '<div class="event-quest-action">' +
+          '<div class="event-quest-badge">' + escapeHtml(badgeText) + '</div>' +
+          '<button class="event-quest-btn secondary" ' + btnAttrs + '>' + escapeHtml(btnLabel) + '</button>' +
+        '</div>' +
+      '</div>';
+    }
+    function updateEventSideFromTagDrop() {
+      const mainEl = document.getElementById('evTagDropMain');
+      const subEl = document.getElementById('evTagDropSub');
+      const timerEl = document.getElementById('evTagDropTimer');
+      if (!mainEl || !subEl || !timerEl) return;
+      if (!currentTagDrop || !currentTagDrop.active) {
+        mainEl.textContent = 'Tidak ada event tag drop aktif';
+        subEl.textContent = 'Tunggu admin mengaktifkan event.';
+        timerEl.textContent = '--:--';
+        return;
+      }
+      mainEl.textContent = 'TAG DROP: ' + String(currentTagDrop.tag || '').toUpperCase();
+      subEl.textContent = currentTagDrop.desc || 'Tag spesial lagi drop untuk user online!';
+      if (currentTagDrop.endAt) {
+        const diff = currentTagDrop.endAt - Date.now();
+        if (diff <= 0) {
+          timerEl.textContent = 'EVENT SELESAI';
+        } else {
+          const totalSec = Math.floor(diff / 1000);
+          const m = String(Math.floor(totalSec / 60)).padStart(2, '0');
+          const s = String(totalSec % 60).padStart(2, '0');
+          timerEl.textContent = m + ':' + s;
+        }
+      } else {
+        timerEl.textContent = 'LIVE';
+      }
+    }
+
+    // ============================================================
+    // TOAST
+    // ============================================================
+    function showToast(text, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      if (container.children.length >= 3) {
+        container.removeChild(container.firstElementChild);
+      }
+      const el = document.createElement('div');
+      el.className = 'toast';
+      let icon = 'fa-info-circle';
+      if (type === 'success') icon = 'fa-check-circle';
+      else if (type === 'error') icon = 'fa-exclamation-triangle';
+      else if (type === 'event') icon = 'fa-bolt';
+      else {
+        if (text.includes('Playing')) icon = 'fa-music';
+        else if (text.includes('Favorit') || text.includes('heart') || text.includes('❤')) icon = 'fa-heart';
+        else if (text.includes('Shuffle') || text.includes('🔀')) icon = 'fa-random';
+        else if (text.includes('Repeat') || text.includes('🔁')) icon = 'fa-redo';
+        else if (text.includes('✅') || text.includes('berhasil')) icon = 'fa-check-circle';
+        else if (text.includes('Error') || text.includes('❌')) icon = 'fa-exclamation-triangle';
+      }
+      el.classList.add('toast-' + type);
+      el.innerHTML = `<i class="fas ${icon}"></i> <span>${text}</span>`;
+      container.appendChild(el);
+      setTimeout(() => el.classList.add('hide'), 2500);
+      setTimeout(() => el.remove(), 2900);
+    }
+    function msg(m) { showToast(m); }
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+      stopHearts();
+      stopProfileMusic();
+      currentProfileUid = null;
+      applyProfileUrl(true);
+    }
+
+    // ============================================================
+    // CAPSULE MENU - v3.2.3
+    // ============================================================
+    function toggleCapsuleMenu() {
+      const panel = document.getElementById('capsuleMenuPanel');
+      if (!panel) return;
+      panel.classList.toggle('show');
+    }
+    function handleLogout() {
+      if (!auth.currentUser) return;
+      if (confirm('Yakin ingin logout?')) {
+        auth.signOut().then(() => {
+          localStorage.clear();
+          location.reload();
+        });
+      }
+    }
+
+    // ============================================================
+    // TAG UNLOCK FULLSCREEN - v3.2.3
+    // ============================================================
+    function showTagUnlockFullscreen(tags) {
+      const wrap = document.getElementById('tagUnlockFullscreen');
+      const listEl = document.getElementById('tagUnlockFullscreenTags');
+      if (!wrap || !listEl) return;
+      listEl.innerHTML = '';
+      let hasRamadhanTag = false;
+      (tags || []).forEach(raw => {
+        const t = String(raw || '').toLowerCase();
+        if (!t) return;
+        const span = document.createElement('span');
+        span.className = 'user-tag tag-' + t;
+        span.textContent = t.toUpperCase();
+        listEl.appendChild(span);
+        // Check if ramadhan tag
+        if (t.includes('ramadhan') || t.includes('tarawih') || t.includes('lailat')) {
+          hasRamadhanTag = true;
+        }
+      });
+      wrap.classList.add('show');
+      // Start ketupat if ramadhan tag
+      if (hasRamadhanTag) {
+        startKetupat();
+        setTimeout(() => stopKetupat(), 8000);
+      }
+    }
+    function closeTagUnlockFullscreen() {
+      const wrap = document.getElementById('tagUnlockFullscreen');
+      if (wrap) wrap.classList.remove('show');
+    }
+
+    // ============================================================
+    // RAMADHAN EVENT SYSTEM - v3.2.3
+    // ============================================================
+    let ramadhanProgress = {
+      cycle1: { loginDays: 0, songsPlayed: 0, onlineMinutes: 0, completed: false },
+      cycle2: { eveningDays: 0, shares: 0, likes: 0, completed: false },
+      cycle3: { loginDays: 0, playtimeMinutes: 0, lateNightDays: 0, completed: false }
+    };
+    
+    function checkRamadhanProgress() {
+      if (!auth.currentUser || !userData) return;
+      const uid = auth.currentUser.uid;
+      
+      // Cycle 1 - Awal Ramadhan
+      if (!ramadhanProgress.cycle1.completed) {
+        if (ramadhanProgress.cycle1.loginDays >= 3 && 
+            ramadhanProgress.cycle1.songsPlayed >= 10 && 
+            ramadhanProgress.cycle1.onlineMinutes >= 30) {
+          grantRamadhanTag(uid, 'ramadhan-1447h');
+          ramadhanProgress.cycle1.completed = true;
+        }
+      }
+      
+      // Cycle 2 - Mid Ramadhan
+      if (!ramadhanProgress.cycle2.completed) {
+        if (ramadhanProgress.cycle2.eveningDays >= 2 && 
+            ramadhanProgress.cycle2.shares >= 2 && 
+            ramadhanProgress.cycle2.likes >= 5) {
+          grantRamadhanTag(uid, 'night-tarawih');
+          ramadhanProgress.cycle2.completed = true;
+        }
+      }
+      
+      // Cycle 3 - 10 Hari Terakhir
+      if (!ramadhanProgress.cycle3.completed) {
+        if (ramadhanProgress.cycle3.loginDays >= 7 && 
+            ramadhanProgress.cycle3.playtimeMinutes >= 120 && 
+            ramadhanProgress.cycle3.lateNightDays >= 1) {
+          grantRamadhanTag(uid, 'lailat-mode');
+          ramadhanProgress.cycle3.completed = true;
+        }
+      }
+    }
+    
+    function grantRamadhanTag(uid, tagName) {
+      const updates = {};
+      updates['users/' + uid + '/alltag/' + tagName] = true;
+      db.ref().update(updates).then(() => {
+        showTagUnlockFullscreen([tagName]);
+        showToast('🎉 Kamu mendapat tag ' + tagName.toUpperCase() + '!');
+      });
+    }
+    
+    function checkSahurTime() {
+      const now = new Date();
+      const hour = now.getHours();
+      // Jam 03:00 - 05:00
+      if (hour >= 3 && hour < 5) {
+        return true;
+      }
+      return false;
+    }
+    
+    function grantSahurTag(uid) {
+      if (!uid) return;
+      const updates = {};
+      updates['users/' + uid + '/alltag/exe-sahur'] = true;
+      db.ref().update(updates).then(() => {
+        showTagUnlockFullscreen(['exe-sahur']);
+        showToast('🌙 SECRET TAG! Exe-Sahur unlocked!');
+      });
+    }
+    
+    function updateRamadhanProgress() {
+      if (!auth.currentUser || !userData) return;
+      
+      // Update Cycle 1
+      const c1Total = 43; // 3 + 10 + 30
+      const c1Current = (ramadhanProgress.cycle1.loginDays || 0) + 
+                        (ramadhanProgress.cycle1.songsPlayed || 0) + 
+                        (ramadhanProgress.cycle1.onlineMinutes || 0);
+      const c1Pct = Math.min(100, Math.round((c1Current / c1Total) * 100));
+      
+      const c1Fill = document.getElementById('ramCycle1Progress');
+      const c1Text = document.getElementById('ramCycle1Text');
+      const c1Badge = document.getElementById('ramCycle1Badge');
+      const c1Btn = document.getElementById('ramCycle1Btn');
+      
+      if (c1Fill) c1Fill.style.transform = `scaleX(${c1Pct / 100})`;
+      if (c1Text) c1Text.textContent = c1Pct + '%';
+      if (ramadhanProgress.cycle1.completed) {
+        if (c1Badge) c1Badge.textContent = 'COMPLETED';
+        if (c1Btn) {
+          c1Btn.textContent = 'CLAIMED';
+          c1Btn.disabled = true;
+        }
+      } else if (c1Pct >= 100) {
+        if (c1Badge) c1Badge.textContent = 'READY';
+        if (c1Btn) {
+          c1Btn.textContent = 'CLAIM';
+          c1Btn.disabled = false;
+          c1Btn.onclick = () => claimRamadhanCycle(1);
+        }
+      }
+      
+      // Update Cycle 2
+      const c2Total = 9; // 2 + 2 + 5
+      const c2Current = (ramadhanProgress.cycle2.eveningDays || 0) + 
+                        (ramadhanProgress.cycle2.shares || 0) + 
+                        (ramadhanProgress.cycle2.likes || 0);
+      const c2Pct = Math.min(100, Math.round((c2Current / c2Total) * 100));
+      
+      const c2Fill = document.getElementById('ramCycle2Progress');
+      const c2Text = document.getElementById('ramCycle2Text');
+      const c2Badge = document.getElementById('ramCycle2Badge');
+      const c2Btn = document.getElementById('ramCycle2Btn');
+      
+      if (c2Fill) c2Fill.style.transform = `scaleX(${c2Pct / 100})`;
+      if (c2Text) c2Text.textContent = c2Pct + '%';
+      if (ramadhanProgress.cycle2.completed) {
+        if (c2Badge) c2Badge.textContent = 'COMPLETED';
+        if (c2Btn) {
+          c2Btn.textContent = 'CLAIMED';
+          c2Btn.disabled = true;
+        }
+      } else if (c2Pct >= 100) {
+        if (c2Badge) c2Badge.textContent = 'READY';
+        if (c2Btn) {
+          c2Btn.textContent = 'CLAIM';
+          c2Btn.disabled = false;
+          c2Btn.onclick = () => claimRamadhanCycle(2);
+        }
+      }
+      
+      // Update Cycle 3
+      const c3Total = 128; // 7 + 120 + 1
+      const c3Current = (ramadhanProgress.cycle3.loginDays || 0) + 
+                        (ramadhanProgress.cycle3.playtimeMinutes || 0) + 
+                        (ramadhanProgress.cycle3.lateNightDays || 0);
+      const c3Pct = Math.min(100, Math.round((c3Current / c3Total) * 100));
+      
+      const c3Fill = document.getElementById('ramCycle3Progress');
+      const c3Text = document.getElementById('ramCycle3Text');
+      const c3Badge = document.getElementById('ramCycle3Badge');
+      const c3Btn = document.getElementById('ramCycle3Btn');
+      
+      if (c3Fill) c3Fill.style.transform = `scaleX(${c3Pct / 100})`;
+      if (c3Text) c3Text.textContent = c3Pct + '%';
+      if (ramadhanProgress.cycle3.completed) {
+        if (c3Badge) c3Badge.textContent = 'COMPLETED';
+        if (c3Btn) {
+          c3Btn.textContent = 'CLAIMED';
+          c3Btn.disabled = true;
+        }
+      } else if (c3Pct >= 100) {
+        if (c3Badge) c3Badge.textContent = 'READY';
+        if (c3Btn) {
+          c3Btn.textContent = 'CLAIM';
+          c3Btn.disabled = false;
+          c3Btn.onclick = () => claimRamadhanCycle(3);
+        }
+      }
+    }
+    
+    function claimRamadhanCycle(cycle) {
+      if (!auth.currentUser) return;
+      const uid = auth.currentUser.uid;
+      const tagMap = {
+        1: 'ramadhan-1447h',
+        2: 'night-tarawih',
+        3: 'lailat-mode'
+      };
+      const tag = tagMap[cycle];
+      if (!tag) return;
+      
+      grantRamadhanTag(uid, tag);
+      ramadhanProgress['cycle' + cycle].completed = true;
+      updateRamadhanProgress();
+    }
+
+    // ============================================================
+    // SETTINGS LISTENER
+    // ============================================================
+    db.ref('settings').on('value', s => {
+      const val = s.val();
+      if (!val) return;
+      
+      // Load Ramadhan Theme globally
+      if (val.ramadanTheme === true) {
+        ramadanActive = true;
+        document.body.classList.add('ramadan-active');
+        const btn = document.getElementById('ramadanToggleBtn');
+        const headerBtn = document.getElementById('btnRamadanTheme');
+        if (btn) { btn.textContent = 'ON'; btn.style.background = 'linear-gradient(135deg,#ffd700,#00ff88)'; btn.style.color = '#000'; }
+        if (headerBtn) { headerBtn.style.background = 'linear-gradient(135deg,rgba(255,215,0,0.3),rgba(0,255,136,0.2))'; headerBtn.style.borderColor = '#ffd700'; headerBtn.style.color = '#ffd700'; }
+      } else {
+        ramadanActive = false;
+        document.body.classList.remove('ramadan-active');
+        const btn = document.getElementById('ramadanToggleBtn');
+        const headerBtn = document.getElementById('btnRamadanTheme');
+        if (btn) { btn.textContent = 'OFF'; btn.style.background = ''; btn.style.color = ''; }
+        if (headerBtn) { headerBtn.style.background = ''; headerBtn.style.borderColor = ''; headerBtn.style.color = ''; }
+      }
+      
+      if (val.accentColor && typeof val.accentColor === 'string') {
+        document.documentElement.style.setProperty('--accent', val.accentColor);
+      } else {
+        document.documentElement.style.setProperty('--accent', '#00ff88');
+      }
+      if (val.mt === true) {
+        db.ref('users/' + (auth.currentUser?.uid) + '/role').once('value', r => {
+          if (r.val() !== 'admin') document.getElementById('mtScreen').style.display = 'flex';
+        });
+      } else {
+        document.getElementById('mtScreen').style.display = 'none';
+      }
+      if (val.announcement) triggerBroadcast(val.announcement);
+
+      const lc = document.getElementById('lebaranCountdown');
+      const lt = document.getElementById('lebaranTimer');
+      if (val.lebaranTs && typeof val.lebaranTs === 'number') {
+        setupLebaranCountdown(val.lebaranTs);
+        if (lc && lt) {
+          lc.classList.add('show');
+        }
+        const dEl = document.getElementById('adLebaranDate');
+        const tEl = document.getElementById('adLebaranTime');
+        if (dEl && tEl) {
+          const dt = new Date(val.lebaranTs);
+          const yyyy = dt.getFullYear();
+          const mm = String(dt.getMonth() + 1).padStart(2, '0');
+          const dd = String(dt.getDate()).padStart(2, '0');
+          const hh = String(dt.getHours()).padStart(2, '0');
+          const mi = String(dt.getMinutes()).padStart(2, '0');
+          dEl.value = `${yyyy}-${mm}-${dd}`;
+          tEl.value = `${hh}:${mi}`;
+        }
+      } else {
+        if (lebaranInterval) {
+          clearInterval(lebaranInterval);
+          lebaranInterval = null;
+        }
+        if (lc) {
+          lc.classList.remove('show', 'celebrate');
+        }
+      }
+      if (val.globalCountdown && typeof val.globalCountdown === 'object') {
+        setupGlobalCountdown(val.globalCountdown);
+      } else {
+        setupGlobalCountdown(null);
+      }
+    });
+
+    // ============================================================
+    // BROADCAST
+    // ============================================================
+    function triggerBroadcast(msg) {
+      const el = document.getElementById('sysBroadcast');
+      const bar = document.getElementById('sbBar');
+      const msgEl = document.getElementById('sbMessage');
+      el.classList.remove('active', 'sb-closing');
+      bar.style.animation = 'none';
+      void bar.offsetWidth;
+      if (typeof msg === 'string' && msg.trim().toLowerCase().startsWith('hexky:')) {
+        const rest = msg.slice(6).trim();
+        msgEl.innerHTML = '<span class="sb-dev-name">Hexky</span>: ' + escapeHtml(rest);
+      } else {
+        msgEl.textContent = msg;
+      }
+      setTimeout(() => { el.classList.add('active'); bar.style.animation = 'countDown 15s linear forwards'; }, 100);
+      clearTimeout(broadcastTimeout);
+      broadcastTimeout = setTimeout(closeBroadcast, 15000);
+    }
+    function closeBroadcast() {
+      const el = document.getElementById('sysBroadcast');
+      el.classList.add('sb-closing');
+      setTimeout(() => el.classList.remove('active', 'sb-closing'), 400);
+    }
+
+    function setupGlobalNotifsWatcher() {
+      let lastKey = null;
+      db.ref('globalNotifications').limitToLast(1).on('child_added', snap => {
+        const val = snap.val();
+        const key = snap.key;
+        if (!val || !key) return;
+        if (lastKey === null) {
+          lastKey = key;
+          mergeAndRenderNotifs([{ ...val, id: 'g_' + key }], 'global');
+          return;
+        }
+        if (key === lastKey) {
+          mergeAndRenderNotifs([{ ...val, id: 'g_' + key }], 'global');
+          return;
+        }
+        lastKey = key;
+        mergeAndRenderNotifs([{ ...val, id: 'g_' + key }], 'global');
+        if (val.type === 'event') {
+          const text = val.text || '';
+          const from = val.fromName || 'Admin';
+          const title = 'EVENT DIMULAI';
+          const msg = text || ('Event baru dimulai oleh ' + from);
+          showBroadcast(title + ' • ' + msg);
+        }
+      });
+    }
+
+    function setupAdminFloatChatWatcher() {
+      const wrap = document.getElementById('adminFloatChat');
+      const nameEl = document.getElementById('adminFloatName');
+      const msgEl = document.getElementById('adminFloatMsg');
+      const timerEl = document.getElementById('adminFloatTimer');
+      if (!wrap || !nameEl || !msgEl || !timerEl) return;
+      db.ref('adminFloatChat/current').on('value', snap => {
+        const val = snap.val();
+        if (adminFloatInterval) {
+          clearInterval(adminFloatInterval);
+          adminFloatInterval = null;
+        }
+        if (!val) {
+          wrap.classList.remove('show');
+          nameEl.textContent = '';
+          msgEl.textContent = '';
+          timerEl.textContent = '';
+          return;
+        }
+        const now = Date.now();
+        const expireAt = val.expireAt || 0;
+        if (expireAt && now >= expireAt) {
+          wrap.classList.remove('show');
+          nameEl.textContent = '';
+          msgEl.textContent = '';
+          timerEl.textContent = '';
+          if (auth.currentUser && userData && (userData.role === 'admin' || userData.role === 'owner')) {
+            db.ref('adminFloatChat/current').remove();
+          }
+          return;
+        }
+        nameEl.textContent = (val.name || 'Admin') + '';
+        msgEl.textContent = val.msg || '';
+        wrap.classList.add('show');
+        function updateTimer() {
+          const now2 = Date.now();
+          const diff = (val.expireAt || 0) - now2;
+          if (diff <= 0) {
+            timerEl.textContent = '0s';
+            wrap.classList.remove('show');
+            clearInterval(adminFloatInterval);
+            adminFloatInterval = null;
+            if (auth.currentUser && userData && (userData.role === 'admin' || userData.role === 'owner')) {
+              db.ref('adminFloatChat/current').remove();
+            }
+            return;
+          }
+          const sec = Math.ceil(diff / 1000);
+          timerEl.textContent = sec + 's';
+        }
+        updateTimer();
+        adminFloatInterval = setInterval(updateTimer, 500);
+      });
+    }
+
+    // ============================================================
+    // NOTIFICATIONS
+    // ============================================================
+    function loadNotifs() {
+      auth.onAuthStateChanged(u => {
+        if (!u) {
+          mergeAndRenderNotifs([], 'user');
+          showGuestIntroNotif();
+          return;
+        }
+        db.ref('users/' + u.uid + '/notifications').orderByChild('timestamp').limitToLast(80).on('value', snap => {
+          const val = snap.val();
+          const list = [];
+          if (val) Object.keys(val).forEach(k => list.push({ ...val[k], id: 'u_' + k }));
+          mergeAndRenderNotifs(list, 'user');
+        });
+      });
+    }
+    function mergeAndRenderNotifs(list, source) {
+      if (source === 'global') _globalNotifs = list;
+      else _userNotifs = list;
+      notifList = [..._globalNotifs, ..._userNotifs].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+      renderNotifList(); updateNotifBadge();
+    }
+    function timeAgo(ts) {
+      if (!ts) return '';
+      const s = Math.floor((Date.now() - ts) / 1000);
+      if (s < 60) return 'Baru saja';
+      if (s < 3600) return Math.floor(s / 60) + ' menit lalu';
+      if (s < 86400) return Math.floor(s / 3600) + ' jam lalu';
+      if (s < 604800) return Math.floor(s / 86400) + ' hari lalu';
+      return new Date(ts).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+    }
+    function renderNotifList() {
+      const el = document.getElementById('notifList');
+      if (!el) return;
+      if (!notifList.length) { el.innerHTML = '<div class="notif-empty">Belum ada notifikasi</div>'; return; }
+      const typeIcon = { admin: 'fa-shield-alt', violation: 'fa-exclamation-triangle', upload: 'fa-music', follow: 'fa-user-plus', system: 'fa-info-circle' };
+      el.innerHTML = notifList.map(n => {
+        const type = (n.type || 'system');
+        const icon = typeIcon[type] || 'fa-bell';
+        return `<div class="notif-item"><div class="notif-item-icon ${type}"><i class="fas ${icon}"></i></div><div class="notif-item-body"><div class="n-text">${escapeHtml(n.text || n.message || '')}</div><div class="n-time">${timeAgo(n.timestamp)}</div></div></div>`;
+      }).join('');
+    }
+    function updateNotifBadge() {
+      const lastRead = parseInt(localStorage.getItem(lastReadNotifTimeKey) || '0', 10);
+      const count = notifList.filter(n => (n.timestamp || 0) > lastRead).length;
+      const badge = document.getElementById('notifBadge');
+      if (badge) { badge.textContent = count > 99 ? '99+' : count; badge.classList.toggle('show', count > 0); }
+    }
+    function positionNotifPanel() {
+      const btn = document.getElementById('btnNotif');
+      const panel = document.getElementById('notifPanel');
+      if (!btn || !panel) return;
+      const rect = btn.getBoundingClientRect();
+      const panelW = Math.min(360, window.innerWidth - 20);
+      let left = rect.right - panelW;
+      if (left < 10) left = 10;
+      if (left + panelW > window.innerWidth - 10) left = window.innerWidth - panelW - 10;
+      panel.style.top = (rect.bottom + 10) + 'px';
+      panel.style.left = left + 'px';
+      panel.style.right = 'auto';
+      panel.style.width = panelW + 'px';
+    }
+    function toggleNotifPanel() {
+      const panel = document.getElementById('notifPanel');
+      const willShow = !panel.classList.contains('show');
+      if (willShow) {
+        positionNotifPanel();
+        panel.classList.add('show');
+        localStorage.setItem(lastReadNotifTimeKey, String(Date.now()));
+        updateNotifBadge();
+      } else {
+        panel.classList.remove('show');
+        localStorage.setItem(lastReadNotifTimeKey, String(Date.now()));
+        updateNotifBadge();
+      }
+    }
+    function closeNotifPanel() { document.getElementById('notifPanel').classList.remove('show'); localStorage.setItem(lastReadNotifTimeKey, String(Date.now())); updateNotifBadge(); }
+    document.addEventListener('click', function(e) {
+      const panel = document.getElementById('notifPanel'); const btn = document.getElementById('btnNotif');
+      if (panel && panel.classList.contains('show') && !panel.contains(e.target) && btn && !btn.contains(e.target)) closeNotifPanel();
+    });
+    function showGuestIntroNotif() {
+      if (localStorage.getItem('exeGuestIntroShown') === '1') return;
+      localStorage.setItem('exeGuestIntroShown', '1');
+      const payload = {
+        type: 'system',
+        text: '[bot exemusic] Login dan daftarkan akun kamu ke ExeMusic sekarang!!',
+        fromName: 'bot exemusic',
+        timestamp: Date.now()
+      };
+      mergeAndRenderNotifs([payload], 'global');
+    }
+    loadNotifs();
+    setupGlobalNotifsWatcher();
+    setupAdminFloatChatWatcher();
+
+    // ============================================================
+    // AUTH
+    // ============================================================
     auth.onAuthStateChanged(u => {
       if (u) {
         db.ref('users/' + u.uid).on('value', snap => {
@@ -6526,7 +8562,6 @@
         stopHearts();
       }
       dismissLoader();
-      console.log('Loader dismissed');
       
       // Check if first time user - show tutorial
       if (u) {
@@ -6536,149 +8571,6 @@
         }
       }
     });
-
-    // ============================================================
-    // LEADERBOARD SYSTEM - v3.2.3
-    // ============================================================
-    let leaderboardRefreshInterval = null;
-    let leaderboardRefreshCountdown = 60;
-
-    function openLeaderboard() {
-      if (!auth.currentUser || !userData) {
-        msg('Login dulu untuk akses leaderboard');
-        return;
-      }
-      
-      const lbModal = document.getElementById('modalLeaderboard');
-      if (lbModal) lbModal.style.display = 'block';
-      
-      // Ensure we have user data before loading
-      setTimeout(() => {
-        loadLeaderboardData();
-        switchLeaderboardTab('followers', null);
-        startLeaderboardRefresh();
-      }, 500);
-    }
-
-    function switchLeaderboardTab(category, btn) {
-      document.querySelectorAll('.leaderboard-tab-view').forEach(v => v.classList.remove('active'));
-      document.querySelectorAll('.leaderboard-tab-btn').forEach(b => b.classList.remove('active'));
-      
-      const tabMap = {
-        'followers': 'lbTabFollowers',
-        'tags': 'lbTabTags',
-        'uploads': 'lbTabUploads',
-        'execoin': 'lbTabExecoin'
-      };
-      
-      const tab = document.getElementById(tabMap[category]);
-      if (tab) tab.classList.add('active');
-      if (btn) btn.classList.add('active');
-    }
-
-    function startLeaderboardRefresh() {
-      if (leaderboardRefreshInterval) {
-        clearInterval(leaderboardRefreshInterval);
-      }
-      
-      leaderboardRefreshCountdown = 60;
-      const timerEl = document.getElementById('lbRefreshTimer');
-      
-      leaderboardRefreshInterval = setInterval(() => {
-        leaderboardRefreshCountdown--;
-        if (timerEl) timerEl.textContent = leaderboardRefreshCountdown + 's';
-        
-        if (leaderboardRefreshCountdown <= 0) {
-          leaderboardRefreshCountdown = 60;
-          loadLeaderboardData();
-        }
-      }, 1000);
-    }
-
-    async function loadLeaderboardData() {
-      try {
-        const usersSnapshot = await db.ref('users').once('value');
-        const songsSnapshot = await db.ref('songs').once('value');
-        const uploadCounts = {};
-        
-        songsSnapshot.forEach(snap => {
-          const song = snap.val();
-          if (song && song.uid) {
-            uploadCounts[song.uid] = (uploadCounts[song.uid] || 0) + 1;
-          }
-        });
-        
-        const users = [];
-        
-        usersSnapshot.forEach(snap => {
-          const data = snap.val();
-          if (!data || !data.username) return;
-          
-          const uid = snap.key;
-          const followersCount = data.followers ? (Array.isArray(data.followers) ? data.followers.length : Object.keys(data.followers).length) : 0;
-          const tagsCount = data.alltag ? (Array.isArray(data.alltag) ? data.alltag.length : Object.keys(data.alltag).length) : 0;
-          const uploadsCount = uploadCounts[uid] || 0;
-          const execoin = data.coins || 0;
-          
-          users.push({
-            uid: uid,
-            username: data.username,
-            tag: data.tag || 'user',
-            followers: followersCount,
-            tags: tagsCount,
-            uploads: uploadsCount,
-            execoin: execoin
-          });
-        });
-        
-        renderLeaderboardCategory('followers', users, 'lbFollowersList');
-        renderLeaderboardCategory('tags', users, 'lbTagsList');
-        renderLeaderboardCategory('uploads', users, 'lbUploadsList');
-        renderLeaderboardCategory('execoin', users, 'lbExecoinList');
-        
-      } catch (error) {
-        console.error('Error loading leaderboard:', error);
-        showToast('Gagal memuat leaderboard');
-      }
-    }
-
-    function renderLeaderboardCategory(category, users, containerId) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
-      
-      const sorted = users.sort((a, b) => b[category] - a[category]).slice(0, 5);
-      
-      if (sorted.length === 0 || sorted[0][category] === 0) {
-        container.innerHTML = '<div class="leaderboard-empty"><i class="fas fa-trophy"></i><div>Belum ada data</div></div>';
-        return;
-      }
-      
-      const medals = ['🥇', '🥈', '🥉'];
-      const rankClasses = ['rank-1', 'rank-2', 'rank-3'];
-      const labels = { followers: 'Followers', tags: 'Tags', uploads: 'Uploads', execoin: 'ExeCoin' };
-      
-      let html = '';
-      sorted.forEach((user, index) => {
-        const rank = index + 1;
-        const rankClass = index < 3 ? rankClasses[index] : '';
-        const medal = index < 3 ? medals[index] : '';
-        const isCurrentUser = auth.currentUser && user.uid === auth.currentUser.uid;
-        
-        html += '<div class="leaderboard-item ' + rankClass + '" style="animation-delay:' + (index * 0.1) + 's">' +
-          '<div class="leaderboard-rank">' + (medal || '<div class="leaderboard-rank-number">' + rank + '</div>') + '</div>' +
-          '<div class="leaderboard-user">' +
-            '<div class="leaderboard-username">' + user.username + (isCurrentUser ? '<i class="fas fa-star" style="color:#fbbf24;font-size:10px"></i>' : '') + '<span class="user-tag tag-' + user.tag + '">' + user.tag.toUpperCase() + '</span></div>' +
-            '<div class="leaderboard-stats">Rank #' + rank + (isCurrentUser ? '<span style="color:#fbbf24"> • You</span>' : '') + '</div>' +
-          '</div>' +
-          '<div class="leaderboard-value">' +
-            '<div class="leaderboard-value-number">' + user[category].toLocaleString() + '</div>' +
-            '<div class="leaderboard-value-label">' + labels[category] + '</div>' +
-          '</div>' +
-        '</div>';
-      });
-      
-      container.innerHTML = html;
-    }
 
     // ============================================================
     // VIP TRIAL BANNER
@@ -6878,8 +8770,15 @@
         const urlParams = new URLSearchParams(window.location.search);
         const songId = urlParams.get('id');
         const profileUid = urlParams.get('profile_userid');
+        const isLeaderboard = urlParams.get('leaderboard');
+        const leaderboardCategory = window.location.hash.substring(1) || 'followers';
 
-        if (profileUid && auth.currentUser) {
+        if (isLeaderboard && auth.currentUser) {
+          // Auto-open leaderboard if URL contains ?leaderboard
+          setTimeout(() => {
+            openLeaderboard(leaderboardCategory);
+          }, 1000); // Delay to ensure userData is loaded
+        } else if (profileUid && auth.currentUser) {
           if (profileUid === auth.currentUser.uid) openProfile();
           else openCreatorByUid(profileUid);
         } else if (audio.src === '') {
