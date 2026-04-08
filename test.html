@@ -7,23 +7,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
     --pink: #FF6B9D;
     --pink-light: #FFB3CC;
     --pink-dark: #E0407A;
     --purple: #8B5CF6;
-    --purple-light: #C4B5FD;
-    --yellow: #FFD93D;
     --bg1: #0D0620;
-    --bg2: #1A0A35;
-    --bg3: #2D1057;
-    --card-bg: rgba(255,255,255,0.06);
-    --card-border: rgba(255,255,255,0.12);
+    --card-bg: rgba(255,255,255,0.07);
+    --card-border: rgba(255,255,255,0.14);
     --text: #F9F5FF;
     --text-muted: rgba(249,245,255,0.55);
   }
-
   html, body {
     width: 100%; min-height: 100vh;
     font-family: 'Quicksand', sans-serif;
@@ -32,13 +26,10 @@
     color: var(--text);
   }
 
-  /* ── Animated BG ── */
-  .bg-layer {
-    position: fixed; inset: 0; z-index: 0; overflow: hidden;
-  }
+  /* BG */
+  .bg-layer { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
   .bg-layer::before {
-    content: '';
-    position: absolute; inset: -50%;
+    content: ''; position: absolute; inset: -50%;
     background:
       radial-gradient(ellipse 70% 60% at 25% 30%, rgba(139,92,246,0.28) 0%, transparent 70%),
       radial-gradient(ellipse 50% 50% at 75% 65%, rgba(255,107,157,0.22) 0%, transparent 65%),
@@ -50,41 +41,30 @@
     100% { transform: scale(1.08) rotate(3deg); }
   }
 
-  /* ── Stars ── */
+  /* Stars */
   .stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-  .star {
-    position: absolute; background: white; border-radius: 50%;
-    animation: twinkle var(--dur, 3s) ease-in-out infinite;
-    opacity: 0;
-  }
-  @keyframes twinkle {
-    0%,100% { opacity: 0; transform: scale(0.5); }
-    50%      { opacity: var(--op, 0.8); transform: scale(1); }
-  }
+  .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--dur,3s) ease-in-out infinite; opacity: 0; }
+  @keyframes twinkle { 0%,100%{opacity:0;transform:scale(0.5)} 50%{opacity:var(--op,0.8);transform:scale(1)} }
 
-  /* ── Floating hearts BG ── */
+  /* Floating hearts */
   .floating-hearts { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-  .fh {
-    position: absolute; bottom: -60px; font-size: var(--fs, 1.5rem);
-    animation: floatBg var(--dur2, 12s) linear infinite;
-    opacity: 0.12;
-    animation-delay: var(--del, 0s);
-  }
+  .fh { position: absolute; bottom: -60px; font-size: var(--fs,1.5rem); animation: floatBg var(--dur2,12s) linear infinite var(--del,0s); opacity: 0; }
   @keyframes floatBg {
     0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
-    10%  { opacity: 0.15; }
-    90%  { opacity: 0.12; }
+    10%  { opacity: 0.13; }
+    90%  { opacity: 0.1; }
     100% { transform: translateY(-110vh) rotate(720deg); opacity: 0; }
   }
 
-  /* ── Page layout ── */
+  /* Page */
   .page {
     position: relative; z-index: 1;
-    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; display: flex;
+    align-items: center; justify-content: center;
     padding: 1.5rem 1rem;
   }
 
-  /* ── Card ── */
+  /* Card */
   .card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
@@ -92,13 +72,12 @@
     -webkit-backdrop-filter: blur(24px) saturate(150%);
     border-radius: 28px;
     padding: clamp(1.8rem, 5vw, 3rem) clamp(1.5rem, 5vw, 3rem);
-    width: min(480px, 100%);
+    width: min(460px, 100%);
     text-align: center;
     position: relative; overflow: hidden;
   }
   .card::before {
-    content: '';
-    position: absolute; inset: 0;
+    content: ''; position: absolute; inset: 0;
     background: linear-gradient(135deg, rgba(255,107,157,0.04) 0%, rgba(139,92,246,0.06) 100%);
     pointer-events: none;
   }
@@ -106,234 +85,145 @@
     position: absolute; top: 0; left: -100%;
     width: 60%; height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
-    animation: shine 6s ease-in-out infinite 2s;
-    pointer-events: none;
+    animation: shine 6s ease-in-out infinite 2s; pointer-events: none;
   }
-  @keyframes shine {
-    0%   { left: -60%; }
-    40%,100% { left: 120%; }
-  }
+  @keyframes shine { 0%{left:-60%} 40%,100%{left:120%} }
 
-  /* ── Cat display ── */
-  .cat-wrap {
-    position: relative; display: inline-block; margin-bottom: 1.2rem;
-  }
+  /* Cat */
+  .cat-wrap { position: relative; display: inline-block; margin-bottom: 1rem; }
   .cat-emoji {
-    font-size: clamp(4.5rem, 16vw, 7rem);
-    display: block; line-height: 1;
+    font-size: clamp(4.5rem, 16vw, 6.5rem); display: block; line-height: 1;
     filter: drop-shadow(0 0 20px rgba(255,107,157,0.4));
-    animation: catBob 2.5s ease-in-out infinite;
-    transition: all 0.3s ease;
-    cursor: default;
+    animation: catBob 2.5s ease-in-out infinite; transition: all 0.3s ease;
   }
-  @keyframes catBob {
-    0%,100% { transform: translateY(0) rotate(-2deg); }
-    50%      { transform: translateY(-8px) rotate(2deg); }
-  }
+  @keyframes catBob { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-8px) rotate(2deg)} }
   .cat-shadow {
-    width: 60px; height: 10px; margin: 0 auto;
-    background: rgba(255,107,157,0.3);
-    border-radius: 50%;
-    filter: blur(6px);
-    animation: shadowPulse 2.5s ease-in-out infinite;
+    width: 55px; height: 9px; margin: 0 auto;
+    background: rgba(255,107,157,0.3); border-radius: 50%;
+    filter: blur(6px); animation: shadowPulse 2.5s ease-in-out infinite;
   }
-  @keyframes shadowPulse {
-    0%,100% { transform: scaleX(1); opacity: 0.4; }
-    50%      { transform: scaleX(0.6); opacity: 0.15; }
-  }
+  @keyframes shadowPulse { 0%,100%{transform:scaleX(1);opacity:0.4} 50%{transform:scaleX(0.6);opacity:0.15} }
 
-  /* ── Badge ── */
+  /* Badge */
   .badge {
     display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(255,107,157,0.15);
-    border: 1px solid rgba(255,107,157,0.3);
-    color: var(--pink-light);
-    font-family: 'Baloo 2', sans-serif;
+    background: rgba(255,107,157,0.15); border: 1px solid rgba(255,107,157,0.3);
+    color: #FFB3CC; font-family: 'Baloo 2', sans-serif;
     font-size: 0.78rem; font-weight: 700;
-    letter-spacing: 0.04em;
-    border-radius: 30px; padding: 4px 14px;
-    margin-bottom: 1.1rem;
+    border-radius: 30px; padding: 4px 14px; margin-bottom: 1rem;
     transition: all 0.4s ease;
   }
-  .badge-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--pink);
-    animation: dotPing 1.2s ease-in-out infinite;
-  }
-  @keyframes dotPing {
-    0%,100% { transform: scale(1); opacity: 1; }
-    50%      { transform: scale(1.6); opacity: 0.5; }
-  }
+  .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pink); animation: dotPing 1.2s ease-in-out infinite; }
+  @keyframes dotPing { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.6);opacity:0.5} }
 
-  /* ── Typography ── */
+  /* Text */
   .heading {
     font-family: 'Baloo 2', sans-serif;
-    font-size: clamp(1.8rem, 6vw, 2.6rem);
-    font-weight: 900; line-height: 1.1;
-    color: var(--pink);
-    text-shadow: 0 0 30px rgba(255,107,157,0.3);
-    margin-bottom: 0.55rem;
-    transition: all 0.4s ease;
+    font-size: clamp(1.75rem, 6vw, 2.5rem); font-weight: 900; line-height: 1.1;
+    color: var(--pink); text-shadow: 0 0 30px rgba(255,107,157,0.3);
+    margin-bottom: 0.5rem; transition: all 0.4s ease;
   }
   .subtext {
-    font-size: clamp(0.9rem, 3vw, 1.05rem);
-    color: var(--text-muted); line-height: 1.6;
-    margin-bottom: 1.4rem;
-    transition: all 0.4s ease;
-    min-height: 2.5em;
+    font-size: clamp(0.88rem, 2.8vw, 1.02rem); color: var(--text-muted);
+    line-height: 1.6; margin-bottom: 1.2rem; transition: all 0.4s ease; min-height: 3em;
   }
   .question-text {
     font-family: 'Baloo 2', sans-serif;
-    font-size: clamp(1.1rem, 4vw, 1.4rem);
-    font-weight: 800; color: var(--text);
-    margin-bottom: 0.7rem;
-    line-height: 1.3;
+    font-size: clamp(1.1rem, 4vw, 1.35rem); font-weight: 800; color: var(--text);
+    margin-bottom: 0.7rem; line-height: 1.3;
   }
-  .highlight { color: var(--pink); position: relative; }
+  .highlight { color: var(--pink); }
 
-  /* ── Progress ── */
-  .progress-wrap {
-    background: rgba(255,255,255,0.07);
-    border-radius: 20px; height: 7px;
-    margin: 0.3rem 0 0.4rem; overflow: hidden;
-  }
+  /* Progress */
+  .progress-wrap { background: rgba(255,255,255,0.08); border-radius: 20px; height: 7px; margin: 0.3rem 0 0.35rem; overflow: hidden; }
   .progress-fill {
     height: 100%; border-radius: 20px;
     background: linear-gradient(90deg, var(--purple), var(--pink));
     transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
     box-shadow: 0 0 8px rgba(255,107,157,0.5);
   }
-  .progress-label {
-    font-size: 0.72rem; color: var(--text-muted);
-    margin-bottom: 1.3rem; font-weight: 600;
-  }
+  .progress-label { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 1.4rem; font-weight: 600; }
 
-  /* ── Buttons ── */
+  /* Button row */
   .btn-row {
-    display: flex; gap: 0.75rem; justify-content: center;
+    display: flex; gap: 0.9rem; justify-content: center;
     align-items: center; flex-wrap: wrap; margin-top: 0.5rem;
   }
+
+  /* YES button */
   .btn-yes {
     font-family: 'Baloo 2', sans-serif;
-    font-size: clamp(1rem, 3.5vw, 1.15rem);
-    font-weight: 900;
+    font-size: clamp(1rem, 3.5vw, 1.15rem); font-weight: 900;
     background: linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%);
-    color: white; border: none; border-radius: 50px;
+    color: #fff; border: none; border-radius: 50px;
     padding: 0.75em 2em; cursor: pointer;
     position: relative; z-index: 20; overflow: hidden;
-    box-shadow: 0 6px 24px rgba(255,107,157,0.4), 0 2px 8px rgba(0,0,0,0.3);
-    transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
+    box-shadow: 0 6px 24px rgba(255,107,157,0.45), 0 2px 8px rgba(0,0,0,0.35);
+    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
+    transform-origin: center;
   }
   .btn-yes::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent);
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.22), transparent);
     border-radius: inherit; pointer-events: none;
   }
-  .btn-yes:hover { transform: scale(1.1) translateY(-2px); box-shadow: 0 12px 32px rgba(255,107,157,0.55); }
-  .btn-yes:active { transform: scale(0.97); }
+  .btn-yes:hover { transform: scale(1.1) translateY(-2px); box-shadow: 0 12px 32px rgba(255,107,157,0.6); }
+  .btn-yes:active { transform: scale(0.96); }
 
-  .btn-no {
+  /* NO button — solid & clearly visible */
+  #noBtn {
     font-family: 'Baloo 2', sans-serif;
-    font-size: clamp(0.85rem, 3vw, 1rem);
-    font-weight: 700;
-    background: rgba(255,255,255,0.07);
-    color: rgba(255,255,255,0.55);
-    border: 1px solid rgba(255,255,255,0.15);
+    font-size: clamp(0.95rem, 3vw, 1.05rem); font-weight: 800;
+    background: #3b0d6e;
+    color: #ffd6ec;
+    border: 2.5px solid #FF6B9D;
     border-radius: 50px;
-    padding: 0.7em 1.6em; cursor: pointer;
-    position: fixed; z-index: 50;
-    transition: left 0.35s cubic-bezier(0.36,0.07,0.19,0.97),
-                top  0.35s cubic-bezier(0.36,0.07,0.19,0.97),
-                transform 0.15s ease,
-                font-size 0.3s ease;
+    padding: 0.72em 1.8em;
+    cursor: pointer;
     white-space: nowrap; user-select: none;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 20px rgba(255,107,157,0.35), 0 2px 8px rgba(0,0,0,0.5);
+    transition:
+      left 0.38s cubic-bezier(0.36,0.07,0.19,0.97),
+      top  0.38s cubic-bezier(0.36,0.07,0.19,0.97),
+      background 0.2s ease;
+    z-index: 9999;
   }
-  .btn-no:active { transform: scale(0.92); }
+  #noBtn.is-fixed { position: fixed !important; }
+  #noBtn:hover { background: #56107a; }
+  #noBtn:active { transform: scale(0.93); }
 
-  /* ── Particle hearts ── */
+  /* Particles */
   .particle {
-    position: fixed; pointer-events: none; z-index: 100;
+    position: fixed; pointer-events: none; z-index: 10000;
     font-size: 1.2rem; animation: particleFly 1.8s ease-out forwards;
   }
-  @keyframes particleFly {
-    0%   { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(-180px) scale(1.3) rotate(var(--rot, 30deg)); opacity: 0; }
-  }
+  @keyframes particleFly { 0%{transform:translateY(0) scale(0.5) rotate(0deg);opacity:1} 100%{transform:translateY(-180px) scale(1.3) rotate(var(--rot,30deg));opacity:0} }
 
-  /* ── Confetti ── */
-  .confetti-piece {
-    position: fixed; z-index: 200; pointer-events: none;
-    width: 8px; height: 8px; border-radius: 2px;
-    animation: confettiFall var(--dur3, 2s) ease-in var(--del2, 0s) forwards;
-  }
-  @keyframes confettiFall {
-    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(110vh) rotate(var(--rot2, 720deg)); opacity: 0; }
-  }
+  /* Confetti */
+  .confetti-piece { position: fixed; z-index: 20000; pointer-events: none; width:8px; height:8px; border-radius:2px; animation: confettiFall var(--dur3,2s) ease-in var(--del2,0s) forwards; }
+  @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(110vh) rotate(var(--rot2,720deg));opacity:0} }
 
-  /* ── Success screen ── */
-  #success-screen {
-    display: none;
-    flex-direction: column; align-items: center;
-    animation: successIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
-  }
-  @keyframes successIn {
-    0% { transform: scale(0.5); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-  }
+  /* Ripple */
+  .ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.3); transform: scale(0); animation: rippleOut 0.6s linear; pointer-events: none; }
+  @keyframes rippleOut { to{transform:scale(4);opacity:0} }
+
+  /* Success */
+  #success-screen { display: none; flex-direction: column; align-items: center; animation: successIn 0.65s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  @keyframes successIn { 0%{transform:scale(0.5);opacity:0} 100%{transform:scale(1);opacity:1} }
   .success-cat {
-    font-size: clamp(5rem, 20vw, 8rem);
-    display: block; margin-bottom: 0.5rem;
-    animation: spinIn 0.8s cubic-bezier(0.34,1.56,0.64,1),
-               catBob 2.5s ease-in-out 0.8s infinite;
+    font-size: clamp(5rem, 20vw, 8rem); display: block; margin-bottom: 0.4rem;
+    animation: spinIn 0.8s cubic-bezier(0.34,1.56,0.64,1), catBob 2.5s ease-in-out 0.8s infinite;
     filter: drop-shadow(0 0 30px rgba(255,107,157,0.5));
   }
-  @keyframes spinIn {
-    0% { transform: scale(0) rotate(-180deg); }
-    100% { transform: scale(1) rotate(0deg); }
-  }
-  .success-title {
-    font-family: 'Baloo 2', sans-serif;
-    font-size: clamp(2.5rem, 10vw, 4rem);
-    font-weight: 900; color: var(--pink);
-    text-shadow: 0 0 40px rgba(255,107,157,0.4);
-    margin-bottom: 0.5rem;
-  }
-  .success-msg {
-    font-size: clamp(1rem, 3.5vw, 1.2rem);
-    color: var(--text-muted); line-height: 1.7;
-    max-width: 320px;
-  }
-  .success-footer {
-    margin-top: 1.5rem;
-    font-size: 0.82rem; color: rgba(255,255,255,0.3);
-    font-style: italic;
-  }
+  @keyframes spinIn { 0%{transform:scale(0) rotate(-180deg)} 100%{transform:scale(1) rotate(0deg)} }
+  .success-title { font-family:'Baloo 2',sans-serif; font-size:clamp(2.5rem,10vw,4rem); font-weight:900; color:var(--pink); text-shadow:0 0 40px rgba(255,107,157,0.4); margin-bottom:0.5rem; }
+  .success-msg { font-size:clamp(0.98rem,3.3vw,1.15rem); color:var(--text-muted); line-height:1.7; max-width:320px; }
+  .success-footer { margin-top:1.5rem; font-size:0.82rem; color:rgba(255,255,255,0.3); font-style:italic; }
 
-  /* ── Ripple on yes ── */
-  .ripple {
-    position: absolute; border-radius: 50%;
-    background: rgba(255,255,255,0.3);
-    transform: scale(0);
-    animation: rippleOut 0.6s linear;
-    pointer-events: none;
-  }
-  @keyframes rippleOut {
-    to { transform: scale(4); opacity: 0; }
-  }
-
-  /* ── Responsive ── */
-  @media (max-width: 420px) {
-    .card { padding: 1.8rem 1.3rem; border-radius: 22px; }
-    .heading { font-size: 1.7rem; }
-    .btn-yes { padding: 0.7em 1.6em; }
-  }
+  @media (max-width:420px) { .card{padding:1.8rem 1.2rem;border-radius:22px;} }
 </style>
 </head>
 <body>
-
 <div class="bg-layer"></div>
 <div class="stars" id="stars"></div>
 <div class="floating-hearts" id="floatingHearts"></div>
@@ -349,28 +239,20 @@
         <div class="cat-shadow"></div>
       </div>
 
-      <div class="badge">
-        <div class="badge-dot"></div>
-        <span id="badgeText">pesan penting banget</span>
-      </div>
-
+      <div class="badge"><div class="badge-dot"></div><span id="badgeText">pesan penting banget</span></div>
       <div class="heading" id="heading">Heyy kamu... 👀</div>
-      <div class="subtext" id="subtext">Ada yang pengen aku bilang... tapi jantungku udah kayak drum band duluan 🥁</div>
+      <div class="subtext" id="subtext">Ada yang pengen aku bilang... jantungku udah kayak drum band duluan 🥁</div>
 
-      <div class="question-text">
-        Maukah kamu jadi <span class="highlight">pacarku</span>? 🥺
-      </div>
+      <div class="question-text">Maukah kamu jadi <span class="highlight">pacarku</span>? 🥺</div>
 
       <div class="progress-wrap">
         <div class="progress-fill" id="progressFill" style="width:50%"></div>
       </div>
       <div class="progress-label" id="progressLabel">☁️ kemungkinan kamu bilang iya: 50%</div>
 
-      <div class="btn-row">
-        <button class="btn-yes" id="yesBtn" onclick="handleYes(event)">
-          IYA MAUUUU!! 💖
-        </button>
-        <button class="btn-no" id="noBtn">ngga... 🙄</button>
+      <div class="btn-row" id="btnRow">
+        <button class="btn-yes" id="yesBtn" onclick="handleYes(event)">IYA MAUUUU!! 💖</button>
+        <button id="noBtn">ngga... 🙄</button>
       </div>
     </div>
 
@@ -380,185 +262,121 @@
       <div class="success-title">YESSSSS!!!</div>
       <div class="success-msg">
         Hehe makasih udah mau ya... aku udah nervous dari tadi banget 🥺✨<br><br>
-        Ini resmi, lho. Ga bisa di-cancel. 😤💖
+        Ini resmi lho. Ga bisa di-cancel. 😤💖
       </div>
-      <div class="success-footer">(sekarang chat aku ya jangan kabur 🐱)</div>
+      <div class="success-footer">(sekarang chat aku ya, jangan kabur 🐱)</div>
     </div>
   </div>
 </div>
 
-<!-- fixed no btn (moved outside card so it can go anywhere) -->
 <script>
-(function() {
-  /* ── Stars ── */
-  const starsEl = document.getElementById('stars');
-  for (let i = 0; i < 80; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const sz = Math.random() * 2.5 + 0.5;
-    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${2+Math.random()*4}s;--op:${0.3+Math.random()*0.7};animation-delay:${Math.random()*5}s`;
+(function(){
+  /* Stars */
+  const starsEl=document.getElementById('stars');
+  for(let i=0;i<80;i++){
+    const s=document.createElement('div'); s.className='star';
+    const sz=Math.random()*2.5+0.5;
+    s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${2+Math.random()*4}s;--op:${0.3+Math.random()*0.7};animation-delay:${Math.random()*5}s`;
     starsEl.appendChild(s);
   }
 
-  /* ── Floating BG hearts ── */
-  const fhEl = document.getElementById('floatingHearts');
-  const fhEmojis = ['💖','💕','🩷','✨','💗','🌸','💝'];
-  for (let i = 0; i < 10; i++) {
-    const f = document.createElement('div');
-    f.className = 'fh';
-    f.textContent = fhEmojis[i % fhEmojis.length];
-    f.style.cssText = `left:${Math.random()*100}%;--fs:${0.9+Math.random()*1.4}rem;--dur2:${10+Math.random()*14}s;--del:${Math.random()*12}s`;
+  /* Floating hearts */
+  const fhEl=document.getElementById('floatingHearts');
+  ['💖','💕','🩷','✨','💗','🌸','💝'].forEach((em,i)=>{
+    const f=document.createElement('div'); f.className='fh'; f.textContent=em;
+    f.style.cssText=`left:${Math.random()*100}%;--fs:${0.9+Math.random()*1.4}rem;--dur2:${10+Math.random()*14}s;--del:${Math.random()*12}s`;
     fhEl.appendChild(f);
-  }
-
-  /* ── Data ── */
-  const cats = ['🐱','😿','🙀','😾','🐈','🐾','😸','🙈','😤','🤡'];
-  const headings = [
-    'Heyy kamu... 👀',
-    'Beneran?? 😭',
-    'Jangan gitu dongg 🥺',
-    'Aku nunggu dari kemarin...',
-    'Kucing aku juga kecewa 😿',
-    'Tombol itu ga berlaku ya 😤',
-    'Satu kata: I-Y-A',
-    'TERAKHIR INI SERIUS 😤',
-    'Baik aku nunggu... 🙄',
-    'YA UDAH FINE. (ga fine) 😭'
-  ];
-  const subtexts = [
-    'Ada yang pengen aku bilang... jantungku kayak drum band duluan 🥁',
-    'Yakin deh kamu mau nolak wajah lucu ini??',
-    'Aku udah latihan nanya ini 3 hari lho... 3 HARI.',
-    'Jempol kamu capek lho ngehindarin tombol itu terus.',
-    'Kucing kesayanganku udah kasih restu. Tinggal kamu aja.',
-    'Penelitian NASA membuktikan: kamu harusnya bilang iya.',
-    'Algoritma cinta (yang kubuat sendiri) bilang: 99.9% cocok.',
-    'Ini percobaan ke-8. Rekor dunia: 11 kali. Kamu mau itu??',
-    'Dokter bilang stres itu ga sehat. Jadi bilang iya ya.',
-    'OK aku give up... (ga give up sama sekali)'
-  ];
-  const badges = [
-    'pesan penting banget', 'coba lagi 🔄', 'ayo dong 🙏',
-    'masih sabar nih', 'kucing menangis 😿', 'ini serius woi',
-    'jangan gini 😤', 'TOLONG 😭', 'hampir nyerah (ga)',
-    'FINAL BOSS 🎮'
-  ];
-  const progressLabels = [
-    '☁️ kemungkinan kamu bilang iya: 50%',
-    '📈 kemungkinan naik jadi: 58%',
-    '🧪 ilmu kimia bilang: reaksi positif diperlukan',
-    '🌙 ramalan bintang: bilang iya hari ini',
-    '🤖 AI analisis: kamu sebenernya mau tapi malu',
-    '📊 statistik: 99% orang cantik bilang iya',
-    '🧠 psikologi: menolak = tanda suka (beneran)',
-    '⚡ OVERRIDE: sistem mendeteksi: HARUS IYA',
-    '🏳️ hampir iya: 99.7%...',
-    '🚨 DARURAT NASIONAL: butuh jawaban IYA'
-  ];
-  const noTexts = [
-    'ngga... 🙄', 'BENERAN?? 😭', 'jangan dong 🥺',
-    'yakin?? YAKIN??', 'pikir lagi deh...', 'kucing aku sedih',
-    'OK FINE 😤 (ga fine)', 'LAST CHANCE !!!', 'sungguh?? sungguh??',
-    '...oke 💔 (tapi aku masih nungguin)'
-  ];
-
-  let count = 0;
-  let yesScale = 1;
-  const noBtn = document.getElementById('noBtn');
-
-  function positionNoBtn() {
-    const vw = window.innerWidth, vh = window.innerHeight;
-    const bw = noBtn.offsetWidth + 10, bh = noBtn.offsetHeight + 10;
-    const margin = 16;
-    const x = margin + Math.random() * (vw - bw - margin * 2);
-    const y = margin + Math.random() * (vh - bh - margin * 2);
-    noBtn.style.left = x + 'px';
-    noBtn.style.top  = y + 'px';
-  }
-
-  // Initial position (near the card area, bottom right of center)
-  window.addEventListener('load', () => {
-    const vw = window.innerWidth, vh = window.innerHeight;
-    noBtn.style.left = Math.min(vw * 0.62, vw - noBtn.offsetWidth - 20) + 'px';
-    noBtn.style.top  = Math.min(vh * 0.65, vh - noBtn.offsetHeight - 20) + 'px';
   });
 
-  function runAway() {
-    count = Math.min(count + 1, headings.length - 1);
-    positionNoBtn();
-    noBtn.textContent = noTexts[count];
+  /* Data */
+  const cats    =['🐱','😿','🙀','😾','🐈','🐾','😸','🙈','😤','🤡'];
+  const headings=['Heyy kamu... 👀','Beneran?? 😭','Jangan gitu dongg 🥺','Aku nunggu dari kemarin...','Kucing aku juga kecewa 😿','Tombol itu ga berlaku ya 😤','Satu kata aja: I-Y-A','INI SERIUS BANGET 😤','Baik... aku nunggu ya 🙄','YA UDAH FINE. (ga fine) 😭'];
+  const subtexts=['Ada yang pengen aku bilang... jantungku udah kayak drum band duluan 🥁','Yakin deh kamu mau nolak wajah lucu ini??','Aku udah latihan nanya ini 3 hari lho... 3 HARI.','Jempol kamu capek lho ngehindarin tombol itu terus.','Kucing kesayanganku udah kasih restu. Tinggal kamu aja.','Penelitian NASA membuktikan: kamu harusnya bilang iya.','Algoritma cinta (yang kubuat sendiri) bilang: 99.9% cocok.','Ini percobaan ke-8. Rekor dunia: 11 kali. Kamu mau itu??','Dokter bilang stres itu ga sehat. Jadi bilang iya ya.','OK aku give up... (ga give up sama sekali)'];
+  const badges  =['pesan penting banget','coba lagi 🔄','ayo dong 🙏','masih sabar nih','kucing menangis 😿','ini serius woi','jangan gini 😤','TOLONG 😭','hampir nyerah (ga)','FINAL BOSS 🎮'];
+  const plabels =['☁️ kemungkinan kamu bilang iya: 50%','📈 kemungkinan naik jadi: 58%','🧪 ilmu kimia bilang: reaksi positif diperlukan','🌙 ramalan bintang: bilang iya hari ini','🤖 AI analisis: kamu sebenernya mau tapi malu','📊 statistik: 99% orang cantik bilang iya','🧠 psikologi: menolak = tanda suka (beneran lho)','⚡ OVERRIDE: sistem mendeteksi: HARUS IYA','🏳️ hampir iya: 99.7%... kamu tahan banget','🚨 DARURAT NASIONAL: butuh jawaban IYA sekarang!!'];
+  const noTexts =['ngga... 🙄','BENERAN?? 😭','jangan dong 🥺','yakin?? YAKIN??','pikir lagi deh...','kucing aku sedih 😿','OK FINE 😤 (ga fine)','LAST CHANCE !!!','sungguh?? sungguh??','...oke 💔 (tapi aku masih nungguin)'];
 
-    document.getElementById('catEmoji').textContent = cats[count];
-    document.getElementById('heading').textContent = headings[count];
-    document.getElementById('subtext').textContent = subtexts[count];
-    document.getElementById('badgeText').textContent = badges[count];
-    document.getElementById('progressLabel').textContent = progressLabels[count];
+  let count=0, yesScale=1, isFixed=false;
+  const noBtn=document.getElementById('noBtn');
+  const yesBtn=document.getElementById('yesBtn');
+  const btnRow=document.getElementById('btnRow');
 
-    const pct = Math.min(50 + count * 6, 99);
-    document.getElementById('progressFill').style.width = pct + '%';
+  function makeFixed(){
+    if(isFixed) return;
+    isFixed=true;
+    const rect=noBtn.getBoundingClientRect();
+    document.body.appendChild(noBtn);
+    noBtn.style.left=rect.left+'px';
+    noBtn.style.top=rect.top+'px';
+    noBtn.classList.add('is-fixed');
+    /* placeholder */
+    const ph=document.createElement('div');
+    ph.style.cssText='width:130px;height:46px;visibility:hidden;flex-shrink:0';
+    btnRow.appendChild(ph);
+  }
 
-    yesScale = Math.min(yesScale + 0.15, 1.9);
-    const yesBtn = document.getElementById('yesBtn');
-    yesBtn.style.transform = `scale(${yesScale})`;
+  function runAway(){
+    makeFixed();
+    count=Math.min(count+1, noTexts.length-1);
 
-    spawnParticles(
-      parseFloat(yesBtn.getBoundingClientRect().left) + yesBtn.offsetWidth / 2,
-      parseFloat(yesBtn.getBoundingClientRect().top)
-    );
+    const vw=window.innerWidth, vh=window.innerHeight;
+    const bw=noBtn.offsetWidth+10, bh=noBtn.offsetHeight+10;
+    const pad=16;
+    noBtn.style.left=(pad+Math.random()*(vw-bw-pad*2))+'px';
+    noBtn.style.top=(pad+Math.random()*(vh-bh-pad*2))+'px';
+    noBtn.textContent=noTexts[count];
+
+    document.getElementById('catEmoji').textContent=cats[count];
+    document.getElementById('heading').textContent=headings[count];
+    document.getElementById('subtext').textContent=subtexts[count];
+    document.getElementById('badgeText').textContent=badges[count];
+    document.getElementById('progressLabel').textContent=plabels[count];
+    document.getElementById('progressFill').style.width=Math.min(50+count*6,99)+'%';
+
+    yesScale=Math.min(yesScale+0.16,1.85);
+    yesBtn.style.transform=`scale(${yesScale})`;
+
+    const r=yesBtn.getBoundingClientRect();
+    spawnParticles(r.left+r.width/2, r.top);
   }
 
   noBtn.addEventListener('mouseover', runAway);
-  noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); runAway(); }, { passive: false });
+  noBtn.addEventListener('touchstart', e=>{ e.preventDefault(); runAway(); }, {passive:false});
 
-  /* ── Particles ── */
-  const pEmojis = ['💖','💕','💗','✨','🩷','💝','🌸'];
-  function spawnParticles(x, y) {
-    for (let i = 0; i < 7; i++) {
-      setTimeout(() => {
-        const el = document.createElement('div');
-        el.className = 'particle';
-        el.textContent = pEmojis[Math.floor(Math.random() * pEmojis.length)];
-        el.style.cssText = `left:${x + (Math.random()-0.5)*60}px;top:${y}px;--rot:${(Math.random()-0.5)*120}deg;animation-delay:${Math.random()*0.2}s`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 2000);
-      }, i * 60);
-    }
+  /* Particles */
+  const pList=['💖','💕','💗','✨','🩷','💝','🌸'];
+  function spawnParticles(x,y){
+    for(let i=0;i<7;i++) setTimeout(()=>{
+      const el=document.createElement('div'); el.className='particle';
+      el.textContent=pList[Math.floor(Math.random()*pList.length)];
+      el.style.cssText=`left:${x+(Math.random()-.5)*70}px;top:${y}px;--rot:${(Math.random()-.5)*120}deg;animation-delay:${Math.random()*0.2}s`;
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),2100);
+    },i*55);
   }
 
-  /* ── Yes handler ── */
-  window.handleYes = function(e) {
-    // Ripple
-    const btn = e.currentTarget;
-    const ripple = document.createElement('span');
-    ripple.className = 'ripple';
-    const rect = btn.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
-    btn.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 700);
+  /* YES */
+  window.handleYes=function(e){
+    const btn=e.currentTarget;
+    const rip=document.createElement('span'); rip.className='ripple';
+    const rect=btn.getBoundingClientRect(), size=Math.max(rect.width,rect.height);
+    rip.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+    btn.appendChild(rip); setTimeout(()=>rip.remove(),700);
 
-    // Confetti
-    const colors = ['#FF6B9D','#FFB3CC','#8B5CF6','#C4B5FD','#FFD93D','#fff'];
-    for (let i = 0; i < 60; i++) {
-      const c = document.createElement('div');
-      c.className = 'confetti-piece';
-      c.style.cssText = `left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};--dur3:${1.5+Math.random()*2}s;--del2:${Math.random()*1}s;--rot2:${(Math.random()-0.5)*1440}deg;border-radius:${Math.random()>0.5?'50%':'2px'}`;
-      document.body.appendChild(c);
-      setTimeout(() => c.remove(), 3500);
+    const cols=['#FF6B9D','#FFB3CC','#8B5CF6','#C4B5FD','#FFD93D','#fff','#f0abfc'];
+    for(let i=0;i<70;i++){
+      const c=document.createElement('div'); c.className='confetti-piece';
+      c.style.cssText=`left:${Math.random()*100}%;background:${cols[Math.floor(Math.random()*cols.length)]};--dur3:${1.5+Math.random()*2}s;--del2:${Math.random()}s;--rot2:${(Math.random()-.5)*1440}deg;border-radius:${Math.random()>.5?'50%':'2px'}`;
+      document.body.appendChild(c); setTimeout(()=>c.remove(),3600);
     }
+    for(let i=0;i<5;i++) spawnParticles(window.innerWidth*(0.15+i*0.17), window.innerHeight*0.4);
 
-    // Big particle burst
-    for (let i = 0; i < 5; i++) {
-      spawnParticles(window.innerWidth * (0.2 + i * 0.15), window.innerHeight * 0.5);
-    }
-
-    // Switch screens
-    setTimeout(() => {
-      document.getElementById('main-screen').style.display = 'none';
-      noBtn.style.display = 'none';
-      const succ = document.getElementById('success-screen');
-      succ.style.display = 'flex';
-    }, 400);
+    setTimeout(()=>{
+      document.getElementById('main-screen').style.display='none';
+      noBtn.style.display='none';
+      const succ=document.getElementById('success-screen');
+      succ.style.display='flex';
+    },420);
   };
 })();
 </script>
