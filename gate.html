@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>ExeMusic - Verification</title>
   <link rel="icon" type="image/png" href="exemusicicon.png">
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6LcGHLMsAAAAAKTJhZuNM0t_66UaGg85v4N8wFRn" async defer></script>
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Exo+2:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
@@ -452,30 +452,38 @@
         // Already verified and token still valid
         redirectToMain();
       } else {
-        // Initialize reCAPTCHA
+        // Execute reCAPTCHA v3 verification
         setTimeout(() => {
-          initializeRecaptcha();
+          executeRecaptcha();
         }, 500);
       }
     }
 
-    function initializeRecaptcha() {
-      if (window.grecaptcha) {
-        window.grecaptcha.render('recaptcha-container', {
-          sitekey: RECAPTCHA_SITE_KEY,
-          theme: 'dark',
-          size: 'normal',
-          callback: onRecaptchaSuccess,
-          'error-callback': onRecaptchaError,
-          'expired-callback': onRecaptchaExpired
-        });
-      } else {
+    function executeRecaptcha() {
+      if (!window.grecaptcha) {
         console.error('reCAPTCHA not loaded');
         setStatus('reCAPTCHA gagal dimuat', 'error');
+        return;
       }
+
+      setStatus('Menghubungkan reCAPTCHA...', 'loading');
+      window.grecaptcha.ready(() => {
+        window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'gate_verifikasi' })
+          .then((token) => {
+            if (token) {
+              onRecaptchaSuccess(token);
+            } else {
+              onRecaptchaError('Token tidak diterima');
+            }
+          })
+          .catch((error) => {
+            onRecaptchaError(error);
+          });
+      });
     }
 
     function onRecaptchaSuccess(token) {
+      console.log('reCAPTCHA token:', token);
       setStatus('Verifikasi berhasil! Mengalihkan...', 'success');
       saveVerification();
       setTimeout(() => {
@@ -486,18 +494,11 @@
     function onRecaptchaError(error) {
       console.error('reCAPTCHA error:', error);
       setStatus('Terjadi kesalahan. Silakan coba lagi.', 'error');
-      // Reset reCAPTCHA
-      if (window.grecaptcha) {
-        window.grecaptcha.reset();
-      }
     }
 
     function onRecaptchaExpired() {
       console.warn('reCAPTCHA expired');
       setStatus('Verifikasi kedaluwarsa. Silakan coba lagi.', 'error');
-      if (window.grecaptcha) {
-        window.grecaptcha.reset();
-      }
     }
 
     function saveVerification() {
@@ -513,7 +514,7 @@
       statusEl.textContent = message;
       statusEl.className = 'gate-status ' + type;
 
-      if (type === 'success') {
+      if (type === 'success' || type === 'loading') {
         loaderEl.classList.add('show');
       } else {
         loaderEl.classList.remove('show');
