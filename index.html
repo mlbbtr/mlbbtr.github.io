@@ -787,20 +787,20 @@
     #btnNotif:hover { background: var(--accent); color: black; border-color: var(--accent); }
     #btnNotif .notif-badge { position: absolute; top: -2px; right: -2px; min-width: 17px; height: 17px; background: var(--danger); border-radius: 9px; font-size: 9px; font-weight: 700; display: none; align-items: center; justify-content: center; padding: 0 3px; }
     #btnNotif .notif-badge.show { display: flex; }
-    #btnLeaderboard {
-      background: rgba(251,191,36,0.12);
-      border: 1px solid rgba(251,191,36,0.45);
-      color: #fbbf24;
+    #btnFeedback {
+      background: rgba(0,255,136,0.12);
+      border: 1px solid rgba(0,255,136,0.45);
+      color: var(--accent);
       border-radius: 10px;
       padding: 8px 10px;
       cursor: pointer;
       font-size: 15px;
       transition: 0.2s;
     }
-    #btnLeaderboard:hover {
-      background: rgba(251,191,36,0.28);
+    #btnFeedback:hover {
+      background: rgba(0,255,136,0.28);
       color: #fff;
-      box-shadow: 0 0 16px rgba(251,191,36,0.45);
+      box-shadow: 0 0 16px rgba(0,255,136,0.45);
     }
     #btnEvent {
       width: 40px; height: 40px;
@@ -1540,6 +1540,10 @@
     .event-topup-progress-panel.show {
       display: flex;
     }
+    .event-topup-progress-panel.rbx-mode-gamepass .event-topup-progress-topline {
+      background: linear-gradient(90deg, transparent, #fbbf24, #f97316, #fb7185, transparent);
+      background-size: 200% 100%;
+    }
     .event-topup-progress-topline {
       height: 3px;
       width: 100%;
@@ -1783,6 +1787,28 @@
       color: #0f172a;
       box-shadow: 0 0 22px rgba(251,191,36,0.35);
       border: 1px solid rgba(255,255,255,0.15);
+    }
+    .leaderboard-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .leaderboard-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(15,23,42,0.75);
+      color: #94a3b8;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .leaderboard-close:hover {
+      color: #fff;
+      border-color: rgba(248,113,113,0.5);
+      background: rgba(239,68,68,0.15);
     }
     .leaderboard-refresh {
       display: inline-flex;
@@ -2058,6 +2084,255 @@
       }
       .leaderboard-value-number {
         font-size: 16px;
+      }
+    }
+
+    /* ============================================================
+       FEEDBACK MODAL - Modern UI
+    ============================================================ */
+    .feedback-sheet {
+      background: linear-gradient(145deg, rgba(18,18,28,0.97) 0%, rgba(8,10,20,0.98) 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.04) inset;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow: hidden;
+      animation: feedbackSheetIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+    }
+    @keyframes feedbackSheetIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .feedback-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .feedback-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+    }
+    .feedback-title i {
+      font-size: 20px;
+    }
+    .feedback-close {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 8px;
+      transition: 0.2s;
+    }
+    .feedback-close:hover {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    .feedback-content {
+      padding: 24px;
+    }
+    .feedback-info {
+      background: rgba(0,255,136,0.1);
+      border: 1px solid rgba(0,255,136,0.2);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #e5e7eb;
+      line-height: 1.5;
+    }
+    .feedback-info i {
+      color: var(--accent);
+      margin-right: 8px;
+    }
+    .feedback-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .feedback-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .feedback-field label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #f8fafc;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 0.5px;
+    }
+    .feedback-field textarea {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px;
+      color: #f8fafc;
+      font-size: 14px;
+      line-height: 1.5;
+      resize: vertical;
+      min-height: 120px;
+      transition: 0.2s;
+      font-family: 'Exo 2', sans-serif;
+    }
+    .feedback-field textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,255,136,0.1);
+    }
+    .feedback-field textarea::placeholder {
+      color: #9ca3af;
+    }
+    .char-count {
+      text-align: right;
+      font-size: 12px;
+      color: #6b7280;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .btn-feedback-submit {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: 12px;
+      padding: 16px 24px;
+      color: #000;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+    }
+    .btn-feedback-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,255,136,0.4);
+    }
+    .btn-feedback-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* THANK YOU ANIMATION */
+    .thank-you-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+    }
+    .thank-you-card {
+      background: linear-gradient(145deg, rgba(18,18,28,0.97) 0%, rgba(8,10,20,0.98) 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 40px 32px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      animation: thankYouIn 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
+      max-width: 400px;
+      width: 90%;
+    }
+    @keyframes thankYouIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    .thank-you-icon {
+      font-size: 48px;
+      color: var(--accent);
+      margin-bottom: 20px;
+      animation: heartPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes heartPulse {
+      0%, 100% {
+        transform: scale(1);
+        color: var(--accent);
+      }
+      50% {
+        transform: scale(1.1);
+        color: #ff69b4;
+      }
+    }
+    .thank-you-card h3 {
+      color: #f8fafc;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+    }
+    .thank-you-card p {
+      color: #e5e7eb;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 640px) {
+      .feedback-sheet {
+        width: calc(100% - 20px);
+        margin: 20px auto;
+        max-height: 85vh;
+      }
+      .feedback-header {
+        padding: 16px 20px;
+      }
+      .feedback-content {
+        padding: 20px;
+      }
+      .feedback-info {
+        padding: 12px;
+        font-size: 13px;
+      }
+      .feedback-field textarea {
+        padding: 14px;
+        min-height: 100px;
+      }
+      .btn-feedback-submit {
+        padding: 14px 20px;
+        font-size: 15px;
+      }
+      .thank-you-card {
+        padding: 32px 24px;
+      }
+      .thank-you-icon {
+        font-size: 40px;
+      }
+      .thank-you-card h3 {
+        font-size: 20px;
+      }
+      .thank-you-card p {
+        font-size: 14px;
       }
     }
 
@@ -4154,8 +4429,8 @@
     }
     @media (max-width: 520px) {
       .sys-notify-stack {
-        top: auto;
-        bottom: 100px;
+        top: calc(14px + env(safe-area-inset-top, 0px));
+        bottom: auto;
         right: 10px;
         left: 10px;
         max-width: none;
@@ -5464,8 +5739,8 @@
         <button id="btnEvent" onclick="openEventCenter()" title="Event">
           <i class="fas fa-calendar-alt"></i>
         </button>
-        <button id="btnLeaderboard" onclick="openLeaderboard()" title="Leaderboard Top 5">
-          <i class="fas fa-trophy"></i>
+        <button id="btnFeedback" onclick="openFeedbackModal()" title="Masukkan/Feedback">
+          <i class="fas fa-comment-dots"></i>
         </button>
         <button id="btnAdmin" onclick="openAdminPanel()" title="Admin Panel">
           <i class="fas fa-shield-alt"></i>
@@ -6008,7 +6283,7 @@
   <div class="modal" id="modalAbout" onclick="if(event.target==this)this.style.display='none'">
     <div class="sheet">
       <div class="about-box">
-        <h3>🎵 ExeMusic 3.3.1</h3>
+        <h3>🎵 ExeMusic 3.3.2</h3>
         <p>Platform musik untuk para creator url berbagi dan menikmati musik berkualitas tinggi.</p>
         <p><b>Fitur Platform</b></p>
         <ul class="about-features">
@@ -6031,7 +6306,7 @@
            Use Boombox — <a href="javascript:void(0)" onclick="openBoomboxTutorial()" class="about-dev-link">click here</a><br>
            Update info — <a href="javascript:void(0)" onclick="openUpdateInfo()" class="about-dev-link">click here</a>
         </p>
-        <p style="font-size:11px; color:#555; margin-top:10px">Dibuat oleh <a href="?profile_userid=GsU6ThLD9gb5P3k8RS87ro553Ks2" class="about-dev-link">Hexky</a><br>© 2025 ExeMusic</p>
+        <p style="font-size:11px; color:#555; margin-top:10px">Dibuat oleh <a href="?profile_userid=GsU6ThLD9gb5P3k8RS87ro553Ks2" class="about-dev-link">Hexky</a><br>© 2026 ExeMusic</p>
         <button onclick="closeModal()" class="btn-act">SAYA MENGERTI</button>
       </div>
     </div>
@@ -6040,16 +6315,17 @@
   <div class="modal" id="modalUpdateInfo" onclick="if(event.target==this)this.style.display='none'">
     <div class="sheet">
       <div class="about-box">
-        <h3>📋 Update Info v3.3.1</h3>
-        <p><b>Version:</b> 3.3.1</p>
-        <p><b>Date:</b> 4/12/2026</p>
-        <p><b>Update List:</b></p>
+        <h3>📋 Update Info v3.3.2</h3>
+        <p><b>Version:</b> 3.3.2</p>
+        <p><b>Date:</b> 20 April 2026</p>
+        <p><b>Changelog (ringkas):</b></p>
         <ul class="about-features">
-          <li><b>Gate Verification System</b> – Proteksi platform dengan Cloudflare Turnstile</li>
-          <li><b>Security Improvement</b> – Cegah bot & spam dengan verifikasi 3 jam sekali</li>
-          <li><b>Modern Leaderboard</b> – Sistem leaderboard responsif tanpa hash-based navigation</li>
-          <li><b>Cleaner URL</b> – Hilangkan ?leaderboard# untuk pengalaman lebih profesional</li>
-          <li><b>Responsive Design</b> – Optimisasi untuk semua ukuran perangkat</li>
+          <li><b>Top Up Robux — Game Pass (pending)</b> – Paket 320 ExeCoin: set Game Pass 143 Robux, kamu dapat 100 Robux setelah pajak; estimasi hingga 5 hari. Stok global <b>2 slot/hari (WIB)</b>, restock tiap <b>00.00 WIB</b>.</li>
+          <li><b>Leaderboard</b> – Tombol dipindah ke header; UI &amp; stylesheet modal diperbarui; perbaikan layout yang sebelumnya terkunci oleh aturan CSS global.</li>
+          <li><b>Event Center</b> – Tampilan glass/modern v3.3.2 (tab, panel, sisi).</li>
+          <li><b>ExeCoin tampilan</b> – Singkatan 1k–999k; nilai ≥1M ditampilkan sebagai 999k+ (nilai asli di database tetap utuh).</li>
+          <li><b>Gate &amp; notifikasi sistem</b> – Tetap aktif dari versi sebelumnya; penyempurnaan minor alur UI.</li>
+          <li><b>Firebase</b> – Untuk stok Game Pass harian, izinkan user terautentikasi menulis ke path <code>shopStocks/robuxGamepassDaily</code> (struktur: <code>dateKey</code> + <code>sold</code>).</li>
         </ul>
         <button onclick="closeModal()" class="btn-act">TUTUP</button>
       </div>
@@ -6176,6 +6452,19 @@
                     <div class="event-topup-card-meta">Harga: <strong>15.000</strong> ExeCoin</div>
                   </div>
                   <button type="button" class="event-topup-go" id="robloxBtn1200" onclick="startRobloxTopupFromUi(1200, 15000)">Cek &amp; kirim</button>
+                </div>
+                <div class="event-topup-card event-topup-card--gamepass">
+                  <div>
+                    <div class="event-topup-card-title">
+                      <span>100</span> Robux <span class="gp-pill">Game Pass · pending ~5 hari</span>
+                    </div>
+                    <div class="event-topup-card-meta">
+                      Set Game Pass: <strong>143</strong> Robux — Kamu dapat: <strong>100</strong> Robux (setelah pajak). Harga <strong>320</strong> ExeCoin.
+                    </div>
+                    <div class="event-topup-stock" id="robloxGpStockLine">Stock hari ini (WIB): …</div>
+                    <div class="event-topup-restock" id="robloxGpRestockLine">Restock jam 00.00 WIB · countdown: …</div>
+                  </div>
+                  <button type="button" class="event-topup-go" id="robloxBtnGp" onclick="startRobloxGamepassTopupFromUi()">Rebut slot</button>
                 </div>
               </div>
             </div>
@@ -6377,23 +6666,26 @@
           <i class="fas fa-trophy"></i>
           <span>LEADERBOARD TOP 5</span>
         </div>
-        <div class="leaderboard-refresh">
-          <i class="fas fa-sync-alt"></i>
-          <span id="lbRefreshTimer">60s</span>
+        <div class="leaderboard-header-actions">
+          <div class="leaderboard-refresh">
+            <i class="fas fa-sync-alt"></i>
+            <span id="lbRefreshTimer">60s</span>
+          </div>
+          <button type="button" class="leaderboard-close" onclick="closeLeaderboard()" title="Tutup">×</button>
         </div>
       </div>
       
       <div class="leaderboard-tabs">
-        <button class="leaderboard-tab-btn active" onclick="switchLeaderboardTab('followers', this)">
+        <button type="button" class="leaderboard-tab-btn active" data-lb-tab="followers" onclick="switchLeaderboardTab('followers', this)">
           <i class="fas fa-users"></i> Followers
         </button>
-        <button class="leaderboard-tab-btn" onclick="switchLeaderboardTab('tags', this)">
+        <button type="button" class="leaderboard-tab-btn" data-lb-tab="tags" onclick="switchLeaderboardTab('tags', this)">
           <i class="fas fa-tags"></i> Tags
         </button>
-        <button class="leaderboard-tab-btn" onclick="switchLeaderboardTab('uploads', this)">
+        <button type="button" class="leaderboard-tab-btn" data-lb-tab="uploads" onclick="switchLeaderboardTab('uploads', this)">
           <i class="fas fa-music"></i> Uploads
         </button>
-        <button class="leaderboard-tab-btn" onclick="switchLeaderboardTab('execoin', this)">
+        <button type="button" class="leaderboard-tab-btn" data-lb-tab="execoin" onclick="switchLeaderboardTab('execoin', this)">
           <i class="fas fa-coins"></i> ExeCoin
         </button>
       </div>
@@ -6437,6 +6729,45 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- FEEDBACK MODAL -->
+  <div class="modal" id="modalFeedback" onclick="if(event.target==this)closeFeedbackModal()">
+    <div class="feedback-sheet">
+      <div class="feedback-header">
+        <div class="feedback-title">
+          <i class="fas fa-comment-dots"></i>
+          <span>MASUKKAN & FEEDBACK</span>
+        </div>
+        <button type="button" class="feedback-close" onclick="closeFeedbackModal()" title="Tutup">×</button>
+      </div>
+      <div class="feedback-content">
+        <div class="feedback-info">
+          <p><i class="fas fa-info-circle"></i> Masukkan Anda sangat berharga untuk pengembangan ExeMusic. Kirim feedback maksimal 1x per hari.</p>
+        </div>
+        <form id="feedbackForm" class="feedback-form">
+          <div class="feedback-field">
+            <label for="feedbackMessage">Pesan Feedback</label>
+            <textarea id="feedbackMessage" placeholder="Tulis masukan atau saran Anda di sini..." maxlength="500" required></textarea>
+            <div class="char-count"><span id="charCount">0</span>/500</div>
+          </div>
+          <button type="submit" class="btn-feedback-submit">
+            <i class="fas fa-paper-plane"></i> Kirim Feedback
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- THANK YOU ANIMATION -->
+  <div class="thank-you-overlay" id="thankYouOverlay">
+    <div class="thank-you-card">
+      <div class="thank-you-icon">
+        <i class="fas fa-heart"></i>
+      </div>
+      <h3>Terima Kasih!</h3>
+      <p id="thankYouMessage">Feedback Anda telah diterima, [username].</p>
     </div>
   </div>
 
@@ -6839,6 +7170,13 @@
     function escapeHtml(text) {
       const d = document.createElement('div'); d.textContent = text; return d.innerHTML;
     }
+    function formatExecoinDisplay(n) {
+      const x = typeof n === 'number' && !isNaN(n) ? Math.floor(n) : parseInt(n, 10);
+      if (isNaN(x) || x < 0) return '0';
+      if (x < 1000) return String(x);
+      if (x >= 1000000) return '999k+';
+      return Math.floor(x / 1000) + 'k';
+    }
     function getTagHTML(tag) {
       if (!tag || tag === 'none') return '';
       const t = tag.toLowerCase();
@@ -7143,6 +7481,7 @@
       }
       if (!modal) return;
       modal.style.display = 'block';
+      ensureRobloxGamepassStockListener();
       loadUserQuests().then(() => {
         renderEventCenter();
       });
@@ -7187,7 +7526,7 @@
     }
 
     // ============================================================
-    // LEADERBOARD SYSTEM - v3.3.1 (Clean URL, No Hash Navigation)
+    // LEADERBOARD SYSTEM - v3.3.2
     // ============================================================
     let leaderboardRefreshInterval = null;
     let leaderboardRefreshCountdown = 60;
@@ -7203,6 +7542,176 @@
         leaderboardRefreshInterval = null;
       }
     }
+
+    // ============================================================
+    // FEEDBACK SYSTEM - Modern UI with Anti-Spam
+    // ============================================================
+    function openFeedbackModal() {
+      if (!auth.currentUser) {
+        showToast('Login dulu untuk mengirim feedback', 'error');
+        return;
+      }
+      const modal = document.getElementById('modalFeedback');
+      if (modal) {
+        modal.style.display = 'flex';
+        modal.style.zIndex = '2000';
+        // Reset form
+        document.getElementById('feedbackForm').reset();
+        document.getElementById('charCount').textContent = '0';
+        // Focus on textarea
+        setTimeout(() => {
+          document.getElementById('feedbackMessage').focus();
+        }, 100);
+      }
+    }
+
+    function closeFeedbackModal() {
+      const modal = document.getElementById('modalFeedback');
+      if (modal) {
+        modal.style.display = 'none';
+        modal.style.zIndex = '';
+      }
+    }
+
+    function showThankYouAnimation(username) {
+      const overlay = document.getElementById('thankYouOverlay');
+      const message = document.getElementById('thankYouMessage');
+      if (overlay && message) {
+        message.textContent = `Feedback Anda telah diterima, ${username}.`;
+        overlay.style.display = 'flex';
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 3000);
+      }
+    }
+
+    // Initialize feedback form
+    document.addEventListener('DOMContentLoaded', function() {
+      const feedbackForm = document.getElementById('feedbackForm');
+      const feedbackMessage = document.getElementById('feedbackMessage');
+      const charCount = document.getElementById('charCount');
+
+      if (feedbackMessage && charCount) {
+        feedbackMessage.addEventListener('input', function() {
+          charCount.textContent = this.value.length;
+        });
+      }
+
+      if (feedbackForm) {
+        feedbackForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+
+          if (!auth.currentUser) {
+            showToast('Login dulu untuk mengirim feedback', 'error');
+            return;
+          }
+
+          const message = feedbackMessage.value.trim();
+          if (!message) {
+            showToast('Tulis pesan feedback dulu', 'error');
+            return;
+          }
+
+          const submitBtn = feedbackForm.querySelector('.btn-feedback-submit');
+          if (submitBtn) submitBtn.disabled = true;
+
+          try {
+            // Check daily limit
+            const uid = auth.currentUser.uid;
+            const today = new Date().toISOString().split('T')[0];
+            const feedbackKey = `feedback_${today}`;
+
+            const userRef = db.ref('users/' + uid);
+            const snapshot = await userRef.once('value');
+            const userData = snapshot.val() || {};
+
+            if (userData[feedbackKey]) {
+              showToast('Anda sudah mengirim feedback hari ini. Coba lagi besok.', 'error');
+              return;
+            }
+
+            // Get user info
+            const username = userData.username || userData.displayName || 'User';
+            const timestamp = new Date().toLocaleString('id-ID', {
+              timeZone: 'Asia/Jakarta',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit'
+            });
+
+            // Prepare Discord embed
+            const embed = {
+              title: '🎵 ExeMusic Feedback Baru!',
+              color: 0x00ff88,
+              fields: [
+                {
+                  name: '👤 Username',
+                  value: username,
+                  inline: true
+                },
+                {
+                  name: '🆔 User ID',
+                  value: uid,
+                  inline: true
+                },
+                {
+                  name: '⏰ Waktu Kirim',
+                  value: timestamp,
+                  inline: false
+                },
+                {
+                  name: '💬 Pesan Feedback',
+                  value: message.length > 1024 ? message.substring(0, 1021) + '...' : message,
+                  inline: false
+                }
+              ],
+              footer: {
+                text: 'ExeMusic v3.3.2 - Feedback System',
+                icon_url: 'https://i.imgur.com/your-icon.png'
+              },
+              timestamp: new Date().toISOString()
+            };
+
+            // Send to Discord webhook
+            const webhookUrl = process.env.DISCORD_WEBHOOK_URL || 'https://webhook.lewisakura.moe/api/webhooks/1497569115127418991/jMzRAdXbKbb1EYIEaKHiedSH3rRuRjeho2Uas5IEJbHmOOTGXMANNnmbXNPRBb2L0mvO';
+
+            const response = await fetch(webhookUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                embeds: [embed],
+                username: 'ExeMusic Feedback Bot',
+                avatar_url: 'https://i.imgur.com/your-avatar.png'
+              })
+            });
+
+            if (response.ok) {
+              // Mark as sent today
+              await userRef.child(feedbackKey).set(true);
+
+              // Close modal and show thank you
+              closeFeedbackModal();
+              showThankYouAnimation(username);
+
+              showToast('Feedback berhasil dikirim! Terima kasih atas masukan Anda.', 'success');
+            } else {
+              throw new Error('Failed to send feedback');
+            }
+
+          } catch (error) {
+            console.error('Feedback error:', error);
+            showToast('Gagal mengirim feedback. Coba lagi nanti.', 'error');
+          } finally {
+            if (submitBtn) submitBtn.disabled = false;
+          }
+        });
+      }
+    });
 
     function openLeaderboard(defaultCategory = 'followers') {
       const eventModal = document.getElementById('modalEventCenter');
@@ -7249,6 +7758,10 @@
       const tab = document.getElementById(tabMap[category]);
       if (tab) tab.classList.add('active');
       if (btn) btn.classList.add('active');
+      else {
+        const auto = document.querySelector('#modalLeaderboard .leaderboard-tab-btn[data-lb-tab="' + category + '"]');
+        if (auto) auto.classList.add('active');
+      }
     }
 
     function startLeaderboardRefresh() {
@@ -7385,7 +7898,7 @@
               </div>
             </div>
             <div class="leaderboard-value">
-              <div class="leaderboard-value-number">${user[category].toLocaleString()}</div>
+              <div class="leaderboard-value-number">${category === 'execoin' ? formatExecoinDisplay(user[category]) : user[category].toLocaleString()}</div>
               <div class="leaderboard-value-label">${labels[category]}</div>
             </div>
           </div>
@@ -7879,15 +8392,145 @@
     function addLog(msg) { db.ref('logs').push({ msg, time: new Date().toLocaleTimeString() }); }
 
     let robloxTopupBusy = false;
+    const RBX_GP_STOCK_PATH = 'shopStocks/robuxGamepassDaily';
+    const RBX_GP_DAILY_CAP = 2;
+    const RBX_GP_PRICE = 320;
     function isValidRobloxUsername(name) {
       const s = String(name || '').trim();
       if (s.length < 3 || s.length > 20) return false;
       return /^[A-Za-z0-9_]+$/.test(s);
     }
+    function getJakartaYmd(d) {
+      return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d || new Date());
+    }
+    function getNextJakartaMidnightMs() {
+      const ymd = getJakartaYmd(new Date());
+      const start = new Date(ymd + 'T00:00:00+07:00').getTime();
+      const now = Date.now();
+      if (now < start) return start;
+      return start + 86400000;
+    }
+    function formatCountdownHms(ms) {
+      if (ms <= 0) return '00:00:00';
+      const s = Math.floor(ms / 1000);
+      const h = Math.floor(s / 3600);
+      const m = Math.floor((s % 3600) / 60);
+      const sec = s % 60;
+      return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+    }
+    function normalizeGpDaily(val) {
+      const today = getJakartaYmd();
+      let sold = 0;
+      if (val && typeof val === 'object' && val.dateKey === today && typeof val.sold === 'number') sold = val.sold;
+      sold = Math.min(RBX_GP_DAILY_CAP, Math.max(0, sold));
+      return { sold: sold, remaining: RBX_GP_DAILY_CAP - sold };
+    }
+    function updateRobloxGamepassStockUi() {
+      const line = document.getElementById('robloxGpStockLine');
+      if (!line) return;
+      const rest = document.getElementById('robloxGpRestockLine');
+      const btn = document.getElementById('robloxBtnGp');
+      const st = normalizeGpDaily(window._rbxGpDaily);
+      const left = st.remaining;
+      if (line) {
+        line.textContent = 'Stock hari ini (WIB): ' + left + ' / ' + RBX_GP_DAILY_CAP + ' slot';
+        line.classList.toggle('ok', left > 0);
+      }
+      const ms = Math.max(0, getNextJakartaMidnightMs() - Date.now());
+      if (rest) rest.textContent = 'Restock jam 00.00 WIB · countdown: ' + formatCountdownHms(ms);
+      const coins = userData && typeof userData.coins === 'number' ? userData.coins : (userData && userData.coins) || 0;
+      if (btn && !robloxTopupBusy) {
+        btn.disabled = left <= 0 || coins < RBX_GP_PRICE;
+      }
+    }
+    function ensureRobloxGamepassStockListener() {
+      if (!db || window._rbxGpListenerStarted) return;
+      window._rbxGpListenerStarted = true;
+      try {
+        db.ref(RBX_GP_STOCK_PATH).on('value', function (snap) {
+          window._rbxGpDaily = snap.val();
+          updateRobloxGamepassStockUi();
+        });
+      } catch (e) {}
+      if (!window._rbxGpUiTimer) {
+        window._rbxGpUiTimer = setInterval(updateRobloxGamepassStockUi, 1000);
+      }
+    }
     function setRobloxTopupButtonsDisabled(dis) {
-      ['robloxBtn500', 'robloxBtn1200'].forEach(id => {
+      ['robloxBtn500', 'robloxBtn1200', 'robloxBtnGp'].forEach(function (id) {
         const b = document.getElementById(id);
         if (b) b.disabled = !!dis;
+      });
+      if (!dis) updateRobloxGamepassStockUi();
+    }
+    function startRobloxGamepassTopupFromUi() {
+      if (robloxTopupBusy) return;
+      if (!auth.currentUser || !userData) {
+        msg('Login dulu untuk top up');
+        return;
+      }
+      const raw = document.getElementById('robloxTopupUsername');
+      const username = raw ? String(raw.value || '').trim() : '';
+      if (!isValidRobloxUsername(username)) {
+        showToast('Username Roblox tidak valid (3–20 karakter, huruf/angka/_ saja)', 'error');
+        return;
+      }
+      const coins = userData.coins || 0;
+      if (coins < RBX_GP_PRICE) {
+        showToast('ExeCoin belum cukup (min. ' + formatExecoinDisplay(RBX_GP_PRICE) + ')', 'error');
+        return;
+      }
+      const stPre = normalizeGpDaily(window._rbxGpDaily);
+      if (stPre.remaining <= 0) {
+        showToast('Stock paket Game Pass habis hari ini. Restock 00.00 WIB.', 'error');
+        return;
+      }
+      const uid = auth.currentUser.uid;
+      const stockRef = db.ref(RBX_GP_STOCK_PATH);
+      const coinsRef = db.ref('users/' + uid + '/coins');
+      robloxTopupBusy = true;
+      setRobloxTopupButtonsDisabled(true);
+      showToast('Memeriksa slot & saldo…', 'info');
+      stockRef.transaction(function (cur) {
+        const today = getJakartaYmd();
+        let sold = 0;
+        if (cur && typeof cur === 'object' && cur.dateKey === today && typeof cur.sold === 'number') sold = cur.sold;
+        if (sold >= RBX_GP_DAILY_CAP) return;
+        return { dateKey: today, sold: sold + 1 };
+      }).then(function (res) {
+        if (!res.committed) {
+          robloxTopupBusy = false;
+          setRobloxTopupButtonsDisabled(false);
+          showToast('Slot habis — orang lain lebih dulu. Coba setelah restock.', 'error');
+          return;
+        }
+        return coinsRef.transaction(function (c) {
+          const base = typeof c === 'number' ? c : 0;
+          if (base < RBX_GP_PRICE) return;
+          return base - RBX_GP_PRICE;
+        }).then(function (res2) {
+          if (!res2.committed) {
+            stockRef.transaction(function (c) {
+              const today = getJakartaYmd();
+              if (!c || typeof c !== 'object' || c.dateKey !== today || typeof c.sold !== 'number' || c.sold <= 0) return c;
+              return { dateKey: today, sold: c.sold - 1 };
+            });
+            robloxTopupBusy = false;
+            setRobloxTopupButtonsDisabled(false);
+            showToast('ExeCoin tidak cukup', 'error');
+            return;
+          }
+          return coinsRef.once('value').then(function (cs) {
+            userData.coins = cs.val() || 0;
+            const balEl = document.getElementById('evCoinBalance');
+            if (balEl) balEl.textContent = formatExecoinDisplay(userData.coins);
+            runRobloxTopupProgress(username, 100, RBX_GP_PRICE, 'gamepass');
+          });
+        });
+      }).catch(function () {
+        robloxTopupBusy = false;
+        setRobloxTopupButtonsDisabled(false);
+        showToast('Gagal memproses order Game Pass', 'error');
       });
     }
     function startRobloxTopupFromUi(robuxAmount, priceExeCoin) {
@@ -7926,8 +8569,8 @@
         return coinsRef.once('value').then(csnap => {
           userData.coins = csnap.val() || 0;
           const balEl = document.getElementById('evCoinBalance');
-          if (balEl) balEl.textContent = String(userData.coins);
-          runRobloxTopupProgress(username, robuxAmount, priceExeCoin);
+          if (balEl) balEl.textContent = formatExecoinDisplay(userData.coins);
+          runRobloxTopupProgress(username, robuxAmount, priceExeCoin, 'instant');
         });
       }).catch(() => {
         robloxTopupBusy = false;
@@ -7935,7 +8578,9 @@
         showToast('Gagal memproses top up', 'error');
       });
     }
-    function runRobloxTopupProgress(username, robuxAmount, paidCoins) {
+    function runRobloxTopupProgress(username, robuxAmount, paidCoins, mode) {
+      if (mode === void 0) mode = 'instant';
+      const isGp = mode === 'gamepass';
       const panel = document.getElementById('robloxTopupProgress');
       const fill = document.getElementById('robloxTopupProgressFill');
       const pctEl = document.getElementById('robloxTopupProgressPct');
@@ -7946,11 +8591,14 @@
       const chipPaid = document.getElementById('robloxTopupChipPaid');
       const dotsWrap = document.getElementById('robloxTopupStepDots');
       const paidNum = typeof paidCoins === 'number' ? paidCoins : parseInt(paidCoins, 10) || 0;
-      if (chipRbx) chipRbx.textContent = String(robuxAmount) + ' Robux';
+      if (panel) panel.classList.toggle('rbx-mode-gamepass', isGp);
+      if (chipRbx) chipRbx.textContent = isGp ? (String(robuxAmount) + ' Robux (net)') : (String(robuxAmount) + ' Robux');
       if (chipUser) chipUser.textContent = '@' + username;
-      if (chipPaid) chipPaid.textContent = paidNum.toLocaleString('id-ID') + ' ExeCoin';
+      if (chipPaid) chipPaid.textContent = (paidNum >= 1000 ? formatExecoinDisplay(paidNum) : String(paidNum)) + ' ExeCoin';
       if (dotsWrap) {
-        const labels = ['Verifikasi', 'Antrian', 'Settlement', 'Transfer', 'Selesai'];
+        const labels = isGp
+          ? ['Slot', 'Bayar', 'Game Pass', 'Pending', 'Antrian']
+          : ['Verifikasi', 'Antrian', 'Settlement', 'Transfer', 'Selesai'];
         dotsWrap.innerHTML = '';
         labels.forEach(function (lab) {
           const s = document.createElement('span');
@@ -7977,29 +8625,51 @@
       if (fill) fill.style.width = '0%';
       if (pctEl) pctEl.textContent = '0%';
       setStepVisual(0);
-      const steps = [
-        { p: 14, t: 'Verifikasi order', d: 'Mencocokkan username @' + username + ' dengan saldo ExeCoin…' },
-        { p: 36, t: 'Antrian distributor', d: 'Memasuki antrian pengiriman Robux untuk wilayah kamu…' },
-        { p: 58, t: 'Settlement ExeCoin', d: paidNum.toLocaleString('id-ID') + ' ExeCoin dikonfirmasi · mengalihkan ke saluran resmi…' },
-        { p: 80, t: 'Transfer ke Roblox', d: 'Menyinkronkan ' + robuxAmount + ' Robux ke akun Roblox kamu…' },
-        { p: 100, t: 'Pengiriman selesai', d: 'Robux telah dikreditkan. Periksa saldo Roblox di aplikasi atau roblox.com.' }
-      ];
+      const steps = isGp
+        ? [
+            { p: 16, t: 'Slot & username', d: 'Mengamankan 1 slot stok harian (WIB) untuk @' + username + '…' },
+            { p: 38, t: 'Settlement ExeCoin', d: formatExecoinDisplay(paidNum) + ' ExeCoin dikunci untuk order Game Pass…' },
+            { p: 56, t: 'Set Game Pass 143', d: 'Menerapkan konfigurasi Game Pass (list 143 Robux) ke pipeline Roblox…' },
+            { p: 78, t: 'Pending verifikasi', d: 'Estimasi hingga 5 hari kerja sistem Roblox sebelum payout 100 Robux (net).' },
+            { p: 100, t: 'Order aktif', d: 'Order tercatat. Pantau saldo Roblox kamu; payout mengikuti status Game Pass.' }
+          ]
+        : [
+            { p: 14, t: 'Verifikasi order', d: 'Mencocokkan username @' + username + ' dengan saldo ExeCoin…' },
+            { p: 36, t: 'Antrian distributor', d: 'Memasuki antrian pengiriman Robux untuk wilayah kamu…' },
+            { p: 58, t: 'Settlement ExeCoin', d: (paidNum >= 1000 ? formatExecoinDisplay(paidNum) : paidNum.toLocaleString('id-ID')) + ' ExeCoin dikonfirmasi · mengalihkan ke saluran resmi…' },
+            { p: 80, t: 'Transfer ke Roblox', d: 'Menyinkronkan ' + robuxAmount + ' Robux ke akun Roblox kamu…' },
+            { p: 100, t: 'Pengiriman selesai', d: 'Robux telah dikreditkan. Periksa saldo Roblox di aplikasi atau roblox.com.' }
+          ];
       let i = 0;
       const tick = () => {
         if (i >= steps.length) {
           robloxTopupBusy = false;
           setRobloxTopupButtonsDisabled(false);
-          if (titleEl) titleEl.textContent = 'Selesai';
-          if (detailEl) detailEl.textContent = 'Order berhasil · Robux seharusnya sudah terlihat di akun kamu.';
-          setStepVisual(99);
-          showSysNotify({
-            variant: 'success',
-            label: 'ROBUX',
-            title: 'Pengiriman selesai',
-            subtitle: String(robuxAmount) + ' Robux → @' + username,
-            meta: 'Periksa inventaris & saldo Robux di akun kamu',
-            duration: 4500
-          });
+          if (isGp) {
+            if (titleEl) titleEl.textContent = 'Order terpasang';
+            if (detailEl) detailEl.textContent = 'Game Pass dalam antrian verifikasi; perkiraan hingga 5 hari.';
+            setStepVisual(99);
+            showSysNotify({
+              variant: 'success',
+              label: 'GAME PASS',
+              title: 'Order aktif',
+              subtitle: '100 Robux (net) → @' + username,
+              meta: 'Set 143 Robux · 320 ExeCoin · tunggu settlement Roblox',
+              duration: 5200
+            });
+          } else {
+            if (titleEl) titleEl.textContent = 'Selesai';
+            if (detailEl) detailEl.textContent = 'Order berhasil · Robux seharusnya sudah terlihat di akun kamu.';
+            setStepVisual(99);
+            showSysNotify({
+              variant: 'success',
+              label: 'ROBUX',
+              title: 'Pengiriman selesai',
+              subtitle: String(robuxAmount) + ' Robux → @' + username,
+              meta: 'Periksa inventaris & saldo Robux di akun kamu',
+              duration: 4500
+            });
+          }
           return;
         }
         const st = steps[i];
@@ -8011,14 +8681,18 @@
         i++;
         setTimeout(tick, 720);
       };
-      if (titleEl) titleEl.textContent = 'Memproses pengiriman…';
-      if (detailEl) detailEl.textContent = 'Menghubungkan ke layanan top-up untuk ' + robuxAmount + ' Robux…';
+      if (titleEl) titleEl.textContent = isGp ? 'Memproses order Game Pass…' : 'Memproses pengiriman…';
+      if (detailEl) {
+        detailEl.textContent = isGp
+          ? ('Menautkan slot harian + ' + formatExecoinDisplay(paidNum) + ' ExeCoin untuk alur Game Pass…')
+          : ('Menghubungkan ke layanan top-up untuk ' + robuxAmount + ' Robux…');
+      }
       setTimeout(tick, 420);
     }
     function renderEventCenter() {
       if (!auth.currentUser || !userData) return;
       const coinsEl = document.getElementById('evCoinBalance');
-      if (coinsEl) coinsEl.textContent = String(userData.coins || 0);
+      if (coinsEl) coinsEl.textContent = formatExecoinDisplay(userData.coins || 0);
       const dailyEl = document.getElementById('evDailyList');
       const weeklyEl = document.getElementById('evWeeklyList');
       const shopEl = document.getElementById('evShopList');
@@ -8027,9 +8701,13 @@
       if (shopEl) shopEl.innerHTML = buildShopHtml();
       if (!robloxTopupBusy) {
         const panel = document.getElementById('robloxTopupProgress');
-        if (panel) panel.classList.remove('show');
+        if (panel) {
+          panel.classList.remove('show', 'rbx-mode-gamepass');
+        }
         setRobloxTopupButtonsDisabled(false);
       }
+      ensureRobloxGamepassStockListener();
+      updateRobloxGamepassStockUi();
       syncExecoinRobuxInfoCard();
       updateEventSideFromTagDrop();
     }
@@ -8130,7 +8808,9 @@
       ];
       const renderItem = it => {
         const coins = userData.coins || 0;
-        const progressText = coins + '/' + it.price;
+        const pShow = it.price >= 1000 ? formatExecoinDisplay(it.price) : String(it.price);
+        const cShow = coins >= 1000 ? formatExecoinDisplay(coins) : String(coins);
+        const progressText = cShow + '/' + pShow;
         const pct = Math.max(0, Math.min(1, coins / it.price));
         const canBuy = coins >= it.price;
         const btnAttrs = canBuy ? ('onclick="buyShopItem(\'' + it.id + '\')"') : 'disabled';
@@ -8139,7 +8819,7 @@
           '<div class="event-shop-main">' +
             '<div class="event-shop-title-row">' +
               '<div class="event-shop-title">' + escapeHtml(it.title) + '</div>' +
-              '<div class="event-shop-price"><i class="fas fa-coins"></i>' + it.price + '</div>' +
+              '<div class="event-shop-price"><i class="fas fa-coins"></i>' + pShow + '</div>' +
             '</div>' +
             '<div class="event-shop-desc">' + escapeHtml(it.desc) + '</div>' +
             '<div class="event-shop-progress-wrap">' +
